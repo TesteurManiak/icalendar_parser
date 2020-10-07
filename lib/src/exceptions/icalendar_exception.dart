@@ -18,3 +18,8 @@ class ICalendarBeginException extends ICalendarFormatException {
 class ICalendarEndException extends ICalendarFormatException {
   const ICalendarEndException(String msg) : super(msg);
 }
+
+/// Exception thrown when there is an empty line.
+class EmptyLineException extends ICalendarFormatException {
+  const EmptyLineException(String msg) : super(msg);
+}

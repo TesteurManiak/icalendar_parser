@@ -1,4 +1,5 @@
 import 'package:icalendar_parser/icalendar_parser.dart';
+import 'package:icalendar_parser/src/exceptions/icalendar_exception.dart';
 import 'package:icalendar_parser/src/model/icalendar.dart';
 
 /// [VEvent] describes an event, which has a scheduled amout of time on a
@@ -27,6 +28,8 @@ class VEvent implements CalendarComponent {
   });
 
   factory VEvent.parseFromString(String vEventString, {bool allowEmptyLine}) {
+    if (!vEventString.startsWith('BEGIN:VEVENT'))
+      throw ICalendarFormatException('The first line must be BEGIN:VEVENT');
     return VEvent();
   }
 }

@@ -36,7 +36,7 @@ class ICalendar {
     final dataList = icString.split('\n');
     for (final e in dataList) {
       if (e.isEmpty && !allowEmptyLine)
-        throw ICalendarFormatException('Empty line are not allowed');
+        throw EmptyLineException('Empty line are not allowed');
       if (prodid == null && e.contains('PRODID') && e.contains(':')) {
         final parsed = e.split(':');
         prodid = parsed.sublist(1).join(':');

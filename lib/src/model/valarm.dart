@@ -5,7 +5,7 @@ class VAlarm {
   VAlarm();
   
   factory VAlarm.parseFromString(String vAlarmString) {
-    // final dataList = vAlarmString.split('\n');
+    final dataList = vAlarmString.split('\n');
     return VAlarm();
   }
 }
