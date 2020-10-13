@@ -23,3 +23,14 @@ class ICalendarEndException extends ICalendarFormatException {
 class EmptyLineException extends ICalendarFormatException {
   const EmptyLineException(String msg) : super(msg);
 }
+
+/// Exception thrown when `VERSION` is missing.
+class ICalendarNoVersionException extends ICalendarFormatException {
+  const ICalendarNoVersionException(String msg) : super(msg);
+}
+
+
+/// Exception thrown when `PRODID` is missing.
+class ICalendarNoProdidException extends ICalendarFormatException {
+  const ICalendarNoProdidException(String msg) : super(msg);
+}

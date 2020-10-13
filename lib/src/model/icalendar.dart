@@ -47,10 +47,11 @@ class ICalendar {
     }
 
     if (version == null)
-      throw ICalendarFormatException(
+      throw ICalendarNoVersionException(
           'The body is missing the property VERSION');
     if (prodid == null)
-      throw ICalendarFormatException('The body is missing the property PRODID');
+      throw ICalendarNoProdidException(
+          'The body is missing the property PRODID');
 
     return ICalendar(
       version: version,
