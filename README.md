@@ -31,3 +31,5 @@ final iCalendar = ICalendar.fromString(icsString);
 * [ ] Parse VEVENT into object
 * [ ] Parse VALARM into object
 * [ ] Generate ICalendar object from JSON
+* [ ] Add unit tests
+* [ ] Configure CI script
