@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:icalendar_parser/icalendar_parser.dart';
-
-final _valid =
-    'BEGIN:VCALENDAR\nVERSION:2.0\nPRODID:-//hacksw/handcal//NONSGML v1.0//EN\nBEGIN:VEVENT\nUID:uid1@example.com\nDTSTAMP:19970714T170000Z\nORGANIZER;CN=John Doe:MAILTO:john.doe@example.com\nDTSTART:19970714T170000Z\nDTEND:19970715T035959Z\nSUMMARY:Bastille Day Party\nGEO:48.85299;2.36885\nEND:VEVENT\nEND:VCALENDAR';
+import 'package:flutter/services.dart' show rootBundle;
 
 void main() {
   runApp(MyApp());
@@ -33,8 +31,6 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  ICalendar _iCalendar;
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -43,22 +39,21 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
       body: Container(
         padding: EdgeInsets.all(16),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Text("${_iCalendar?.toString()}"),
-            Center(
-              child: RaisedButton(
-                child: Text('Push me'),
-                onPressed: () {
-                  final data = ICalendar.fromString(_valid);
-                  print(data);
-                  setState(() => _iCalendar = data);
-                },
-              ),
-            ),
-          ],
+        child: FutureBuilder<String>(
+          future: rootBundle.loadString('assets/calendar.ics'),
+          builder: (_, snapshot) {
+            if (!snapshot.hasData)
+              return Center(child: CircularProgressIndicator());
+
+            final iCalendar = ICalendar.fromString(snapshot.data);
+            return Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Text("${iCalendar?.toString()}"),
+              ],
+            );
+          },
         ),
       ),
     );
