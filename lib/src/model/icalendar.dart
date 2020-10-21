@@ -3,8 +3,9 @@ import 'package:icalendar_parser/src/exceptions/icalendar_exception.dart';
 class ICalendar {
   final String version;
   final String prodid;
-  final List data;
+  final List<Map<String, dynamic>> data;
 
+  /// Default constructor.
   ICalendar({
     this.version,
     this.prodid,
@@ -12,7 +13,7 @@ class ICalendar {
   });
 
   /// Parse an [ICalendar] object from a [String]. The line from the parameter
-  /// must be separated with a `\n`.
+  /// [icsString] must be separated with a `\n`.
   ///
   /// The first line must be `BEGIN:CALENDAR`, and the last line must be
   /// `END:CALENDAR`.
@@ -177,14 +178,14 @@ class ICalendar {
   };
 
   /// Parse a [List] of icalendar object from a [String]. The line from the
-  /// parameter must be separated with a `\n`.
-  static List<Map<String, dynamic>> fromStringToJson(String icString,
+  /// parameter [icsString] must be separated with a `\n`.
+  static List<Map<String, dynamic>> fromStringToJson(String icsString,
       {bool allowEmptyLine = true}) {
     List<Map<String, dynamic>> data = [];
     List events = [];
     Map<String, dynamic> lastEvent = {};
 
-    List<String> lines = icString.split('\n');
+    List<String> lines = icsString.split('\n');
 
     for (int i = 0; i < lines.length; i++) {
       String line = lines[i].trim();
@@ -220,7 +221,25 @@ class ICalendar {
           lastEvent = _objects[name](value, params, events, lastEvent);
       }
     }
-
     return data;
   }
+
+  /// Convert [ICalendar] object to a [Map] containing all its data.
+  /// 
+  /// ```
+  /// {
+  ///   "version": ICalendar.version,
+  ///   "prodid": ICalendar.prodid,
+  ///   "data": ICalendar.data
+  /// }
+  /// ```
+  Map<String, dynamic> toJson() => {
+        "version": version,
+        "prodid": prodid,
+        "data": data,
+      };
+
+  @override
+  String toString() =>
+      'iCalendar - VERSION: $version - PRODID: $prodid - DATA: $data';
 }

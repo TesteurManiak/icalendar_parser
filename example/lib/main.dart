@@ -47,9 +47,7 @@ class _MyHomePageState extends State<MyHomePage> {
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            Text("Version: ${_iCalendar?.version}"),
-            Text("PRODID: ${_iCalendar?.prodid}"),
-            Text("Data: ${_iCalendar?.data}"),
+            Text("${_iCalendar?.toString()}"),
             Center(
               child: RaisedButton(
                 child: Text('Push me'),
