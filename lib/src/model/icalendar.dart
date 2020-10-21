@@ -3,15 +3,59 @@ import 'package:icalendar_parser/src/exceptions/icalendar_exception.dart';
 class ICalendar {
   final String version;
   final String prodid;
-  final List<CalendarProperty> calendarProperties;
-  final List<CalendarComponent> calendarComponents;
+  final List data;
 
   ICalendar({
     this.version,
     this.prodid,
-    this.calendarProperties = const [],
-    this.calendarComponents = const [],
+    this.data,
   });
+
+  /// Parse an [ICalendar] object from a [String]. The line from the parameter
+  /// must be separated with a `\n`.
+  ///
+  /// The first line must be `BEGIN:CALENDAR`, and the last line must be
+  /// `END:CALENDAR`.
+  ///
+  /// The body MUST include the "PRODID" and "VERSION" calendar properties.
+  factory ICalendar.fromString(String icsString, {bool allowEmptyLine = true}) {
+    String prodid;
+    String version;
+
+    if (!icsString.startsWith('BEGIN:VCALENDAR'))
+      throw ICalendarBeginException('The first line must be BEGIN:VCALENDAR');
+    else if (!icsString.endsWith('END:VCALENDAR'))
+      throw ICalendarEndException('The last line must be END:VCALENDAR');
+
+    final lines = icsString.split('\n');
+    for (String e in lines) {
+      final line = e.trim();
+      if (line.isEmpty && !allowEmptyLine)
+        throw EmptyLineException('Empty line are not allowed');
+      if (prodid == null && line.contains('PRODID:') && line.contains(':')) {
+        final parsed = line.split(':');
+        prodid = parsed.sublist(1).join(':');
+      } else if (version == null &&
+          line.contains('VERSION:') &&
+          line.contains(':')) {
+        final parsed = line.split(':');
+        version = parsed.sublist(1).join(':');
+      }
+    }
+
+    if (version == null)
+      throw ICalendarNoVersionException(
+          'The body is missing the property VERSION');
+    if (prodid == null)
+      throw ICalendarNoProdidException(
+          'The body is missing the property PRODID');
+
+    return ICalendar(
+      version: version,
+      prodid: prodid,
+      data: fromStringToJson(icsString),
+    );
+  }
 
   static Function(String, Map<String, String>, List, Map<String, dynamic>)
       _generateDateFunction(String name) {
@@ -88,7 +132,7 @@ class ICalendar {
     'URL': _generateSimpleParamFunction('url'),
     'ORGANIZER': (String value, Map<String, String> params, List events,
         Map<String, dynamic> lastEvent) {
-      final mail = value.replaceAll(RegExp('/MAILTO:/i'), '');
+      final mail = value.replaceAll('MAILTO:', '').trim();
 
       if (params.containsKey('CN')) {
         lastEvent['organizer'] = {
@@ -119,7 +163,7 @@ class ICalendar {
         Map<String, dynamic> lastEvent) {
       lastEvent['attendee'] ??= [];
 
-      final mail = value.replaceAll(RegExp(r'/MAILTO:/i'), '');
+      final mail = value.replaceAll('MAILTO:', '').trim();
 
       if (params.containsKey('CN')) {
         (lastEvent['attendee'] as List).add({
@@ -132,26 +176,13 @@ class ICalendar {
     }
   };
 
-  /// Parse an [ICalendar] object from a [String]. The line from the parameter
-  /// must be separated with a `\n`.
-  ///
-  /// The first line must be `BEGIN:CALENDAR`, and the last line must be
-  /// `END:CALENDAR`.
-  ///
-  /// The body MUST include the "PRODID" and "VERSION" calendar properties.
-  static List<Map<String, dynamic>> parseFromString(String icString,
+  /// Parse a [List] of icalendar object from a [String]. The line from the
+  /// parameter must be separated with a `\n`.
+  static List<Map<String, dynamic>> fromStringToJson(String icString,
       {bool allowEmptyLine = true}) {
-    String prodid;
-    String version;
-
     List<Map<String, dynamic>> data = [];
     List events = [];
     Map<String, dynamic> lastEvent = {};
-
-    if (!icString.startsWith('BEGIN:VCALENDAR'))
-      throw ICalendarBeginException('The first line must be BEGIN:VCALENDAR');
-    else if (!icString.endsWith('END:VCALENDAR'))
-      throw ICalendarEndException('The last line must be END:VCALENDAR');
 
     List<String> lines = icString.split('\n');
 
@@ -188,31 +219,8 @@ class ICalendar {
         else
           lastEvent = _objects[name](value, params, events, lastEvent);
       }
-
-      if (line.isEmpty && !allowEmptyLine)
-        throw EmptyLineException('Empty line are not allowed');
-      if (prodid == null && line.contains('PRODID') && line.contains(':')) {
-        final parsed = line.split(':');
-        prodid = parsed.sublist(1).join(':');
-      } else if (version == null &&
-          line.contains('VERSION') &&
-          line.contains(':')) {
-        final parsed = line.split(':');
-        version = parsed.sublist(1).join(':');
-      }
     }
-
-    if (version == null)
-      throw ICalendarNoVersionException(
-          'The body is missing the property VERSION');
-    if (prodid == null)
-      throw ICalendarNoProdidException(
-          'The body is missing the property PRODID');
 
     return data;
   }
 }
-
-abstract class CalendarProperty {}
-
-abstract class CalendarComponent {}

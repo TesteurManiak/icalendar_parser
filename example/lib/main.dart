@@ -33,7 +33,7 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  String text = '';
+  ICalendar _iCalendar;
 
   @override
   Widget build(BuildContext context) {
@@ -41,16 +41,25 @@ class _MyHomePageState extends State<MyHomePage> {
       appBar: AppBar(
         title: Text(widget.title),
       ),
-      body: Center(
+      body: Container(
+        padding: EdgeInsets.all(16),
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            Text(text),
-            RaisedButton(
-              child: Text('Push me'),
-              onPressed: () => setState(
-                  () => text = ICalendar.parseFromString(_valid).toString()),
-            )
+            Text("Version: ${_iCalendar?.version}"),
+            Text("PRODID: ${_iCalendar?.prodid}"),
+            Text("Data: ${_iCalendar?.data}"),
+            Center(
+              child: RaisedButton(
+                child: Text('Push me'),
+                onPressed: () {
+                  final data = ICalendar.fromString(_valid);
+                  print(data);
+                  setState(() => _iCalendar = data);
+                },
+              ),
+            ),
           ],
         ),
       ),

@@ -12,16 +12,16 @@ main() {
 
   TestWidgetsFlutterBinding.ensureInitialized();
   test('Missing BEGIN:VCALENDAR', () {
-    expect(() => ICalendar.parseFromString(_noCalendarBegin),
+    expect(() => ICalendar.fromString(_noCalendarBegin),
         throwsA(isInstanceOf<ICalendarBeginException>()));
   });
 
   test('Missing END:VCALENDAR', () {
-    expect(() => ICalendar.parseFromString(_noCalendarEnd),
+    expect(() => ICalendar.fromString(_noCalendarEnd),
         throwsA(isInstanceOf<ICalendarEndException>()));
   });
 
   test('Valid calendar', () {
-    ICalendar.parseFromString(_valid);
+    expect(ICalendar.fromString(_valid).data.length, 1);
   });
 }
