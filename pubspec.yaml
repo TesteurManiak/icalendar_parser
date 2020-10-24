@@ -9,3 +9,4 @@ environment:
 
 dev_dependencies:
   test: ^1.15.4
+  pedantic: ^1.9.2

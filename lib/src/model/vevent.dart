@@ -17,10 +17,10 @@ class VEvent {
       );
 
   Map<String, dynamic> toJson() => {
-        "type": "VEVENT",
-        "uid": uid,
-        "organizer": organizer?.toJson(),
-        "name": name,
-        "geo": geo?.toJson(),
+        'type': 'VEVENT',
+        'uid': uid,
+        'organizer': organizer?.toJson(),
+        'name': name,
+        'geo': geo?.toJson(),
       };
 }

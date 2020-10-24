@@ -29,7 +29,6 @@ class ICalendarNoVersionException extends ICalendarFormatException {
   const ICalendarNoVersionException(String msg) : super(msg);
 }
 
-
 /// Exception thrown when `PRODID` is missing.
 class ICalendarNoProdidException extends ICalendarFormatException {
   const ICalendarNoProdidException(String msg) : super(msg);

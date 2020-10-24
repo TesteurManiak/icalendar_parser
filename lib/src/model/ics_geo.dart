@@ -8,5 +8,5 @@ class IcsGeo {
       IcsGeo(latitude: json['latitude'], longitude: json['longitude']);
 
   Map<String, dynamic> toJson() =>
-      {"latitude": latitude, "longitude": longitude};
+      {'latitude': latitude, 'longitude': longitude};
 }

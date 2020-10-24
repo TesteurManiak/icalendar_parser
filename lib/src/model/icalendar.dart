@@ -30,16 +30,17 @@ class ICalendar {
     }
 
     if (!icsString.startsWith('BEGIN:VCALENDAR'))
-      throw ICalendarBeginException('The first line must be BEGIN:VCALENDAR');
+      throw const ICalendarBeginException(
+          'The first line must be BEGIN:VCALENDAR');
     else if (!icsString.endsWith('END:VCALENDAR'))
-      throw ICalendarEndException('The last line must be END:VCALENDAR');
+      throw const ICalendarEndException('The last line must be END:VCALENDAR');
 
     final lines = icsString.split('\n');
 
     for (String e in lines) {
       final line = e.trim();
       if (line.isEmpty && !allowEmptyLine)
-        throw EmptyLineException('Empty line are not allowed');
+        throw const EmptyLineException('Empty line are not allowed');
       if (prodid == null && line.contains('PRODID:') && line.contains(':')) {
         final parsed = line.split(':');
         prodid = parsed.sublist(1).join(':');
@@ -52,10 +53,10 @@ class ICalendar {
     }
 
     if (version == null)
-      throw ICalendarNoVersionException(
+      throw const ICalendarNoVersionException(
           'The body is missing the property VERSION');
     if (prodid == null)
-      throw ICalendarNoProdidException(
+      throw const ICalendarNoProdidException(
           'The body is missing the property PRODID');
 
     return ICalendar(
@@ -97,15 +98,15 @@ class ICalendar {
       _generateSimpleParamFunction(String name) {
     return (String value, Map<String, String> params, List events,
         Map<String, dynamic> lastEvent) {
-      lastEvent[name] = value.replaceAll(RegExp(r'/\\n/g'), "\n");
+      lastEvent[name] = value.replaceAll(RegExp(r'/\\n/g'), '\n');
       return lastEvent;
     };
   }
 
-  static Map<String, Function> _objects = {
+  static final Map<String, Function> _objects = {
     'BEGIN': (String value, Map<String, String> params, List events,
         Map<String, dynamic> lastEvent) {
-      if (value == "VCALENDAR") return null;
+      if (value == 'VCALENDAR') return null;
 
       lastEvent = {'type': value};
       events.add(lastEvent);
@@ -114,7 +115,7 @@ class ICalendar {
     },
     'END': (String value, Map<String, String> params, List events,
         Map<String, dynamic> lastEvent, List<Map<String, dynamic>> data) {
-      if (value == "VCALENDAR") return lastEvent;
+      if (value == 'VCALENDAR') return lastEvent;
 
       data.add(lastEvent);
 
@@ -214,10 +215,10 @@ class ICalendar {
       dataName.removeRange(0, 1);
 
       Map<String, String> params = {};
-      dataName.forEach((e) {
+      for (String e in dataName) {
         List<String> param = e.split('=');
         if (param.length == 2) params[param[0]] = param[1];
-      });
+      }
 
       dataLine.removeRange(0, 1);
       String value = dataLine.join(':').replaceAll(RegExp(r'\\,'), ',');
@@ -241,9 +242,9 @@ class ICalendar {
   /// }
   /// ```
   Map<String, dynamic> toJson() => {
-        "version": version,
-        "prodid": prodid,
-        "data": data,
+        'version': version,
+        'prodid': prodid,
+        'data': data,
       };
 
   @override

@@ -10,7 +10,7 @@ class IcsOrganizer {
       );
 
   Map<String, dynamic> toJson() => {
-        "name": name,
-        "mail": mail,
+        'name': name,
+        'mail': mail,
       };
 }
