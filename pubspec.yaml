@@ -8,5 +8,4 @@ environment:
   sdk: ">=2.7.0 <3.0.0"
 
 dev_dependencies:
-  flutter_test:
-    sdk: flutter
+  test: ^1.15.4
