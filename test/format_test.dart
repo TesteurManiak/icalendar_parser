@@ -24,7 +24,12 @@ main() {
     expect(ICalendar.fromString(_valid).data.length, 1);
   });
 
-  test('Valid calendar ending with newline', () {
+  test('Valid calendar ending w/ newline: authorized empty line', () {
     expect(ICalendar.fromString(_valid + '\n').data.length, 1);
+  });
+
+  test('Valid calendar ending w/ newline: unauthorized empty line', () {
+    expect(() => ICalendar.fromString(_valid + '\n', allowEmptyLine: false),
+        throwsA(isA<ICalendarEndException>()));
   });
 }

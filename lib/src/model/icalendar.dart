@@ -23,9 +23,15 @@ class ICalendar {
     String prodid;
     String version;
 
+    // Clean end of file to remove empty lines.
+    if (allowEmptyLine) {
+      while (icsString.endsWith('\n'))
+        icsString = icsString.substring(0, icsString.length - 1);
+    }
+
     if (!icsString.startsWith('BEGIN:VCALENDAR'))
       throw ICalendarBeginException('The first line must be BEGIN:VCALENDAR');
-    else if (!_checkEndCalendar(icsString, allowEmptyLine))
+    else if (!icsString.endsWith('END:VCALENDAR'))
       throw ICalendarEndException('The last line must be END:VCALENDAR');
 
     final lines = icsString.split('\n');
@@ -57,17 +63,6 @@ class ICalendar {
       prodid: prodid,
       data: fromStringToJson(icsString),
     );
-  }
-
-  /// Separate method to check `END:VCALENDAR` easily.
-  static bool _checkEndCalendar(String icsString, bool allowEmptyLine) {
-    if (allowEmptyLine)
-      return icsString.endsWith('END:VCALENDAR') ||
-              icsString.endsWith('END:VCALENDAR\n')
-          ? true
-          : false;
-    else
-      return icsString.endsWith('END:VCALENDAR') ? true : false;
   }
 
   static Function(String, Map<String, String>, List, Map<String, dynamic>)
