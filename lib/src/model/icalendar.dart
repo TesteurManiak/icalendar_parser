@@ -23,12 +23,19 @@ class ICalendar {
     String prodid;
     String version;
 
+    // Clean end of file to remove empty lines.
+    if (allowEmptyLine) {
+      while (icsString.endsWith('\n'))
+        icsString = icsString.substring(0, icsString.length - 1);
+    }
+
     if (!icsString.startsWith('BEGIN:VCALENDAR'))
       throw ICalendarBeginException('The first line must be BEGIN:VCALENDAR');
     else if (!icsString.endsWith('END:VCALENDAR'))
       throw ICalendarEndException('The last line must be END:VCALENDAR');
 
     final lines = icsString.split('\n');
+
     for (String e in lines) {
       final line = e.trim();
       if (line.isEmpty && !allowEmptyLine)
@@ -225,7 +232,7 @@ class ICalendar {
   }
 
   /// Convert [ICalendar] object to a [Map] containing all its data.
-  /// 
+  ///
   /// ```
   /// {
   ///   "version": ICalendar.version,

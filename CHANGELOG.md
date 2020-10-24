@@ -1,3 +1,10 @@
+# Changelog
+
+## [0.1.1] - 24/10/2020
+
+* Compatible with `dart::core`
+* Authorize `END:VCALENDAR` ending with newline
+
 ## [0.1.0] - 21/10/2020
 
 * First release

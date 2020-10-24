@@ -1,5 +1,10 @@
 # icalendar_parser
 
+[![Issues](https://img.shields.io/github/issues/TesteurManiak/icalendar_parser)](https://github.com/TesteurManiak/icalendar_parser/issues)
+[![Forks](https://img.shields.io/github/forks/TesteurManiak/icalendar_parser)](https://github.com/TesteurManiak/icalendar_parser/network/members)
+[![Stars](https://img.shields.io/github/stars/TesteurManiak/icalendar_parser)](https://github.com/TesteurManiak/icalendar_parser/stargazers)
+[![Pub Version](https://img.shields.io/pub/v/icalendar_parser?color=blue&logo=dart)](https://pub.dev/packages/icalendar_parser)
+
 Package to parse iCalendar (.ics) files written in pure Dart.
 
 Implementation of [AnyFetch's ics-parser](https://github.com/AnyFetch/ics-parser) in JavaScript.
@@ -8,7 +13,7 @@ Implementation of [AnyFetch's ics-parser](https://github.com/AnyFetch/ics-parser
 
 Add `icalendar_parser` to your pubspec.yaml:
 
-```
+```bash
 icalendar_parser: any
 ```
 
@@ -31,5 +36,5 @@ final iCalendar = ICalendar.fromString(icsString);
 * [ ] Parse VEVENT into object
 * [ ] Parse VALARM into object
 * [ ] Generate ICalendar object from JSON
-* [ ] Add unit tests
+* [x] Add unit tests
 * [ ] Configure CI script
