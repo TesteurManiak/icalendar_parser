@@ -23,4 +23,8 @@ main() {
   test('Valid calendar', () {
     expect(ICalendar.fromString(_valid).data.length, 1);
   });
+
+  test('Valid calendar ending with newline', () {
+    expect(ICalendar.fromString(_valid + '\n').data.length, 1);
+  });
 }

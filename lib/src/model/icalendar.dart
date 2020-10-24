@@ -25,10 +25,11 @@ class ICalendar {
 
     if (!icsString.startsWith('BEGIN:VCALENDAR'))
       throw ICalendarBeginException('The first line must be BEGIN:VCALENDAR');
-    else if (!icsString.endsWith('END:VCALENDAR'))
+    else if (!_checkEndCalendar(icsString, allowEmptyLine))
       throw ICalendarEndException('The last line must be END:VCALENDAR');
 
     final lines = icsString.split('\n');
+
     for (String e in lines) {
       final line = e.trim();
       if (line.isEmpty && !allowEmptyLine)
@@ -56,6 +57,17 @@ class ICalendar {
       prodid: prodid,
       data: fromStringToJson(icsString),
     );
+  }
+
+  /// Separate method to check `END:VCALENDAR` easily.
+  static bool _checkEndCalendar(String icsString, bool allowEmptyLine) {
+    if (allowEmptyLine)
+      return icsString.endsWith('END:VCALENDAR') ||
+              icsString.endsWith('END:VCALENDAR\n')
+          ? true
+          : false;
+    else
+      return icsString.endsWith('END:VCALENDAR') ? true : false;
   }
 
   static Function(String, Map<String, String>, List, Map<String, dynamic>)
@@ -225,7 +237,7 @@ class ICalendar {
   }
 
   /// Convert [ICalendar] object to a [Map] containing all its data.
-  /// 
+  ///
   /// ```
   /// {
   ///   "version": ICalendar.version,
