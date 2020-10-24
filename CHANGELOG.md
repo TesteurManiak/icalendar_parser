@@ -1,5 +1,9 @@
 # Changelog
 
+## [0.1.1+1] - 24/10/2020
+
+* Added pedantic rules to lint code
+
 ## [0.1.1] - 24/10/2020
 
 * Compatible with `dart::core`
