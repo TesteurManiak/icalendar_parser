@@ -38,19 +38,19 @@ class _MyHomePageState extends State<MyHomePage> {
         title: Text(widget.title),
       ),
       body: Container(
-        padding: EdgeInsets.all(16),
+        padding: const EdgeInsets.all(16),
         child: FutureBuilder<String>(
           future: rootBundle.loadString('assets/calendar.ics'),
           builder: (_, snapshot) {
             if (!snapshot.hasData)
-              return Center(child: CircularProgressIndicator());
+              return const Center(child: CircularProgressIndicator());
 
             final iCalendar = ICalendar.fromString(snapshot.data);
             return Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
-                Text("${iCalendar?.toString()}"),
+                Text('${iCalendar?.toString()}'),
               ],
             );
           },
