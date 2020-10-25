@@ -35,16 +35,30 @@ class MyHomePage extends StatefulWidget {
   _MyHomePageState createState() => _MyHomePageState();
 }
 
-Future<List<String>> _getAssetsFile() async {
-  final directory = await getApplicationDocumentsDirectory();
-  final path = p.join(directory.path, 'calendar.ics');
-  final data = await rootBundle.load('assets/calendar.ics');
-  final bytes = data.buffer.asUint8List(data.offsetInBytes, data.lengthInBytes);
-  final file = await File(path).writeAsBytes(bytes);
-  return file.readAsLines();
-}
-
 class _MyHomePageState extends State<MyHomePage> {
+  ICalendar _iCalendar;
+  bool _isLoading = false;
+
+  Future<void> _getAssetsFile(String assetName) async {
+    setState(() => _isLoading = true);
+    try {
+      final directory = await getTemporaryDirectory();
+      final path = p.join(directory.path, assetName);
+      final data = await rootBundle.load('assets/$assetName');
+      final bytes =
+          data.buffer.asUint8List(data.offsetInBytes, data.lengthInBytes);
+      final file = await File(path).writeAsBytes(bytes);
+      final lines = await file.readAsLines();
+      setState(() {
+        _iCalendar = ICalendar.fromLines(lines);
+        _isLoading = false;
+      });
+    } catch (e) {
+      setState(() => _isLoading = false);
+      throw 'Error: $e';
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -53,20 +67,24 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
       body: Container(
         padding: const EdgeInsets.all(16),
-        child: FutureBuilder<List<String>>(
-          future: _getAssetsFile(),
-          builder: (_, snapshot) {
-            if (!snapshot.hasData)
-              return const Center(child: CircularProgressIndicator());
-            final iCalendar = ICalendar.fromLines(snapshot.data);
-            return Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                Text('${iCalendar?.toString()}'),
-              ],
-            );
-          },
+        child: Column(
+          children: [
+            if (_isLoading || _iCalendar == null)
+              const Center(child: CircularProgressIndicator())
+            else
+              Text(
+                '${_iCalendar?.toString()}',
+                overflow: TextOverflow.ellipsis,
+              ),
+            FlatButton(
+              child: const Text('Load File 1'),
+              onPressed: () => _getAssetsFile('calendar.ics'),
+            ),
+            FlatButton(
+              child: const Text('Load File 2'),
+              onPressed: () => _getAssetsFile('calendar2.ics'),
+            ),
+          ],
         ),
       ),
     );
