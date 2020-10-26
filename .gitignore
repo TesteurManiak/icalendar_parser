@@ -80,3 +80,11 @@ example/ios/Flutter/flutter_export_environment 3.sh
 example/ios/Flutter/Generated 3.xcconfig
 
 example/ios/Flutter/.Generated 3.xcconfig.icloud
+
+example/.flutter-plugins 4
+
+example/.flutter-plugins-dependencies 4
+
+example/ios/Flutter/flutter_export_environment 4.sh
+
+example/ios/Flutter/Generated 4.xcconfig
