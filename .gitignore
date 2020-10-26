@@ -72,3 +72,11 @@ build/
 !**/ios/**/default.mode2v3
 !**/ios/**/default.pbxuser
 !**/ios/**/default.perspectivev3
+
+example/ios/Flutter/.flutter_export_environment 3.sh.icloud
+
+example/ios/Flutter/flutter_export_environment 3.sh
+
+example/ios/Flutter/Generated 3.xcconfig
+
+example/ios/Flutter/.Generated 3.xcconfig.icloud

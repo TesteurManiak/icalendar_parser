@@ -59,23 +59,51 @@ class _MyHomePageState extends State<MyHomePage> {
     }
   }
 
+  Widget _generateTextContent() {
+    final style = const TextStyle(color: Colors.black);
+    return RichText(
+      text: TextSpan(
+        children: [
+          TextSpan(
+              text: 'VERSION: ${_iCalendar.version}\n',
+              style: style.copyWith(fontWeight: FontWeight.bold)),
+          TextSpan(
+              text: 'PRODID: ${_iCalendar.prodid}\n',
+              style: style.copyWith(fontWeight: FontWeight.bold)),
+          TextSpan(
+              children: _iCalendar.data
+                  .map((e) => TextSpan(
+                        children: e.keys
+                            .map((f) => TextSpan(children: [
+                                  TextSpan(
+                                      text: '${f.toUpperCase()}: ',
+                                      style: style.copyWith(
+                                          fontWeight: FontWeight.bold)),
+                                  TextSpan(text: '${e[f]}\n')
+                                ]))
+                            .toList(),
+                      ))
+                  .toList()),
+        ],
+        style: style,
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.title),
       ),
-      body: Container(
+      body: SingleChildScrollView(
         padding: const EdgeInsets.all(16),
         child: Column(
           children: [
             if (_isLoading || _iCalendar == null)
               const Center(child: CircularProgressIndicator())
             else
-              Text(
-                '${_iCalendar?.toString()}',
-                overflow: TextOverflow.ellipsis,
-              ),
+              _generateTextContent(),
             FlatButton(
               child: const Text('Load File 1'),
               onPressed: () => _getAssetsFile('calendar.ics'),
