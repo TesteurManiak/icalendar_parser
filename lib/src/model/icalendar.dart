@@ -88,26 +88,7 @@ class ICalendar {
       _generateDateFunction(String name) {
     return (String value, Map<String, String> params, List events,
         Map<String, dynamic> lastEvent) {
-      final matches =
-          RegExp(r'/^(\d{4})(\d{2})(\d{2})$/').allMatches(value).toList();
-      if (matches != null && matches.isNotEmpty) {
-        lastEvent[name] = DateTime(int.parse(matches[1].input),
-            int.parse(matches[2].input) - 1, int.parse(matches[3].input));
-        return lastEvent;
-      }
-
-      if (RegExp(r'/^(\d{4})(\d{2})(\d{2})T(\d{2})(\d{2})(\d{2})/')
-          .hasMatch(value)) {
-        lastEvent[name] = DateTime.parse(value.substring(0, 4) +
-            '-' +
-            value.substring(4, 6) +
-            '-' +
-            value.substring(6, 11) +
-            ':' +
-            value.substring(11, 13) +
-            ':' +
-            value.substring(13));
-      }
+      lastEvent[name] = DateTime.parse(value);
       return lastEvent;
     };
   }
