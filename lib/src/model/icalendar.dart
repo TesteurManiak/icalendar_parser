@@ -12,24 +12,23 @@ class ICalendar {
     this.data,
   });
 
-  /// Deprecated: Doesn't support multiline "DESCRIPTION". Use
-  /// [ICalendar.fromLines] instead.
+  /// Parse an [ICalendar] object from a [String]. The parameter
+  /// [icsString] will be split on each [lineSeparator] occurence which is by
+  /// default `\r\n`.
   ///
-  /// Parse an [ICalendar] object from a [String]. The line from the parameter
-  /// [icsString] must be separated with a `\n`.
-  ///
-  /// The first line must be `BEGIN:CALENDAR`, and the last line must be
-  /// `END:CALENDAR`.
+  /// The first line must be `BEGIN:VCALENDAR`, and the last line must be
+  /// `END:VCALENDAR`.
   ///
   /// The body MUST include the "PRODID" and "VERSION" calendar properties.
-  @Deprecated('Use ICalendar.fromLines instead')
-  factory ICalendar.fromString(String icsString, {bool allowEmptyLine = true}) {
-    // Clean end of file to remove empty lines.
+  factory ICalendar.fromString(String icsString,
+      {bool allowEmptyLine = true, String lineSeparator = '\r\n'}) {
+    // Clean empty line end of file.
     if (allowEmptyLine) {
-      while (icsString.endsWith('\n'))
-        icsString = icsString.substring(0, icsString.length - 1);
+      while (icsString.endsWith(lineSeparator))
+        icsString =
+            icsString.substring(0, icsString.length - lineSeparator.length);
     }
-    final lines = icsString.split('\n');
+    final lines = icsString.split(lineSeparator);
     return _linesParser(lines, allowEmptyLine);
   }
 
