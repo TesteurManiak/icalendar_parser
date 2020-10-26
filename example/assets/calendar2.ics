@@ -1,0 +1,98 @@
+BEGIN:VCALENDAR
+METHOD:PUBLISH
+PRODID:-//Moodle Pty Ltd//NONSGML Moodle Version 2020061501//EN
+VERSION:2.0
+BEGIN:VEVENT
+UID:12928@195832.logineonrw-lms.de
+SUMMARY:200925 - Einfache Schlange (Warteschlange Freizeitpark) ist fällig.
+DESCRIPTION:Bearbeitet im Net-Schulbuch auf der Seite "baab_aufgaben" die A
+	ufgabe 3.\n\nLadet eure Lösungen als zip-Datei hier hoch.\n\n
+	
+CLASS:PUBLIC
+LAST-MODIFIED:20201009T103237Z
+DTSTAMP:20201023T110413Z
+DTSTART:20201005T080000Z
+DTEND:20201005T080000Z
+CATEGORIES:Q1_GK IF 1_Kock
+END:VEVENT
+BEGIN:VEVENT
+UID:13001@195832.logineonrw-lms.de
+SUMMARY:Testaufgabe ist fällig.
+DESCRIPTION:Agrobusiness - Lösung des Welternährungsproblems\n\n
+CLASS:PUBLIC
+LAST-MODIFIED:20201006T201443Z
+DTSTAMP:20201023T110413Z
+DTSTART:20201005T220000Z
+DTEND:20201005T220000Z
+CATEGORIES:Q1_LK_EK1_Muel
+END:VEVENT
+BEGIN:VEVENT
+UID:20797@195832.logineonrw-lms.de
+SUMMARY:Verschiedene Übungen als Vorbereitung auf die anstehende Klausur zu
+	m Thema "sprachliche Varietäten" ist fällig.
+	
+DESCRIPTION:1. Stelle alle Positionen zum Thema "Kiezdeutsch" in einer ausf
+	ührlichen Tabelle zusammen zusammen.\n\n2. Schreibt Definitionen für die Sp
+	rachvarietäten "Dialekt" und "Soziolekt.\n\n3. Stellt tabellarisch die Vor-
+	 und Nachteile des Sprechens von Dialekten dar.\n\n4. Schreibt die Merkmale
+	 von Dialekt\, Kiezdeutsch sowie Jugendsprache auf. Beachtet dabei auch Gra
+	mmatik\, Semantik und Phonetik.\n\n
+	
+CLASS:PUBLIC
+LAST-MODIFIED:20201023T084557Z
+DTSTAMP:20201023T110413Z
+DTSTART:20201006T220000Z
+DTEND:20201006T220000Z
+CATEGORIES:Q1_GK D_Hölv
+END:VEVENT
+BEGIN:VEVENT
+UID:20798@195832.logineonrw-lms.de
+SUMMARY:Tasks to the topic of GB ist fällig.
+DESCRIPTION:1. Send me your lectures (Referate bitte einstellen).\n\n2. Cho
+	ose one character from the movie we are going to watch soon. give reasons w
+	hy you have decided to write about this character\, why or why not you like
+	 it. Write about his/ her situation and the way he oder she is dealing with
+	 the arising conflicts. You should additionally comment on the character an
+	d maybe suggest ways that could support the character. Feel free to utter y
+	our feelings\, questions or to add criticism on some kind of behaviour\, fo
+	r example.\n\n
+	
+CLASS:PUBLIC
+LAST-MODIFIED:20201023T092950Z
+DTSTAMP:20201023T110413Z
+DTSTART:20201006T220000Z
+DTEND:20201006T220000Z
+CATEGORIES:Q1_GK E2_Hölv
+END:VEVENT
+BEGIN:VEVENT
+UID:20383@195832.logineonrw-lms.de
+SUMMARY:Testaufgabe ist fällig.
+DESCRIPTION:Hallo zusammen\,\n\nhier kommt eine Testaufgabe für euch! Bitte
+	 fotografiert eine Steckdose und sendet mir das Foto über Logineo zu.\n\nHe
+	rzliche Grüße\n\nvon Frau Haase\n\n
+	
+CLASS:PUBLIC
+LAST-MODIFIED:20200930T181945Z
+DTSTAMP:20201023T110413Z
+DTSTART:20201007T140000Z
+DTEND:20201007T140000Z
+CATEGORIES:Q1_GK_Physik_Haase
+END:VEVENT
+BEGIN:VEVENT
+UID:21550@195832.logineonrw-lms.de
+SUMMARY:201009 - Generische Queue (Musikwuensche) ist fällig.
+DESCRIPTION:Liebe Schülerinnen und Schüler\,\n\nbearbeitet im Net-Schulbuch
+	 auf der Seite baab_aufgabe2 die Aufgaben 1 und 2. Für Aufgabe 2 verwendet 
+	die Datei im Anhang.\n\nDiese müsst ihr herunterladen und "extrahieren". Sp
+	eichert sie beim Extrahieren in einem geeigneten Verzeichnis.\n\nHinweis: A
+	uf der Seite baab_queue findet ihr eine Erklärung zur generischen Schlange.
+	\n
+	
+CLASS:PUBLIC
+LAST-MODIFIED:20201009T103223Z
+DTSTAMP:20201023T110413Z
+DTSTART:20201011T210000Z
+DTEND:20201011T210000Z
+CATEGORIES:Q1_GK IF 1_Kock
+END:VEVENT
+END:VCALENDAR

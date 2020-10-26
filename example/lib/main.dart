@@ -1,6 +1,11 @@
+import 'dart:core';
+import 'dart:io';
+
 import 'package:flutter/material.dart';
-import 'package:icalendar_parser/icalendar_parser.dart';
 import 'package:flutter/services.dart' show rootBundle;
+import 'package:icalendar_parser/icalendar_parser.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:path/path.dart' as p;
 
 void main() {
   runApp(MyApp());
@@ -31,29 +36,83 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  ICalendar _iCalendar;
+  bool _isLoading = false;
+
+  Future<void> _getAssetsFile(String assetName) async {
+    setState(() => _isLoading = true);
+    try {
+      final directory = await getTemporaryDirectory();
+      final path = p.join(directory.path, assetName);
+      final data = await rootBundle.load('assets/$assetName');
+      final bytes =
+          data.buffer.asUint8List(data.offsetInBytes, data.lengthInBytes);
+      final file = await File(path).writeAsBytes(bytes);
+      final lines = await file.readAsLines();
+      setState(() {
+        _iCalendar = ICalendar.fromLines(lines);
+        _isLoading = false;
+      });
+    } catch (e) {
+      setState(() => _isLoading = false);
+      throw 'Error: $e';
+    }
+  }
+
+  Widget _generateTextContent() {
+    final style = const TextStyle(color: Colors.black);
+    return RichText(
+      text: TextSpan(
+        children: [
+          TextSpan(
+              text: 'VERSION: ${_iCalendar.version}\n',
+              style: style.copyWith(fontWeight: FontWeight.bold)),
+          TextSpan(
+              text: 'PRODID: ${_iCalendar.prodid}\n',
+              style: style.copyWith(fontWeight: FontWeight.bold)),
+          TextSpan(
+              children: _iCalendar.data
+                  .map((e) => TextSpan(
+                        children: e.keys
+                            .map((f) => TextSpan(children: [
+                                  TextSpan(
+                                      text: '${f.toUpperCase()}: ',
+                                      style: style.copyWith(
+                                          fontWeight: FontWeight.bold)),
+                                  TextSpan(text: '${e[f]}\n')
+                                ]))
+                            .toList(),
+                      ))
+                  .toList()),
+        ],
+        style: style,
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.title),
       ),
-      body: Container(
-        padding: EdgeInsets.all(16),
-        child: FutureBuilder<String>(
-          future: rootBundle.loadString('assets/calendar.ics'),
-          builder: (_, snapshot) {
-            if (!snapshot.hasData)
-              return Center(child: CircularProgressIndicator());
-
-            final iCalendar = ICalendar.fromString(snapshot.data);
-            return Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                Text("${iCalendar?.toString()}"),
-              ],
-            );
-          },
+      body: SingleChildScrollView(
+        padding: const EdgeInsets.all(16),
+        child: Column(
+          children: [
+            if (_isLoading || _iCalendar == null)
+              const Center(child: CircularProgressIndicator())
+            else
+              _generateTextContent(),
+            FlatButton(
+              child: const Text('Load File 1'),
+              onPressed: () => _getAssetsFile('calendar.ics'),
+            ),
+            FlatButton(
+              child: const Text('Load File 2'),
+              onPressed: () => _getAssetsFile('calendar2.ics'),
+            ),
+          ],
         ),
       ),
     );

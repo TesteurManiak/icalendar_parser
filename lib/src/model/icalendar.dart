@@ -12,6 +12,9 @@ class ICalendar {
     this.data,
   });
 
+  /// Deprecated: Doesn't support multiline "DESCRIPTION". Use
+  /// [ICalendar.fromLines] instead.
+  ///
   /// Parse an [ICalendar] object from a [String]. The line from the parameter
   /// [icsString] must be separated with a `\n`.
   ///
@@ -19,34 +22,50 @@ class ICalendar {
   /// `END:CALENDAR`.
   ///
   /// The body MUST include the "PRODID" and "VERSION" calendar properties.
+  @Deprecated('Use ICalendar.fromLines instead')
   factory ICalendar.fromString(String icsString, {bool allowEmptyLine = true}) {
-    String prodid;
-    String version;
-
     // Clean end of file to remove empty lines.
     if (allowEmptyLine) {
       while (icsString.endsWith('\n'))
         icsString = icsString.substring(0, icsString.length - 1);
     }
-
-    if (!icsString.startsWith('BEGIN:VCALENDAR'))
-      throw const ICalendarBeginException(
-          'The first line must be BEGIN:VCALENDAR');
-    else if (!icsString.endsWith('END:VCALENDAR'))
-      throw const ICalendarEndException('The last line must be END:VCALENDAR');
-
     final lines = icsString.split('\n');
+    return _linesParser(lines, allowEmptyLine);
+  }
+
+  /// Parse an [ICalendar] object from a [List<String>].
+  ///
+  /// The first line must be `BEGIN:CALENDAR`, and the last line must be
+  /// `END:CALENDAR`.
+  ///
+  /// The body MUST include the "PRODID" and "VERSION" calendar properties.
+  factory ICalendar.fromLines(List<String> lines,
+      {bool allowEmptyLine = true}) {
+    if (allowEmptyLine) {
+      while (lines.last.isEmpty) lines.removeLast();
+    }
+    return _linesParser(lines, allowEmptyLine);
+  }
+
+  static ICalendar _linesParser(List<String> lines, bool allowEmptyLine) {
+    String prodid;
+    String version;
+
+    if (lines.first != 'BEGIN:VCALENDAR')
+      throw ICalendarBeginException(
+          'The first line must be BEGIN:VCALENDAR but was ${lines.first}.');
+    else if (lines.last != 'END:VCALENDAR')
+      throw ICalendarEndException(
+          'The last line must be END:VCALENDAR but was ${lines.last}.');
 
     for (String e in lines) {
       final line = e.trim();
       if (line.isEmpty && !allowEmptyLine)
         throw const EmptyLineException('Empty line are not allowed');
-      if (prodid == null && line.contains('PRODID:') && line.contains(':')) {
+      if (prodid == null && line.contains('PRODID:')) {
         final parsed = line.split(':');
         prodid = parsed.sublist(1).join(':');
-      } else if (version == null &&
-          line.contains('VERSION:') &&
-          line.contains(':')) {
+      } else if (version == null && line.contains('VERSION:')) {
         final parsed = line.split(':');
         version = parsed.sublist(1).join(':');
       }
@@ -62,7 +81,7 @@ class ICalendar {
     return ICalendar(
       version: version,
       prodid: prodid,
-      data: fromStringToJson(icsString),
+      data: fromListToJson(lines, allowEmptyLine: allowEmptyLine),
     );
   }
 
@@ -129,13 +148,13 @@ class ICalendar {
 
       return lastEvent;
     },
-    'DTSTART': _generateDateFunction('startDate'),
-    'DTEND': _generateDateFunction('endDate'),
+    'DTSTART': _generateDateFunction('dtstart'),
+    'DTEND': _generateDateFunction('dtend'),
     'DTSTAMP': _generateDateFunction('end'),
     'COMPLETED': _generateDateFunction('completed'),
     'DUE': _generateDateFunction('due'),
     'UID': _generateSimpleParamFunction('uid'),
-    'SUMMARY': _generateSimpleParamFunction('name'),
+    'SUMMARY': _generateSimpleParamFunction('summary'),
     'DESCRIPTION': _generateSimpleParamFunction('description'),
     'LOCATION': _generateSimpleParamFunction('location'),
     'URL': _generateSimpleParamFunction('url'),
@@ -185,15 +204,13 @@ class ICalendar {
     }
   };
 
-  /// Parse a [List] of icalendar object from a [String]. The line from the
-  /// parameter [icsString] must be separated with a `\n`.
-  static List<Map<String, dynamic>> fromStringToJson(String icsString,
+  /// Parse a [List] of icalendar object from a [List<String>].
+  static List<Map<String, dynamic>> fromListToJson(List<String> lines,
       {bool allowEmptyLine = true}) {
     List<Map<String, dynamic>> data = [];
     List events = [];
     Map<String, dynamic> lastEvent = {};
-
-    List<String> lines = icsString.split('\n');
+    String currentName;
 
     for (int i = 0; i < lines.length; i++) {
       String line = lines[i].trim();
@@ -206,6 +223,9 @@ class ICalendar {
 
       List<String> dataLine = line.split(':');
       if (dataLine.length < 2) {
+        if (line.isNotEmpty && currentName != null) {
+          lastEvent[currentName] += line;
+        }
         continue;
       }
 
@@ -223,9 +243,11 @@ class ICalendar {
       dataLine.removeRange(0, 1);
       String value = dataLine.join(':').replaceAll(RegExp(r'\\,'), ',');
       if (_objects.containsKey(name)) {
-        if (name == 'END')
+        currentName = name.toLowerCase();
+        if (name == 'END') {
+          currentName = null;
           lastEvent = _objects[name](value, params, events, lastEvent, data);
-        else
+        } else
           lastEvent = _objects[name](value, params, events, lastEvent);
       }
     }
