@@ -90,6 +90,21 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 
+  Future<void> _getAssets(String assetName) async {
+    setState(() => _isLoading = true);
+    try {
+      final icsString = await rootBundle.loadString('assets/$assetName');
+      final iCalendar = ICalendar.fromString(icsString);
+      setState(() {
+        _iCalendar = iCalendar;
+        _isLoading = false;
+      });
+    } catch (e) {
+      setState(() => _isLoading = false);
+      throw 'Error: $e';
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -104,13 +119,17 @@ class _MyHomePageState extends State<MyHomePage> {
               const Center(child: CircularProgressIndicator())
             else
               _generateTextContent(),
-            FlatButton(
+            RaisedButton(
               child: const Text('Load File 1'),
               onPressed: () => _getAssetsFile('calendar.ics'),
             ),
-            FlatButton(
+            RaisedButton(
               child: const Text('Load File 2'),
               onPressed: () => _getAssetsFile('calendar2.ics'),
+            ),
+            RaisedButton(
+              child: const Text('Load String 1'),
+              onPressed: () => _getAssets('calendar.ics'),
             ),
           ],
         ),
