@@ -1,5 +1,9 @@
 # Changelog
 
+## [0.3.1] - 26/10/2020
+
+* Fixed parsing of `DTSTART` and `DTEND`
+
 ## [0.3.0] - 26/10/2020
 
 * Fixed `END:VCALENDAR` check if ending with newline

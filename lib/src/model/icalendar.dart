@@ -130,7 +130,7 @@ class ICalendar {
     },
     'DTSTART': _generateDateFunction('dtstart'),
     'DTEND': _generateDateFunction('dtend'),
-    'DTSTAMP': _generateDateFunction('end'),
+    'DTSTAMP': _generateDateFunction('dtstamp'),
     'COMPLETED': _generateDateFunction('completed'),
     'DUE': _generateDateFunction('due'),
     'UID': _generateSimpleParamFunction('uid'),
