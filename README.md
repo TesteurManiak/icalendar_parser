@@ -21,12 +21,21 @@ icalendar_parser: any
 
 You can refer to the `example/` folder for a complete example implemented in Flutter.
 
+### ICalendar.fromString
+
 ```dart
 import 'package:flutter/services.dart' show rootBundle;
 import 'package:icalendar_parser/icalendar_parser.dart';
 
 final icsString = await rootBundle.loadString('assets/your_file.ics');
 final iCalendar = ICalendar.fromString(icsString);
+```
+
+### ICalendar.fromLines
+
+```dart
+final icsLines = await File('your_file.ics').readAsLines();
+final iCalendar = ICalendar.fromLines(lines);
 ```
 
 ## TODO
@@ -37,4 +46,4 @@ final iCalendar = ICalendar.fromString(icsString);
 * [ ] Parse VALARM into object
 * [ ] Generate ICalendar object from JSON
 * [x] Add unit tests
-* [ ] Configure CI script
+* [x] Configure CI script

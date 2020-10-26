@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.3.0] - 26/10/2020
+
+* Fixed `END:VCALENDAR` check if ending with newline
+* Added parameter `lineSeparator` to `ICalendar.fromString`
+* Added constructor `ICalendar.fromLines`
+* Added some unit tests
+
 ## [0.1.1+1] - 24/10/2020
 
 * Added pedantic rules to lint code
