@@ -3,12 +3,22 @@ import 'package:icalendar_parser/src/extensions/string_extensions.dart';
 
 /// Core object
 class ICalendar {
+  /// iCalendar's components list.
   final List<Map<String, dynamic>> data;
+
+  /// iCalendar's fields.
   final Map<String, dynamic> headData;
 
+  /// `VERSION` of the object.
   String get version => headData['version'];
+
+  /// `PRODID` of the object.
   String get prodid => headData['prodid'];
+
+  /// `CALSCALE` of the object.
   String get calscale => headData['calscale'];
+
+  /// `METHOD` of the object.
   String get method => headData['method'];
 
   /// Default constructor.
@@ -51,6 +61,7 @@ class ICalendar {
     return _linesParser(lines, allowEmptyLine);
   }
 
+  /// Method to call [fromListToJson] and parse object line by line.
   static ICalendar _linesParser(List<String> lines, bool allowEmptyLine) {
     final parsedData = fromListToJson(lines, allowEmptyLine: allowEmptyLine);
     return ICalendar(
@@ -73,6 +84,8 @@ class ICalendar {
     };
   }
 
+  /// Generate a method that return the [lastEvent] with a new entry at [name]
+  /// containing the [value] as [String].
   static Function(String, Map<String, String>, List, Map<String, dynamic>)
       _generateSimpleParamFunction(String name) {
     return (String value, Map<String, String> params, List events,
@@ -185,7 +198,13 @@ class ICalendar {
     'METHOD': _generateSimpleParamFunction('method'),
   };
 
-  /// Parse a [List] of icalendar object from a [List<String>].
+  /// Parse a list of icalendar object from a [List<String>].
+  ///
+  /// It will return a list containing at `first` the
+  /// `Map<String, dynamic> headData` and at `last` the
+  /// `List<Map<String, dynamic>> data`.
+  ///
+  /// If [allowEmptyLine] is false the method will throw [EmptyLineException].
   static List<dynamic> fromListToJson(List<String> lines,
       {bool allowEmptyLine = true}) {
     List<Map<String, dynamic>> data = [];
