@@ -131,6 +131,10 @@ class _MyHomePageState extends State<MyHomePage> {
               child: const Text('Load String 1'),
               onPressed: () => _getAssets('calendar.ics'),
             ),
+            RaisedButton(
+              child: const Text('Load File 3'),
+              onPressed: () => _getAssetsFile('calendar3.ics'),
+            ),
           ],
         ),
       ),

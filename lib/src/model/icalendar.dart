@@ -109,6 +109,7 @@ class ICalendar {
     };
   }
 
+  /// Map containing the methods used to parse each kind of fields in the file.
   static final Map<String, Function> _objects = {
     'BEGIN': (String value, Map<String, String> params, List events,
         Map<String, dynamic> lastEvent) {
@@ -173,7 +174,7 @@ class ICalendar {
     },
     'CATEGORIES': (String value, Map<String, String> params, List events,
         Map<String, dynamic> lastEvent) {
-      lastEvent['categories'] = value.split(RegExp(r'/\s*,\s*/g'));
+      lastEvent['categories'] = value.split(',');
       return lastEvent;
     },
     'ATTENDEE': (String value, Map<String, String> params, List _,
@@ -192,7 +193,6 @@ class ICalendar {
       return lastEvent;
     },
     'ACTION': _generateSimpleParamFunction('action'),
-    'METHOD': _generateDateFunction('method'),
     'STATUS': (String value, Map<String, String> _, List __,
         Map<String, dynamic> lastEvent) {
       lastEvent['status'] = value.trim().toIcsStatus();
@@ -206,7 +206,6 @@ class ICalendar {
       lastEvent['transp'] = value.trim().toIcsTransp();
       return lastEvent;
     },
-    'CALSCALE': _generateSimpleParamFunction('calscale'),
   };
 
   /// Parse a [List] of icalendar object from a [List<String>].
