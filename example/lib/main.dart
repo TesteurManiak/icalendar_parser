@@ -71,6 +71,12 @@ class _MyHomePageState extends State<MyHomePage> {
               text: 'PRODID: ${_iCalendar.prodid}\n',
               style: style.copyWith(fontWeight: FontWeight.bold)),
           TextSpan(
+              text: 'CALSCALE: ${_iCalendar.calscale}\n',
+              style: style.copyWith(fontWeight: FontWeight.bold)),
+          TextSpan(
+              text: 'METHOD: ${_iCalendar.method}\n',
+              style: style.copyWith(fontWeight: FontWeight.bold)),
+          TextSpan(
               children: _iCalendar.data
                   .map((e) => TextSpan(
                         children: e.keys

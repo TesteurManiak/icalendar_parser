@@ -8,6 +8,8 @@ class ICalendar {
 
   String get version => headData['version'];
   String get prodid => headData['prodid'];
+  String get calscale => headData['calscale'];
+  String get method => headData['method'];
 
   /// Default constructor.
   ICalendar({
@@ -179,6 +181,8 @@ class ICalendar {
     },
     'VERSION': _generateSimpleParamFunction('version'),
     'PRODID': _generateSimpleParamFunction('prodid'),
+    'CALSCALE': _generateSimpleParamFunction('calscale'),
+    'METHOD': _generateSimpleParamFunction('method'),
   };
 
   /// Parse a [List] of icalendar object from a [List<String>].
