@@ -88,7 +88,12 @@ class ICalendar {
       _generateDateFunction(String name) {
     return (String value, Map<String, String> params, List events,
         Map<String, dynamic> lastEvent) {
-      lastEvent[name] = DateTime.parse(value);
+      try {
+        lastEvent[name] = DateTime.parse(value);
+      } catch (_) {
+        print('Warning: $value could not be parsed, stored as String');
+        lastEvent[name] = value;
+      }
       return lastEvent;
     };
   }
@@ -131,6 +136,8 @@ class ICalendar {
     'DTSTART': _generateDateFunction('dtstart'),
     'DTEND': _generateDateFunction('dtend'),
     'DTSTAMP': _generateDateFunction('dtstamp'),
+    'TRIGGER': _generateDateFunction('trigger'),
+    'LAST-MODIFIED': _generateDateFunction('lastModified'),
     'COMPLETED': _generateDateFunction('completed'),
     'DUE': _generateDateFunction('due'),
     'UID': _generateSimpleParamFunction('uid'),
@@ -181,7 +188,13 @@ class ICalendar {
       } else
         (lastEvent['attendee'] as List).add({'mail': mail});
       return lastEvent;
-    }
+    },
+    'ACTION': _generateSimpleParamFunction('action'),
+    'METHOD': _generateDateFunction('method'),
+    'STATUS': _generateDateFunction('status'),
+    'SEQUENCE': _generateDateFunction('sequence'),
+    'REPEAT': _generateSimpleParamFunction('repeat'),
+    'CLASS': _generateSimpleParamFunction('class'),
   };
 
   /// Parse a [List] of icalendar object from a [List<String>].
