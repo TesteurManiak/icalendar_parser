@@ -71,6 +71,12 @@ class _MyHomePageState extends State<MyHomePage> {
               text: 'PRODID: ${_iCalendar.prodid}\n',
               style: style.copyWith(fontWeight: FontWeight.bold)),
           TextSpan(
+              text: 'CALSCALE: ${_iCalendar.calscale}\n',
+              style: style.copyWith(fontWeight: FontWeight.bold)),
+          TextSpan(
+              text: 'METHOD: ${_iCalendar.method}\n',
+              style: style.copyWith(fontWeight: FontWeight.bold)),
+          TextSpan(
               children: _iCalendar.data
                   .map((e) => TextSpan(
                         children: e.keys
@@ -130,6 +136,10 @@ class _MyHomePageState extends State<MyHomePage> {
             RaisedButton(
               child: const Text('Load String 1'),
               onPressed: () => _getAssets('calendar.ics'),
+            ),
+            RaisedButton(
+              child: const Text('Load File 3'),
+              onPressed: () => _getAssetsFile('calendar3.ics'),
             ),
           ],
         ),

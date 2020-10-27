@@ -2,6 +2,5 @@ library icalendar_parser;
 
 export 'src/exceptions/icalendar_exception.dart';
 export 'src/model/icalendar.dart';
-export 'src/model/ics_geo.dart';
-export 'src/model/organizer.dart';
-export 'src/model/vevent.dart';
+export 'src/model/ics_status.dart';
+export 'src/model/ics_transp.dart';
