@@ -1,5 +1,6 @@
 import 'package:icalendar_parser/src/exceptions/icalendar_exception.dart';
 
+/// Core object
 class ICalendar {
   final String version;
   final String prodid;
