@@ -13,6 +13,8 @@ void main() {
       'BEGIN:VCALENDAR\r\nVERSION:2.0\r\nPRODID:-//hacksw/handcal//NONSGML v1.0//EN\r\nBEGIN:VEVENT\r\nUID:uid1@example.com\r\nDTSTAMP:19970714T170000Z\r\nORGANIZER;CN=John Doe:MAILTO:john.doe@example.com\r\nDTSTART:19970714T170000Z\r\nDTEND:19970715T035959Z\r\nSUMMARY:Bastille Day Party\r\nDESCRIPTION:Lorem ipsum dolor sit amet, consectetur adipiscing elit.\nSed suscipit malesuada sodales.\nUt viverra metus neque, ut ullamcorper felis fermentum vel.\nSed sodales mauris nec.\r\nGEO:48.85299;2.36885\r\nEND:VEVENT\r\nEND:VCALENDAR';
   final _validWithAlarm =
       'BEGIN:VCALENDAR\r\nVERSION:2.0\r\nPRODID:-//hacksw/handcal//NONSGML v1.0//EN\r\nBEGIN:VEVENT\r\nUID:uid1@example.com\r\nDTSTAMP:19970714T170000Z\r\nORGANIZER;CN=John Doe:MAILTO:john.doe@example.com\r\nDTSTART:19970714T170000Z\r\nDTEND:19970715T035959Z\r\nSUMMARY:Bastille Day Party\r\nGEO:48.85299;2.36885\r\nEND:VEVENT\r\nBEGIN:VALARM\r\nTRIGGER:-PT1440M\r\nACTION:DISPLAY\r\nDESCRIPTION:Reminder\r\nEND:VALARM\r\nEND:VCALENDAR';
+  final _noVersion =
+      'BEGIN:VCALENDAR\r\nPRODID:-//hacksw/handcal//NONSGML v1.0//EN\r\nBEGIN:VEVENT\r\nUID:uid1@example.com\r\nDTSTAMP:19970714T170000Z\r\nORGANIZER;CN=John Doe:MAILTO:john.doe@example.com\r\nDTSTART:19970714T170000Z\r\nDTEND:19970715T035959Z\r\nSUMMARY:Bastille Day Party\r\nGEO:48.85299;2.36885\r\nEND:VEVENT\r\nEND:VCALENDAR';
 
   test('Missing BEGIN:VCALENDAR', () {
     final lines = _noCalendarBegin.split('\r\n');
@@ -28,6 +30,14 @@ void main() {
         throwsA(isA<ICalendarEndException>()));
     expect(() => ICalendar.fromString(_noCalendarEnd),
         throwsA(isA<ICalendarEndException>()));
+  });
+
+  test('Missing VERSION', () {
+    final lines = _noVersion.split('\r\n');
+    expect(() => ICalendar.fromLines(lines),
+        throwsA(isA<ICalendarNoVersionException>()));
+    expect(() => ICalendar.fromString(_noVersion),
+        throwsA(isA<ICalendarNoVersionException>()));
   });
 
   test('Valid calendar', () {
