@@ -196,6 +196,7 @@ class ICalendar {
     'SEQUENCE': _generateDateFunction('sequence'),
     'REPEAT': _generateSimpleParamFunction('repeat'),
     'CLASS': _generateSimpleParamFunction('class'),
+    'TRANSP': _generateSimpleParamFunction('transp'),
   };
 
   /// Parse a [List] of icalendar object from a [List<String>].
