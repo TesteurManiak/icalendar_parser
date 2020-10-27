@@ -1,1 +1,0 @@
-enum Transparency { OPAQUE, TRANSPARENT }

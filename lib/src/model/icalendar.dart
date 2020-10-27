@@ -1,4 +1,5 @@
 import 'package:icalendar_parser/src/exceptions/icalendar_exception.dart';
+import 'package:icalendar_parser/src/extensions/string_extensions.dart';
 
 /// Core object
 class ICalendar {
@@ -175,7 +176,7 @@ class ICalendar {
       lastEvent['categories'] = value.split(RegExp(r'/\s*,\s*/g'));
       return lastEvent;
     },
-    'ATTENDEE': (String value, Map<String, String> params, List events,
+    'ATTENDEE': (String value, Map<String, String> params, List _,
         Map<String, dynamic> lastEvent) {
       lastEvent['attendee'] ??= [];
 
@@ -192,11 +193,20 @@ class ICalendar {
     },
     'ACTION': _generateSimpleParamFunction('action'),
     'METHOD': _generateDateFunction('method'),
-    'STATUS': _generateDateFunction('status'),
+    'STATUS': (String value, Map<String, String> _, List __,
+        Map<String, dynamic> lastEvent) {
+      lastEvent['status'] = value.trim().toIcsStatus();
+      return lastEvent;
+    },
     'SEQUENCE': _generateDateFunction('sequence'),
     'REPEAT': _generateSimpleParamFunction('repeat'),
     'CLASS': _generateSimpleParamFunction('class'),
-    'TRANSP': _generateSimpleParamFunction('transp'),
+    'TRANSP': (String value, Map<String, String> _, List __,
+        Map<String, dynamic> lastEvent) {
+      lastEvent['transp'] = value.trim().toIcsTransp();
+      return lastEvent;
+    },
+    'CALSCALE': _generateSimpleParamFunction('calscale'),
   };
 
   /// Parse a [List] of icalendar object from a [List<String>].

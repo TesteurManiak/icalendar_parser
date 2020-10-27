@@ -63,7 +63,6 @@ void main() {
 
   test('Valid calendar parse TRIGGER', () {
     final iCalendar = ICalendar.fromString(_validWithAlarm);
-    print(iCalendar.data[1]);
     expect(iCalendar.data[1]['trigger'], '-PT1440M');
   });
 }
