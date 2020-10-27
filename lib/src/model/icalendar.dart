@@ -1,15 +1,30 @@
 import 'package:icalendar_parser/src/exceptions/icalendar_exception.dart';
+import 'package:icalendar_parser/src/extensions/string_extensions.dart';
 
+/// Core object
 class ICalendar {
-  final String version;
-  final String prodid;
+  /// iCalendar's components list.
   final List<Map<String, dynamic>> data;
+
+  /// iCalendar's fields.
+  final Map<String, dynamic> headData;
+
+  /// `VERSION` of the object.
+  String get version => headData['version'];
+
+  /// `PRODID` of the object.
+  String get prodid => headData['prodid'];
+
+  /// `CALSCALE` of the object.
+  String get calscale => headData['calscale'];
+
+  /// `METHOD` of the object.
+  String get method => headData['method'];
 
   /// Default constructor.
   ICalendar({
-    this.version,
-    this.prodid,
     this.data,
+    this.headData,
   });
 
   /// Parse an [ICalendar] object from a [String]. The parameter
@@ -46,41 +61,12 @@ class ICalendar {
     return _linesParser(lines, allowEmptyLine);
   }
 
+  /// Method to call [fromListToJson] and parse object line by line.
   static ICalendar _linesParser(List<String> lines, bool allowEmptyLine) {
-    String prodid;
-    String version;
-
-    if (lines.first != 'BEGIN:VCALENDAR')
-      throw ICalendarBeginException(
-          'The first line must be BEGIN:VCALENDAR but was ${lines.first}.');
-    else if (lines.last != 'END:VCALENDAR')
-      throw ICalendarEndException(
-          'The last line must be END:VCALENDAR but was ${lines.last}.');
-
-    for (String e in lines) {
-      final line = e.trim();
-      if (line.isEmpty && !allowEmptyLine)
-        throw const EmptyLineException('Empty line are not allowed');
-      if (prodid == null && line.contains('PRODID:')) {
-        final parsed = line.split(':');
-        prodid = parsed.sublist(1).join(':');
-      } else if (version == null && line.contains('VERSION:')) {
-        final parsed = line.split(':');
-        version = parsed.sublist(1).join(':');
-      }
-    }
-
-    if (version == null)
-      throw const ICalendarNoVersionException(
-          'The body is missing the property VERSION');
-    if (prodid == null)
-      throw const ICalendarNoProdidException(
-          'The body is missing the property PRODID');
-
+    final parsedData = fromListToJson(lines, allowEmptyLine: allowEmptyLine);
     return ICalendar(
-      version: version,
-      prodid: prodid,
-      data: fromListToJson(lines, allowEmptyLine: allowEmptyLine),
+      headData: parsedData.first,
+      data: parsedData.last,
     );
   }
 
@@ -88,11 +74,18 @@ class ICalendar {
       _generateDateFunction(String name) {
     return (String value, Map<String, String> params, List events,
         Map<String, dynamic> lastEvent) {
-      lastEvent[name] = DateTime.parse(value);
+      try {
+        lastEvent[name] = DateTime.parse(value);
+      } catch (_) {
+        print('Warning: $value could not be parsed, stored as String');
+        lastEvent[name] = value;
+      }
       return lastEvent;
     };
   }
 
+  /// Generate a method that return the [lastEvent] with a new entry at [name]
+  /// containing the [value] as [String].
   static Function(String, Map<String, String>, List, Map<String, dynamic>)
       _generateSimpleParamFunction(String name) {
     return (String value, Map<String, String> params, List events,
@@ -102,6 +95,7 @@ class ICalendar {
     };
   }
 
+  /// Map containing the methods used to parse each kind of fields in the file.
   static final Map<String, Function> _objects = {
     'BEGIN': (String value, Map<String, String> params, List events,
         Map<String, dynamic> lastEvent) {
@@ -131,6 +125,8 @@ class ICalendar {
     'DTSTART': _generateDateFunction('dtstart'),
     'DTEND': _generateDateFunction('dtend'),
     'DTSTAMP': _generateDateFunction('dtstamp'),
+    'TRIGGER': _generateDateFunction('trigger'),
+    'LAST-MODIFIED': _generateDateFunction('lastModified'),
     'COMPLETED': _generateDateFunction('completed'),
     'DUE': _generateDateFunction('due'),
     'UID': _generateSimpleParamFunction('uid'),
@@ -164,10 +160,10 @@ class ICalendar {
     },
     'CATEGORIES': (String value, Map<String, String> params, List events,
         Map<String, dynamic> lastEvent) {
-      lastEvent['categories'] = value.split(RegExp(r'/\s*,\s*/g'));
+      lastEvent['categories'] = value.split(',');
       return lastEvent;
     },
-    'ATTENDEE': (String value, Map<String, String> params, List events,
+    'ATTENDEE': (String value, Map<String, String> params, List _,
         Map<String, dynamic> lastEvent) {
       lastEvent['attendee'] ??= [];
 
@@ -181,19 +177,54 @@ class ICalendar {
       } else
         (lastEvent['attendee'] as List).add({'mail': mail});
       return lastEvent;
-    }
+    },
+    'ACTION': _generateSimpleParamFunction('action'),
+    'STATUS': (String value, Map<String, String> _, List __,
+        Map<String, dynamic> lastEvent) {
+      lastEvent['status'] = value.trim().toIcsStatus();
+      return lastEvent;
+    },
+    'SEQUENCE': _generateDateFunction('sequence'),
+    'REPEAT': _generateSimpleParamFunction('repeat'),
+    'CLASS': _generateSimpleParamFunction('class'),
+    'TRANSP': (String value, Map<String, String> _, List __,
+        Map<String, dynamic> lastEvent) {
+      lastEvent['transp'] = value.trim().toIcsTransp();
+      return lastEvent;
+    },
+    'VERSION': _generateSimpleParamFunction('version'),
+    'PRODID': _generateSimpleParamFunction('prodid'),
+    'CALSCALE': _generateSimpleParamFunction('calscale'),
+    'METHOD': _generateSimpleParamFunction('method'),
   };
 
-  /// Parse a [List] of icalendar object from a [List<String>].
-  static List<Map<String, dynamic>> fromListToJson(List<String> lines,
+  /// Parse a list of icalendar object from a [List<String>].
+  ///
+  /// It will return a list containing at `first` the
+  /// `Map<String, dynamic> headData` and at `last` the
+  /// `List<Map<String, dynamic>> data`.
+  ///
+  /// If [allowEmptyLine] is false the method will throw [EmptyLineException].
+  static List<dynamic> fromListToJson(List<String> lines,
       {bool allowEmptyLine = true}) {
     List<Map<String, dynamic>> data = [];
+    Map<String, dynamic> _headData = {};
     List events = [];
     Map<String, dynamic> lastEvent = {};
     String currentName;
 
+    if (lines.first != 'BEGIN:VCALENDAR')
+      throw ICalendarBeginException(
+          'The first line must be BEGIN:VCALENDAR but was ${lines.first}.');
+    else if (lines.last != 'END:VCALENDAR')
+      throw ICalendarEndException(
+          'The last line must be END:VCALENDAR but was ${lines.last}.');
+
     for (int i = 0; i < lines.length; i++) {
       String line = lines[i].trim();
+
+      if (line.isEmpty && !allowEmptyLine)
+        throw const EmptyLineException('Empty line are not allowed');
 
       final exp = RegExp(r'/^ /');
       while (i + 1 < lines.length && exp.hasMatch(lines[i + 1])) {
@@ -228,10 +259,17 @@ class ICalendar {
           currentName = null;
           lastEvent = _objects[name](value, params, events, lastEvent, data);
         } else
-          lastEvent = _objects[name](value, params, events, lastEvent);
+          lastEvent =
+              _objects[name](value, params, events, lastEvent ?? _headData);
       }
     }
-    return data;
+    if (!_headData.containsKey('version'))
+      throw const ICalendarNoVersionException(
+          'The body is missing the property VERSION');
+    else if (!_headData.containsKey('prodid'))
+      throw const ICalendarNoProdidException(
+          'The body is missing the property PRODID');
+    return [_headData, data];
   }
 
   /// Convert [ICalendar] object to a [Map] containing all its data.

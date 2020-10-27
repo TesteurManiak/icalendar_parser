@@ -44,6 +44,10 @@ final iCalendar = ICalendar.fromLines(lines);
 
 * [ ] Parse VEVENT into object
 * [ ] Parse VALARM into object
+* [ ] Parse VTODO into object
+* [ ] Parse VJOURNAL into object
+* [ ] Parse VFREEBUSY into object
 * [ ] Generate ICalendar object from JSON
 * [x] Add unit tests
 * [x] Configure CI script
+* [ ] Support parameters

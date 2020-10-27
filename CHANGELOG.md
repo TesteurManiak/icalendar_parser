@@ -1,5 +1,18 @@
 # Changelog
 
+## [0.4.0] - 27/10/2020
+
+* Improved unit tests
+* Added support for fields:
+    - `TRIGGER`
+    - `ACTION`
+    - `METHOD`
+    - `STATUS` (using `IcsStatus` enum)
+    - `SEQUENCE`
+    - `REPEAT`
+    - `CLASS`
+    - `TRANSP` (using `IcsTransp` enum)
+
 ## [0.3.1] - 26/10/2020
 
 * Fixed parsing of `DTSTART` and `DTEND`

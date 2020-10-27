@@ -33,3 +33,13 @@ class ICalendarNoVersionException extends ICalendarFormatException {
 class ICalendarNoProdidException extends ICalendarFormatException {
   const ICalendarNoProdidException(String msg) : super(msg);
 }
+
+/// Exception thrown when parsed [IcsStatus] is unknown.
+class ICalendarStatusParseException extends ICalendarFormatException {
+  const ICalendarStatusParseException(String msg) : super(msg);
+}
+
+/// Exception thrown when parsed [IcsTransp] is unknown.
+class ICalendarTranspParseException extends ICalendarFormatException {
+  const ICalendarTranspParseException(String msg) : super(msg);
+}
