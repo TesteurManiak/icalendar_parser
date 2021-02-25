@@ -68,15 +68,15 @@ DA:136,2
 DA:138,1
 DA:139,2
 DA:140,1
-DA:144,0
+DA:144,2
 DA:148,1
 DA:150,1
 DA:151,2
 DA:153,2
 DA:154,4
 DA:155,4
-DA:158,0
-DA:160,0
+DA:158,1
+DA:160,2
 DA:163,0
 DA:165,0
 DA:167,0
@@ -142,7 +142,7 @@ DA:284,0
 DA:287,0
 DA:289,0
 LF:128
-LH:103
+LH:106
 end_of_record
 SF:lib\src\model\ics_status.dart
 DA:2,1

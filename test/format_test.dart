@@ -51,6 +51,10 @@ void main() {
         'BEGIN:VCALENDAR\r\nVERSION:2.0\r\nPRODID:-//hacksw/handcal//NONSGML v1.0//EN\r\nBEGIN:VEVENT\r\nUID:uid1@example.com\r\nDTSTAMP:19970714T170000Z\r\nORGANIZER;CN=John Doe:MAILTO:john.doe@example.com\r\nDTSTART:19970714T170000Z\r\nDTEND:19970715T035959Z\r\nSUMMARY:Bastille Day Party\r\nDESCRIPTION:Lorem ipsum dolor sit amet, consectetur adipiscing elit.\nSed suscipit malesuada sodales.\nUt viverra metus neque, ut ullamcorper felis fermentum vel.\nSed sodales mauris nec.\r\nGEO:48.85299;2.36885\r\nEND:VEVENT\r\nEND:VCALENDAR';
     final _validWithAlarm =
         'BEGIN:VCALENDAR\r\nVERSION:2.0\r\nPRODID:-//hacksw/handcal//NONSGML v1.0//EN\r\nBEGIN:VEVENT\r\nUID:uid1@example.com\r\nDTSTAMP:19970714T170000Z\r\nORGANIZER;CN=John Doe:MAILTO:john.doe@example.com\r\nDTSTART:19970714T170000Z\r\nDTEND:19970715T035959Z\r\nSUMMARY:Bastille Day Party\r\nGEO:48.85299;2.36885\r\nEND:VEVENT\r\nBEGIN:VALARM\r\nTRIGGER:-PT1440M\r\nACTION:DISPLAY\r\nDESCRIPTION:Reminder\r\nEND:VALARM\r\nEND:VCALENDAR';
+    final _noOrganizerName =
+        'BEGIN:VCALENDAR\r\nVERSION:2.0\r\nPRODID:-//hacksw/handcal//NONSGML v1.0//EN\r\nCALSCALE:GREGORIAN\r\nMETHOD:PUBLISH\r\nBEGIN:VEVENT\r\nUID:uid1@example.com\r\nDTSTAMP:19970714T170000Z\r\nORGANIZER:MAILTO:john.doe@example.com\r\nDTSTART:19970714T170000Z\r\nDTEND:19970715T035959Z\r\nSUMMARY:Bastille Day Party\r\nGEO:48.85299;2.36885\r\nEND:VEVENT\r\nEND:VCALENDAR';
+    final _withCategories =
+        'BEGIN:VCALENDAR\r\nVERSION:2.0\r\nPRODID:-//hacksw/handcal//NONSGML v1.0//EN\r\nCALSCALE:GREGORIAN\r\nMETHOD:PUBLISH\r\nBEGIN:VEVENT\r\nUID:uid1@example.com\r\nDTSTAMP:19970714T170000Z\r\nORGANIZER:MAILTO:john.doe@example.com\r\nCATEGORIES:APPOINTMENT,EDUCATION\r\nDTSTART:19970714T170000Z\r\nDTEND:19970715T035959Z\r\nSUMMARY:Bastille Day Party\r\nGEO:48.85299;2.36885\r\nEND:VEVENT\r\nEND:VCALENDAR';
 
     group('fromLines()', () {
       test('base valid', () {
@@ -125,6 +129,22 @@ void main() {
       test('method', () {
         expect(iCalendar.method, 'PUBLISH');
       });
+    });
+
+    test('no organizer name', () {
+      final iCalendar = ICalendar.fromString(_noOrganizerName);
+      final Map<String, dynamic> organizer = iCalendar.data
+          .firstWhere((e) => e.containsKey('organizer'))['organizer'];
+      expect(organizer.containsKey('name'), false);
+      expect(organizer['mail'], 'john.doe@example.com');
+    });
+
+    test('with categories', () {
+      final iCalendar = ICalendar.fromString(_withCategories);
+      final List<String> categories = iCalendar.data
+          .firstWhere((e) => e.containsKey('categories'))['categories'];
+      expect(categories.length, 2);
+      expect(categories, ['APPOINTMENT', 'EDUCATION']);
     });
   });
 }
