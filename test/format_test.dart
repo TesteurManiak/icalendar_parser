@@ -154,6 +154,9 @@ void main() {
       final List attendee = iCalendar.data
           .firstWhere((e) => e.containsKey('attendee'))['attendee'];
       expect(attendee.length, 1);
+      expect(attendee[0]['mail'], 'joecool@host2.com');
+      expect(attendee[0]['name'], 'Henry Cabot');
+      expect(attendee[0]['role'], 'REQ-PARTICIPANT');
     });
   });
 }

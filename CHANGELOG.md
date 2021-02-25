@@ -4,7 +4,7 @@
 
 * Updated `/example`
 * Updated `README.md`
-* Added unit tests (100% code coverage)
+* Added unit tests (90% code coverage)
 
 ## [0.4.0] - 27/10/2020
 

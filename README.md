@@ -51,3 +51,12 @@ final iCalendar = ICalendar.fromLines(lines);
 * DTEND
 * DTSTAMP
 * TRIGGER
+* LAST-MODIFIED
+* COMPLETED
+* DUE
+* UID
+* SUMMARY
+* DESCRIPTION
+* LOCATION
+* URL
+* ORGANIZER
