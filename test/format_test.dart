@@ -55,6 +55,8 @@ void main() {
         'BEGIN:VCALENDAR\r\nVERSION:2.0\r\nPRODID:-//hacksw/handcal//NONSGML v1.0//EN\r\nCALSCALE:GREGORIAN\r\nMETHOD:PUBLISH\r\nBEGIN:VEVENT\r\nUID:uid1@example.com\r\nDTSTAMP:19970714T170000Z\r\nORGANIZER:MAILTO:john.doe@example.com\r\nDTSTART:19970714T170000Z\r\nDTEND:19970715T035959Z\r\nSUMMARY:Bastille Day Party\r\nGEO:48.85299;2.36885\r\nEND:VEVENT\r\nEND:VCALENDAR';
     final _withCategories =
         'BEGIN:VCALENDAR\r\nVERSION:2.0\r\nPRODID:-//hacksw/handcal//NONSGML v1.0//EN\r\nCALSCALE:GREGORIAN\r\nMETHOD:PUBLISH\r\nBEGIN:VEVENT\r\nUID:uid1@example.com\r\nDTSTAMP:19970714T170000Z\r\nORGANIZER:MAILTO:john.doe@example.com\r\nCATEGORIES:APPOINTMENT,EDUCATION\r\nDTSTART:19970714T170000Z\r\nDTEND:19970715T035959Z\r\nSUMMARY:Bastille Day Party\r\nGEO:48.85299;2.36885\r\nEND:VEVENT\r\nEND:VCALENDAR';
+    final _withAttendee =
+        'BEGIN:VCALENDAR\r\nVERSION:2.0\r\nPRODID:-//hacksw/handcal//NONSGML v1.0//EN\r\nCALSCALE:GREGORIAN\r\nMETHOD:PUBLISH\r\nBEGIN:VEVENT\r\nUID:uid1@example.com\r\nDTSTAMP:19970714T170000Z\r\nORGANIZER;CN=John Doe:MAILTO:john.doe@example.com\r\nATTENDEE;ROLE=REQ-PARTICIPANT;PARTSTAT=TENTATIVE;CN=Henry Cabot\n:MAILTO:joecool@host2.com\r\nDTSTART:19970714T170000Z\r\nDTEND:19970715T035959Z\r\nSUMMARY:Bastille Day Party\r\nGEO:48.85299;2.36885\r\nEND:VEVENT\r\nEND:VCALENDAR';
 
     group('fromLines()', () {
       test('base valid', () {
@@ -131,7 +133,7 @@ void main() {
       });
     });
 
-    test('no organizer name', () {
+    test('without organizer name', () {
       final iCalendar = ICalendar.fromString(_noOrganizerName);
       final Map<String, dynamic> organizer = iCalendar.data
           .firstWhere((e) => e.containsKey('organizer'))['organizer'];
@@ -145,6 +147,13 @@ void main() {
           .firstWhere((e) => e.containsKey('categories'))['categories'];
       expect(categories.length, 2);
       expect(categories, ['APPOINTMENT', 'EDUCATION']);
+    });
+
+    test('with attendee', () {
+      final iCalendar = ICalendar.fromString(_withAttendee);
+      final List attendee = iCalendar.data
+          .firstWhere((e) => e.containsKey('attendee'))['attendee'];
+      expect(attendee.length, 1);
     });
   });
 }

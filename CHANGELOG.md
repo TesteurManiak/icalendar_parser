@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.4.0+1]
+
+* Updated `/example`
+* Updated `README.md`
+* Added unit tests (100% code coverage)
+
 ## [0.4.0] - 27/10/2020
 
 * Improved unit tests

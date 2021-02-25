@@ -39,18 +39,15 @@ final icsLines = await File('your_file.ics').readAsLines();
 final iCalendar = ICalendar.fromLines(lines);
 ```
 
-## Features
+## Supported Properties
 
-* [x] Generate ICalendar object from `String`
-* [x] Generate ICalendar object from `List<String>`
-* [ ] Generate ICalendar object from JSON
-* [ ] Parse VEVENT into object
-* [ ] Parse VALARM into object
-* [ ] Parse VTODO into object
-* [ ] Parse VJOURNAL into object
-* [ ] Parse VFREEBUSY into object
-* [x] Add unit tests
-* [x] Configure CI script
-* [ ] Support parameters
-
-## Supported Elements
+* VERSION
+* PRODID
+* CALSCALE
+* METHOD
+* COMPONENT:BEGIN
+* COMPONENT:END
+* DTSTART
+* DTEND
+* DTSTAMP
+* TRIGGER
