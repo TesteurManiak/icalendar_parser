@@ -25,5 +25,22 @@ void main() {
             throwsA(const TypeMatcher<ICalendarStatusParseException>()));
       });
     });
+
+    group('toIcsTransp()', () {
+      test('IcsTransp.OPAQUE', () {
+        expect('opaque'.toIcsTransp(), IcsTransp.OPAQUE);
+        expect('OPAQUE'.toIcsTransp(), IcsTransp.OPAQUE);
+      });
+
+      test('IcsTransp.TRANSPARENT', () {
+        expect('transparent'.toIcsTransp(), IcsTransp.TRANSPARENT);
+        expect('TRANSPARENT'.toIcsTransp(), IcsTransp.TRANSPARENT);
+      });
+
+      test('unknown', () {
+        expect(() => ''.toIcsTransp(),
+            throwsA(const TypeMatcher<ICalendarTranspParseException>()));
+      });
+    });
   });
 }
