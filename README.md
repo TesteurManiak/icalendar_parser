@@ -4,7 +4,7 @@
 [![Forks](https://img.shields.io/github/forks/TesteurManiak/icalendar_parser)](https://github.com/TesteurManiak/icalendar_parser/network/members)
 [![Stars](https://img.shields.io/github/stars/TesteurManiak/icalendar_parser)](https://github.com/TesteurManiak/icalendar_parser/stargazers)
 [![Pub Version](https://img.shields.io/pub/v/icalendar_parser?color=blue&logo=dart)](https://pub.dev/packages/icalendar_parser)
-<img src="./coverage_badge.svg">
+![Coverage](https://raw.githubusercontent.com/TesteurManiak/icalendar_parser/main/coverage_badge.svg?sanitize=true)
 
 Package to parse iCalendar (.ics) files written in pure Dart.
 
