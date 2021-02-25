@@ -22,10 +22,7 @@ class ICalendar {
   String get method => headData['method'];
 
   /// Default constructor.
-  ICalendar({
-    this.data,
-    this.headData,
-  });
+  ICalendar({this.data, this.headData});
 
   /// Parse an [ICalendar] object from a [String]. The parameter
   /// [icsString] will be split on each [lineSeparator] occurence which is by
