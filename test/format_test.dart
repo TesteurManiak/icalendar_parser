@@ -57,6 +57,10 @@ void main() {
         'BEGIN:VCALENDAR\r\nVERSION:2.0\r\nPRODID:-//hacksw/handcal//NONSGML v1.0//EN\r\nCALSCALE:GREGORIAN\r\nMETHOD:PUBLISH\r\nBEGIN:VEVENT\r\nUID:uid1@example.com\r\nDTSTAMP:19970714T170000Z\r\nORGANIZER:MAILTO:john.doe@example.com\r\nCATEGORIES:APPOINTMENT,EDUCATION\r\nDTSTART:19970714T170000Z\r\nDTEND:19970715T035959Z\r\nSUMMARY:Bastille Day Party\r\nGEO:48.85299;2.36885\r\nEND:VEVENT\r\nEND:VCALENDAR';
     final _withAttendee =
         'BEGIN:VCALENDAR\r\nVERSION:2.0\r\nPRODID:-//hacksw/handcal//NONSGML v1.0//EN\r\nCALSCALE:GREGORIAN\r\nMETHOD:PUBLISH\r\nBEGIN:VEVENT\r\nUID:uid1@example.com\r\nDTSTAMP:19970714T170000Z\r\nORGANIZER;CN=John Doe:MAILTO:john.doe@example.com\r\nATTENDEE;ROLE=REQ-PARTICIPANT;PARTSTAT=TENTATIVE;CN=Henry Cabot\n:MAILTO:joecool@host2.com\r\nDTSTART:19970714T170000Z\r\nDTEND:19970715T035959Z\r\nSUMMARY:Bastille Day Party\r\nGEO:48.85299;2.36885\r\nEND:VEVENT\r\nEND:VCALENDAR';
+    final _withTransp =
+        'BEGIN:VCALENDAR\r\nVERSION:2.0\r\nPRODID:-//hacksw/handcal//NONSGML v1.0//EN\r\nCALSCALE:GREGORIAN\r\nMETHOD:PUBLISH\r\nBEGIN:VEVENT\r\nUID:uid1@example.com\r\nDTSTAMP:19970714T170000Z\r\nTRANSP:TRANSPARENT\r\nORGANIZER;CN=John Doe:MAILTO:john.doe@example.com\r\nDTSTART:19970714T170000Z\r\nDTEND:19970715T035959Z\r\nSUMMARY:Bastille Day Party\r\nGEO:48.85299;2.36885\r\nEND:VEVENT\r\nEND:VCALENDAR';
+    final _withStatus =
+        'BEGIN:VCALENDAR\r\nVERSION:2.0\r\nPRODID:-//hacksw/handcal//NONSGML v1.0//EN\r\nCALSCALE:GREGORIAN\r\nMETHOD:PUBLISH\r\nBEGIN:VEVENT\r\nUID:uid1@example.com\r\nSTATUS:TENTATIVE\r\nDTSTAMP:19970714T170000Z\r\nORGANIZER;CN=John Doe:MAILTO:john.doe@example.com\r\nDTSTART:19970714T170000Z\r\nDTEND:19970715T035959Z\r\nSUMMARY:Bastille Day Party\r\nGEO:48.85299;2.36885\r\nEND:VEVENT\r\nEND:VCALENDAR';
 
     group('fromLines()', () {
       test('base valid', () {
@@ -133,6 +137,20 @@ void main() {
       });
     });
 
+    test('toString()', () {
+      final iCal = ICalendar.fromString(_valid);
+      final str = iCal.toString();
+      expect(str.contains('iCalendar - VERSION: 2.0 - PRODID: '), true);
+    });
+
+    test('toJson()', () {
+      final iCal = ICalendar.fromString(_valid);
+      final json = iCal.toJson();
+      expect(json['version'], '2.0');
+      expect(json['prodid'], '-//hacksw/handcal//NONSGML v1.0//EN');
+      expect(json.containsKey('data'), true);
+    });
+
     test('without organizer name', () {
       final iCalendar = ICalendar.fromString(_noOrganizerName);
       final Map<String, dynamic> organizer = iCalendar.data
@@ -157,6 +175,20 @@ void main() {
       expect(attendee[0]['mail'], 'joecool@host2.com');
       expect(attendee[0]['name'], 'Henry Cabot');
       expect(attendee[0]['role'], 'REQ-PARTICIPANT');
+    });
+
+    test('with transp', () {
+      final iCalendar = ICalendar.fromString(_withTransp);
+      final transp =
+          iCalendar.data.firstWhere((e) => e.containsKey('transp'))['transp'];
+      expect(transp, IcsTransp.TRANSPARENT);
+    });
+
+    test('with status', () {
+      final iCal = ICalendar.fromString(_withStatus);
+      final status =
+          iCal.data.firstWhere((e) => e.containsKey('status'))['status'];
+      expect(status, IcsStatus.TENTATIVE);
     });
   });
 }

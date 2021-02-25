@@ -60,3 +60,11 @@ final iCalendar = ICalendar.fromLines(lines);
 * LOCATION
 * URL
 * ORGANIZER
+* GEO
+* CATEGORIES
+* ATTENDEE
+* ACTION
+* STATUS
+* SEQUENCE
+* REPEAT
+* REPEAT
