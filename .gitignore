@@ -90,3 +90,5 @@ example/ios/Flutter/flutter_export_environment 4.sh
 example/ios/Flutter/Generated 4.xcconfig
 
 example/ios/Flutter/
+
+test/.test_coverage.dart
