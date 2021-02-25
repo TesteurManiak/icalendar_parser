@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.4.1] - 25/02/2021
+
+* Updated `/example`
+* Updated `README.md`
+* Added unit tests and code coverage
+* Added support for `IcsStatus` enum:
+    - `NEEDS-ACTION`
+    - `COMPLETED`
+    - `IN-PROCESS`
+    - `DRAFT`
+    - `FINAL`
+
 ## [0.4.0] - 27/10/2020
 
 * Improved unit tests

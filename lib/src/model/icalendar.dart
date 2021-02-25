@@ -22,10 +22,7 @@ class ICalendar {
   String get method => headData['method'];
 
   /// Default constructor.
-  ICalendar({
-    this.data,
-    this.headData,
-  });
+  ICalendar({this.data, this.headData});
 
   /// Parse an [ICalendar] object from a [String]. The parameter
   /// [icsString] will be split on each [lineSeparator] occurence which is by
@@ -168,14 +165,17 @@ class ICalendar {
       lastEvent['attendee'] ??= [];
 
       final mail = value.replaceAll('MAILTO:', '').trim();
-
+      final elem = <String, String>{};
       if (params.containsKey('CN')) {
-        (lastEvent['attendee'] as List).add({
-          'name': params['CN'],
-          'mail': mail,
-        });
-      } else
-        (lastEvent['attendee'] as List).add({'mail': mail});
+        elem['name'] = params['CN'].trim();
+      }
+      params.forEach((key, value) {
+        if (key != 'CN') {
+          elem[key.toLowerCase()] = value.trim();
+        }
+      });
+      elem['mail'] = mail;
+      (lastEvent['attendee'] as List).add(elem);
       return lastEvent;
     },
     'ACTION': _generateSimpleParamFunction('action'),

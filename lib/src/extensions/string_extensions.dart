@@ -11,6 +11,16 @@ extension IcsStringModifier on String {
         return IcsStatus.CONFIRMED;
       case 'CANCELLED':
         return IcsStatus.CANCELLED;
+      case 'NEEDS-ACTION':
+        return IcsStatus.NEEDS_ACTION;
+      case 'COMPLETED':
+        return IcsStatus.COMPLETED;
+      case 'IN-PROCESS':
+        return IcsStatus.IN_PROCESS;
+      case 'DRAFT':
+        return IcsStatus.DRAFT;
+      case 'FINAL':
+        return IcsStatus.FINAL;
       default:
         throw ICalendarStatusParseException('Unknown IcsStatus: $this');
     }
