@@ -125,19 +125,19 @@ class _MyHomePageState extends State<MyHomePage> {
               const Center(child: CircularProgressIndicator())
             else
               _generateTextContent(),
-            RaisedButton(
+            ElevatedButton(
               child: const Text('Load File 1'),
               onPressed: () => _getAssetsFile('calendar.ics'),
             ),
-            RaisedButton(
+            ElevatedButton(
               child: const Text('Load File 2'),
               onPressed: () => _getAssetsFile('calendar2.ics'),
             ),
-            RaisedButton(
+            ElevatedButton(
               child: const Text('Load String 1'),
               onPressed: () => _getAssets('calendar.ics'),
             ),
-            RaisedButton(
+            ElevatedButton(
               child: const Text('Load File 3'),
               onPressed: () => _getAssetsFile('calendar3.ics'),
             ),

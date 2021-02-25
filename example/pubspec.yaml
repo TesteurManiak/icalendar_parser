@@ -10,11 +10,11 @@ environment:
   sdk: ">=2.7.0 <3.0.0"
 
 dependencies:
+  cupertino_icons: ^1.0.0
   flutter:
     sdk: flutter
   icalendar_parser:
     path: ../
-  cupertino_icons: ^1.0.0
   path_provider: ^1.6.22
 
 dev_dependencies:
