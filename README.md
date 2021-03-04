@@ -22,6 +22,8 @@ icalendar_parser: any
 
 You can refer to the `example/` folder for a complete example implemented in Flutter.
 
+## Constructor
+
 ### ICalendar.fromString
 
 ``` dart
@@ -37,6 +39,32 @@ final iCalendar = ICalendar.fromString(icsString);
 ``` dart
 final icsLines = await File('your_file.ics').readAsLines();
 final iCalendar = ICalendar.fromLines(lines);
+```
+
+## Other methods
+
+### ICalendar.registerField
+
+With this method you can add custom fields to the parsing and you can specify a custom `function` to parse its content :
+
+``` dart
+ICalendar.registerField(field: 'TEST');
+
+ICalendar.registerField(
+    field: 'TEST2',
+    function: (value, params, event, lastEvent) {
+        lastEvent['test2'] = 'test';
+        return lastEvent;
+    },
+);
+```
+
+### ICalendar.unregisterField
+
+With this method you can remove parsed fields to ignore them in your file :
+
+``` dart
+ICalendar.unregisterField('TEST');
 ```
 
 ## Supported Properties
