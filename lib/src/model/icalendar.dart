@@ -1,5 +1,6 @@
 import 'package:icalendar_parser/src/exceptions/icalendar_exception.dart';
 import 'package:icalendar_parser/src/extensions/string_extensions.dart';
+import 'package:meta/meta.dart';
 
 /// Core object
 class ICalendar {
@@ -197,6 +198,23 @@ class ICalendar {
     'CALSCALE': _generateSimpleParamFunction('calscale'),
     'METHOD': _generateSimpleParamFunction('method'),
   };
+
+  static void registerCustomField({
+    @required String field,
+    Function(String value, Map<String, String> params, List event,
+            Map<String, dynamic> lastEvent)
+        function,
+  }) {
+    if (_objects.containsKey(field))
+      throw ICalendarFormatException('The field $field is already registered');
+
+    _objects[field] = function != null
+        ? function
+        : _generateSimpleParamFunction(field.toLowerCase());
+  }
+
+  /// Expose managed parsing methods.
+  static Map<String, Function> get objects => _objects;
 
   /// Parse a list of icalendar object from a [List<String>].
   ///
