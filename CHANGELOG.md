@@ -1,5 +1,9 @@
 # Changelog
 
+## [0.4.2] - 04/03/2021
+
+* Added method `registerField` and `unregisterField` to add custom fields to parsing. 
+
 ## [0.4.1] - 25/02/2021
 
 * Updated `/example`
