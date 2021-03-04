@@ -3,38 +3,8 @@ import 'package:icalendar_parser/src/exceptions/icalendar_exception.dart';
 import 'package:test/test.dart';
 
 void main() {
-  final _noCalendarBegin =
-      'VERSION:2.0\r\nPRODID:-//hacksw/handcal//NONSGML v1.0//EN\r\nBEGIN:VEVENT\r\nUID:uid1@example.com\r\nDTSTAMP:19970714T170000Z\r\nORGANIZER;CN=John Doe:MAILTO:john.doe@example.com\r\nDTSTART:19970714T170000Z\r\nDTEND:19970715T035959Z\r\nSUMMARY:Bastille Day Party\r\nGEO:48.85299;2.36885\r\nEND:VEVENT\r\nEND:VCALENDAR';
-  final _noCalendarEnd =
-      'BEGIN:VCALENDAR\r\nVERSION:2.0\r\nPRODID:-//hacksw/handcal//NONSGML v1.0//EN\r\nBEGIN:VEVENT\r\nUID:uid1@example.com\r\nDTSTAMP:19970714T170000Z\r\nORGANIZER;CN=John Doe:MAILTO:john.doe@example.com\r\nDTSTART:19970714T170000Z\r\nDTEND:19970715T035959Z\r\nSUMMARY:Bastille Day Party\r\nGEO:48.85299;2.36885\r\nEND:VEVENT';
-  final _noVersion =
-      'BEGIN:VCALENDAR\r\nPRODID:-//hacksw/handcal//NONSGML v1.0//EN\r\nBEGIN:VEVENT\r\nUID:uid1@example.com\r\nDTSTAMP:19970714T170000Z\r\nORGANIZER;CN=John Doe:MAILTO:john.doe@example.com\r\nDTSTART:19970714T170000Z\r\nDTEND:19970715T035959Z\r\nSUMMARY:Bastille Day Party\r\nGEO:48.85299;2.36885\r\nEND:VEVENT\r\nEND:VCALENDAR';
   final _noProdid =
       'BEGIN:VCALENDAR\r\nVERSION:2.0\r\nBEGIN:VEVENT\r\nUID:uid1@example.com\r\nDTSTAMP:19970714T170000Z\r\nORGANIZER;CN=John Doe:MAILTO:john.doe@example.com\r\nDTSTART:19970714T170000Z\r\nDTEND:19970715T035959Z\r\nSUMMARY:Bastille Day Party\r\nGEO:48.85299;2.36885\r\nEND:VEVENT\r\nEND:VCALENDAR';
-
-  test('Missing BEGIN:VCALENDAR', () {
-    final lines = _noCalendarBegin.split('\r\n');
-    expect(() => ICalendar.fromLines(lines),
-        throwsA(isA<ICalendarBeginException>()));
-    expect(() => ICalendar.fromString(_noCalendarBegin),
-        throwsA(isA<ICalendarBeginException>()));
-  });
-
-  test('Missing END:VCALENDAR', () {
-    final lines = _noCalendarEnd.split('\r\n');
-    expect(() => ICalendar.fromLines(lines),
-        throwsA(isA<ICalendarEndException>()));
-    expect(() => ICalendar.fromString(_noCalendarEnd),
-        throwsA(isA<ICalendarEndException>()));
-  });
-
-  test('Missing VERSION', () {
-    final lines = _noVersion.split('\r\n');
-    expect(() => ICalendar.fromLines(lines),
-        throwsA(isA<ICalendarNoVersionException>()));
-    expect(() => ICalendar.fromString(_noVersion),
-        throwsA(isA<ICalendarNoVersionException>()));
-  });
 
   test('Missing PRODID', () {
     final lines = _noProdid.split('\r\n');
