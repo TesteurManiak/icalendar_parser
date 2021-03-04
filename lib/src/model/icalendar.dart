@@ -1,5 +1,6 @@
 import 'package:icalendar_parser/src/exceptions/icalendar_exception.dart';
 import 'package:icalendar_parser/src/extensions/string_extensions.dart';
+import 'package:meta/meta.dart';
 
 /// Core object
 class ICalendar {
@@ -197,6 +198,40 @@ class ICalendar {
     'CALSCALE': _generateSimpleParamFunction('calscale'),
     'METHOD': _generateSimpleParamFunction('method'),
   };
+
+  /// Managed parsing methods.
+  static Map<String, Function> get objects => _objects;
+
+  /// Allow to add custom field to parse.
+  ///
+  /// If no `function` parameter to parse the field is provided the default
+  /// method `_generateSimpleParamFunction` will be used.
+  ///
+  /// If a field with the same name already exists the method will throw a
+  /// `ICalendarFormatException`.
+  static void registerField({
+    @required String field,
+    Function(String value, Map<String, String> params, List event,
+            Map<String, dynamic> lastEvent)
+        function,
+  }) {
+    if (_objects.containsKey(field))
+      throw ICalendarFormatException('The field $field is already registered.');
+
+    _objects[field] = function != null
+        ? function
+        : _generateSimpleParamFunction(field.toLowerCase());
+  }
+
+  /// Remove an existing parsing field.
+  ///
+  /// If there is no corresponding field the method will throw a
+  /// `ICalendarFormatException`.
+  static void unregisterField(String field) {
+    if (!_objects.containsKey(field))
+      throw ICalendarFormatException('The field $field does not exists.');
+    _objects.remove(field);
+  }
 
   /// Parse a list of icalendar object from a [List<String>].
   ///
