@@ -1,5 +1,10 @@
 # Changelog
 
+## [0.5.0] - 25/03/2021
+
+* Migrate code to nullsafety
+* Refacto some tests
+
 ## [0.4.2] - 04/03/2021
 
 * Added method `registerField` and `unregisterField` to add custom fields to parsing. 
