@@ -3,38 +3,8 @@ import 'package:icalendar_parser/src/exceptions/icalendar_exception.dart';
 import 'package:test/test.dart';
 
 void main() {
-  final _noCalendarBegin =
-      'VERSION:2.0\r\nPRODID:-//hacksw/handcal//NONSGML v1.0//EN\r\nBEGIN:VEVENT\r\nUID:uid1@example.com\r\nDTSTAMP:19970714T170000Z\r\nORGANIZER;CN=John Doe:MAILTO:john.doe@example.com\r\nDTSTART:19970714T170000Z\r\nDTEND:19970715T035959Z\r\nSUMMARY:Bastille Day Party\r\nGEO:48.85299;2.36885\r\nEND:VEVENT\r\nEND:VCALENDAR';
-  final _noCalendarEnd =
-      'BEGIN:VCALENDAR\r\nVERSION:2.0\r\nPRODID:-//hacksw/handcal//NONSGML v1.0//EN\r\nBEGIN:VEVENT\r\nUID:uid1@example.com\r\nDTSTAMP:19970714T170000Z\r\nORGANIZER;CN=John Doe:MAILTO:john.doe@example.com\r\nDTSTART:19970714T170000Z\r\nDTEND:19970715T035959Z\r\nSUMMARY:Bastille Day Party\r\nGEO:48.85299;2.36885\r\nEND:VEVENT';
-  final _noVersion =
-      'BEGIN:VCALENDAR\r\nPRODID:-//hacksw/handcal//NONSGML v1.0//EN\r\nBEGIN:VEVENT\r\nUID:uid1@example.com\r\nDTSTAMP:19970714T170000Z\r\nORGANIZER;CN=John Doe:MAILTO:john.doe@example.com\r\nDTSTART:19970714T170000Z\r\nDTEND:19970715T035959Z\r\nSUMMARY:Bastille Day Party\r\nGEO:48.85299;2.36885\r\nEND:VEVENT\r\nEND:VCALENDAR';
   final _noProdid =
       'BEGIN:VCALENDAR\r\nVERSION:2.0\r\nBEGIN:VEVENT\r\nUID:uid1@example.com\r\nDTSTAMP:19970714T170000Z\r\nORGANIZER;CN=John Doe:MAILTO:john.doe@example.com\r\nDTSTART:19970714T170000Z\r\nDTEND:19970715T035959Z\r\nSUMMARY:Bastille Day Party\r\nGEO:48.85299;2.36885\r\nEND:VEVENT\r\nEND:VCALENDAR';
-
-  test('Missing BEGIN:VCALENDAR', () {
-    final lines = _noCalendarBegin.split('\r\n');
-    expect(() => ICalendar.fromLines(lines),
-        throwsA(isA<ICalendarBeginException>()));
-    expect(() => ICalendar.fromString(_noCalendarBegin),
-        throwsA(isA<ICalendarBeginException>()));
-  });
-
-  test('Missing END:VCALENDAR', () {
-    final lines = _noCalendarEnd.split('\r\n');
-    expect(() => ICalendar.fromLines(lines),
-        throwsA(isA<ICalendarEndException>()));
-    expect(() => ICalendar.fromString(_noCalendarEnd),
-        throwsA(isA<ICalendarEndException>()));
-  });
-
-  test('Missing VERSION', () {
-    final lines = _noVersion.split('\r\n');
-    expect(() => ICalendar.fromLines(lines),
-        throwsA(isA<ICalendarNoVersionException>()));
-    expect(() => ICalendar.fromString(_noVersion),
-        throwsA(isA<ICalendarNoVersionException>()));
-  });
 
   test('Missing PRODID', () {
     final lines = _noProdid.split('\r\n');
@@ -65,13 +35,13 @@ void main() {
     group('fromLines()', () {
       test('base valid', () {
         final lines = _valid.split('\r\n');
-        expect(ICalendar.fromLines(lines).data.length, 1);
+        expect(ICalendar.fromLines(lines).data!.length, 1);
       });
 
       test('ending w/ newline: authorized empty line', () {
         final testString = _valid + '\r\n';
         final lines = testString.split('\r\n');
-        expect(ICalendar.fromLines(lines).data.length, 1);
+        expect(ICalendar.fromLines(lines).data!.length, 1);
       });
 
       test('ending w/ newline: unauthorized empty line', () {
@@ -85,18 +55,18 @@ void main() {
         final lines = _validMultiline.split('\r\n');
         final iCalendarLines = ICalendar.fromLines(lines);
         expect(
-            (iCalendarLines.data.first['description'] as String).length, 172);
+            (iCalendarLines.data!.first['description'] as String).length, 172);
       });
     });
 
     group('fromString()', () {
       test('base valid', () {
-        expect(ICalendar.fromString(_valid).data.length, 1);
+        expect(ICalendar.fromString(_valid).data!.length, 1);
       });
 
       test('ending w/ newline: authorized empty line', () {
         final testString = _valid + '\r\n';
-        expect(ICalendar.fromString(testString).data.length, 1);
+        expect(ICalendar.fromString(testString).data!.length, 1);
       });
 
       test('ending w/ newline: unauthorized empty line', () {
@@ -108,12 +78,12 @@ void main() {
       test('w/ multiline description', () {
         final iCalendarString = ICalendar.fromString(_validMultiline);
         expect(
-            (iCalendarString.data.first['description'] as String).length, 172);
+            (iCalendarString.data!.first['description'] as String).length, 172);
       });
 
       test('parse TRIGGER', () {
         final iCalendar = ICalendar.fromString(_validWithAlarm);
-        expect(iCalendar.data[1]['trigger'], '-PT1440M');
+        expect(iCalendar.data![1]['trigger'], '-PT1440M');
       });
     });
 
@@ -153,7 +123,7 @@ void main() {
 
     test('without organizer name', () {
       final iCalendar = ICalendar.fromString(_noOrganizerName);
-      final Map<String, dynamic> organizer = iCalendar.data
+      final Map<String, dynamic> organizer = iCalendar.data!
           .firstWhere((e) => e.containsKey('organizer'))['organizer'];
       expect(organizer.containsKey('name'), false);
       expect(organizer['mail'], 'john.doe@example.com');
@@ -161,7 +131,7 @@ void main() {
 
     test('with categories', () {
       final iCalendar = ICalendar.fromString(_withCategories);
-      final List<String> categories = iCalendar.data
+      final List<String> categories = iCalendar.data!
           .firstWhere((e) => e.containsKey('categories'))['categories'];
       expect(categories.length, 2);
       expect(categories, ['APPOINTMENT', 'EDUCATION']);
@@ -169,7 +139,7 @@ void main() {
 
     test('with attendee', () {
       final iCalendar = ICalendar.fromString(_withAttendee);
-      final List attendee = iCalendar.data
+      final List attendee = iCalendar.data!
           .firstWhere((e) => e.containsKey('attendee'))['attendee'];
       expect(attendee.length, 1);
       expect(attendee[0]['mail'], 'joecool@host2.com');
@@ -180,14 +150,14 @@ void main() {
     test('with transp', () {
       final iCalendar = ICalendar.fromString(_withTransp);
       final transp =
-          iCalendar.data.firstWhere((e) => e.containsKey('transp'))['transp'];
+          iCalendar.data!.firstWhere((e) => e.containsKey('transp'))['transp'];
       expect(transp, IcsTransp.TRANSPARENT);
     });
 
     test('with status', () {
       final iCal = ICalendar.fromString(_withStatus);
       final status =
-          iCal.data.firstWhere((e) => e.containsKey('status'))['status'];
+          iCal.data!.firstWhere((e) => e.containsKey('status'))['status'];
       expect(status, IcsStatus.TENTATIVE);
     });
   });
