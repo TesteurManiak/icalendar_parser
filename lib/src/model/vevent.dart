@@ -6,20 +6,20 @@ import 'package:icalendar_parser/src/model/ics_transp.dart';
 
 /// VEVENT component
 class VEvent {
-  final String uid;
+  final String? uid;
   final dynamic dtStart;
   final dynamic dtEnd;
   final dynamic dtStamp;
-  final IcsOrganizer organizer;
-  final IcsGeo geo;
-  final String summary;
-  final String location;
-  final List<String> categories;
-  final IcsStatus status;
-  final String description;
-  final IcsTransp transp;
-  final int sequence;
-  final IcsClass icsClass;
+  final IcsOrganizer? organizer;
+  final IcsGeo? geo;
+  final String? summary;
+  final String? location;
+  final List<String>? categories;
+  final IcsStatus? status;
+  final String? description;
+  final IcsTransp? transp;
+  final int? sequence;
+  final IcsClass? icsClass;
   final dynamic lastModified;
 
   VEvent({
