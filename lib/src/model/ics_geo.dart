@@ -1,6 +1,6 @@
 class IcsGeo {
-  num latitude;
-  num longitude;
+  num? latitude;
+  num? longitude;
 
   IcsGeo({this.latitude, this.longitude});
 

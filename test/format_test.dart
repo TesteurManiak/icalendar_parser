@@ -35,13 +35,13 @@ void main() {
     group('fromLines()', () {
       test('base valid', () {
         final lines = _valid.split('\r\n');
-        expect(ICalendar.fromLines(lines).data.length, 1);
+        expect(ICalendar.fromLines(lines).data!.length, 1);
       });
 
       test('ending w/ newline: authorized empty line', () {
         final testString = _valid + '\r\n';
         final lines = testString.split('\r\n');
-        expect(ICalendar.fromLines(lines).data.length, 1);
+        expect(ICalendar.fromLines(lines).data!.length, 1);
       });
 
       test('ending w/ newline: unauthorized empty line', () {
@@ -55,18 +55,18 @@ void main() {
         final lines = _validMultiline.split('\r\n');
         final iCalendarLines = ICalendar.fromLines(lines);
         expect(
-            (iCalendarLines.data.first['description'] as String).length, 172);
+            (iCalendarLines.data!.first['description'] as String).length, 172);
       });
     });
 
     group('fromString()', () {
       test('base valid', () {
-        expect(ICalendar.fromString(_valid).data.length, 1);
+        expect(ICalendar.fromString(_valid).data!.length, 1);
       });
 
       test('ending w/ newline: authorized empty line', () {
         final testString = _valid + '\r\n';
-        expect(ICalendar.fromString(testString).data.length, 1);
+        expect(ICalendar.fromString(testString).data!.length, 1);
       });
 
       test('ending w/ newline: unauthorized empty line', () {
@@ -78,12 +78,12 @@ void main() {
       test('w/ multiline description', () {
         final iCalendarString = ICalendar.fromString(_validMultiline);
         expect(
-            (iCalendarString.data.first['description'] as String).length, 172);
+            (iCalendarString.data!.first['description'] as String).length, 172);
       });
 
       test('parse TRIGGER', () {
         final iCalendar = ICalendar.fromString(_validWithAlarm);
-        expect(iCalendar.data[1]['trigger'], '-PT1440M');
+        expect(iCalendar.data![1]['trigger'], '-PT1440M');
       });
     });
 
@@ -123,7 +123,7 @@ void main() {
 
     test('without organizer name', () {
       final iCalendar = ICalendar.fromString(_noOrganizerName);
-      final Map<String, dynamic> organizer = iCalendar.data
+      final Map<String, dynamic> organizer = iCalendar.data!
           .firstWhere((e) => e.containsKey('organizer'))['organizer'];
       expect(organizer.containsKey('name'), false);
       expect(organizer['mail'], 'john.doe@example.com');
@@ -131,7 +131,7 @@ void main() {
 
     test('with categories', () {
       final iCalendar = ICalendar.fromString(_withCategories);
-      final List<String> categories = iCalendar.data
+      final List<String> categories = iCalendar.data!
           .firstWhere((e) => e.containsKey('categories'))['categories'];
       expect(categories.length, 2);
       expect(categories, ['APPOINTMENT', 'EDUCATION']);
@@ -139,7 +139,7 @@ void main() {
 
     test('with attendee', () {
       final iCalendar = ICalendar.fromString(_withAttendee);
-      final List attendee = iCalendar.data
+      final List attendee = iCalendar.data!
           .firstWhere((e) => e.containsKey('attendee'))['attendee'];
       expect(attendee.length, 1);
       expect(attendee[0]['mail'], 'joecool@host2.com');
@@ -150,14 +150,14 @@ void main() {
     test('with transp', () {
       final iCalendar = ICalendar.fromString(_withTransp);
       final transp =
-          iCalendar.data.firstWhere((e) => e.containsKey('transp'))['transp'];
+          iCalendar.data!.firstWhere((e) => e.containsKey('transp'))['transp'];
       expect(transp, IcsTransp.TRANSPARENT);
     });
 
     test('with status', () {
       final iCal = ICalendar.fromString(_withStatus);
       final status =
-          iCal.data.firstWhere((e) => e.containsKey('status'))['status'];
+          iCal.data!.firstWhere((e) => e.containsKey('status'))['status'];
       expect(status, IcsStatus.TENTATIVE);
     });
   });

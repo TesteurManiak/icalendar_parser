@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:collection/collection.dart' show IterableExtension;
 import 'package:icalendar_parser/icalendar_parser.dart';
 import 'package:test/test.dart';
 
@@ -42,7 +43,7 @@ void main() {
 
       final obj = ICalendar.fromString(_valid);
       final entry =
-          obj.data.firstWhere((e) => e.containsKey('test'), orElse: () => null);
+          obj.data!.firstWhereOrNull((e) => e.containsKey('test'))!;
       expect(entry, isNotNull);
       expect(entry['test'], 'This is a test content');
     });
@@ -61,8 +62,8 @@ void main() {
       expect(ICalendar.objects.containsKey('TEST2'), true);
 
       final obj = ICalendar.fromString(_valid);
-      final entry = obj.data
-          .firstWhere((e) => e.containsKey('test2'), orElse: () => null);
+      final entry = obj.data!
+          .firstWhereOrNull((e) => e.containsKey('test2'))!;
       expect(entry, isNotNull);
       expect(entry['test2'], 'test');
     });
