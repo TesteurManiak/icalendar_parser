@@ -15,13 +15,13 @@ void main() {
 
   test('Missing elements', () {
     expect(() => ICalendar.fromLines(readFileLines('no_begin.ics')),
-        throwsA(isA<ICalendarBeginException>()));
+        throwsA(isA<ICalendarFormatException>()));
 
     expect(() => ICalendar.fromString(readFileString('no_end.ics')),
-        throwsA(isA<ICalendarEndException>()));
+        throwsA(isA<ICalendarFormatException>()));
 
     expect(() => ICalendar.fromLines(readFileLines('no_version.ics')),
-        throwsA(isA<ICalendarNoVersionException>()));
+        throwsA(isA<ICalendarFormatException>()));
   });
 
   group('Register fields', () {
