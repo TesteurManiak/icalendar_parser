@@ -250,7 +250,7 @@ class ICalendar {
     if (lines.first != 'BEGIN:VCALENDAR')
       throw ICalendarBeginException(
           'The first line must be BEGIN:VCALENDAR but was ${lines.first}.');
-    else if (lines.last != 'END:VCALENDAR')
+    if (lines.last != 'END:VCALENDAR')
       throw ICalendarEndException(
           'The last line must be END:VCALENDAR but was ${lines.last}.');
 
@@ -267,7 +267,10 @@ class ICalendar {
       }
 
       List<String> dataLine = line.split(':');
-      if (dataLine.length < 2 || (dataLine.isNotEmpty && dataLine[0].toUpperCase() != dataLine[0] && !dataLine[0].contains(';'))) {
+      if (dataLine.length < 2 ||
+          (dataLine.isNotEmpty &&
+              dataLine[0].toUpperCase() != dataLine[0] &&
+              !dataLine[0].contains(';'))) {
         if (line.isNotEmpty && currentName != null) {
           lastEvent![currentName] += line;
         }
