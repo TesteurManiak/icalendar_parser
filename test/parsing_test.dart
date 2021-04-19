@@ -4,8 +4,6 @@ import 'package:collection/collection.dart' show IterableExtension;
 import 'package:icalendar_parser/icalendar_parser.dart';
 import 'package:test/test.dart';
 
-Matcher throwsTypeOf<T>() => throwsA(isA<T>());
-
 void main() {
   String readFileString(String name) =>
       File('test/test_resources/$name').readAsStringSync();

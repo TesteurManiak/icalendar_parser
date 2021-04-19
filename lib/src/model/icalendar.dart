@@ -247,10 +247,10 @@ class ICalendar {
     Map<String, dynamic>? lastEvent = {};
     String? currentName;
 
-    if (lines.first != 'BEGIN:VCALENDAR')
+    if (lines.first.trim() != 'BEGIN:VCALENDAR')
       throw ICalendarBeginException(
           'The first line must be BEGIN:VCALENDAR but was ${lines.first}.');
-    if (lines.last != 'END:VCALENDAR')
+    if (lines.last.trim() != 'END:VCALENDAR')
       throw ICalendarEndException(
           'The last line must be END:VCALENDAR but was ${lines.last}.');
 
