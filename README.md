@@ -25,6 +25,8 @@ You can refer to the `example/` folder for a complete example implemented in Flu
 
 ### ICalendar.fromString
 
+**Warning: For unknown reason the command `dart test` on GitHub Actions will generate errors so try to prefer using `ICalendar.fromLines` in your unit tests.**
+
 ``` dart
 import 'package:flutter/services.dart' show rootBundle;
 import 'package:icalendar_parser/icalendar_parser.dart';

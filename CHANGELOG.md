@@ -1,5 +1,9 @@
 # Changelog
 
+## [0.5.1] - 19/04/2021
+
+* Fix for `DESCRIPTION` text that is spanned over multiple lines and contains a `:` (Contributor: [stevenboeckmans](https://github.com/TesteurManiak/icalendar_parser/pull/19))
+
 ## [0.5.0] - 25/03/2021
 
 * Migrate code to nullsafety
