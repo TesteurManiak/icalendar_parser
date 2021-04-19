@@ -13,24 +13,23 @@ void main() {
     final noVersionFile = File('test_resources/no_version.ics');
 
     test('Missing BEGIN:VCALENDAR', () {
-      expect(() async => ICalendar.fromLines(await noBeginFile.readAsLines()),
+      expect(() => ICalendar.fromLines(noBeginFile.readAsLinesSync()),
           throwsA(isA<ICalendarBeginException>()));
-      expect(() async => ICalendar.fromString(await noBeginFile.readAsString()),
+      expect(() => ICalendar.fromString(noBeginFile.readAsStringSync()),
           throwsA(isA<ICalendarBeginException>()));
     });
 
     test('Missing END:VCALENDAR', () {
-      expect(() async => ICalendar.fromLines(await noEndFile.readAsLines()),
+      expect(() => ICalendar.fromLines(noEndFile.readAsLinesSync()),
           throwsA(isA<ICalendarEndException>()));
-      expect(() async => ICalendar.fromString(await noEndFile.readAsString()),
+      expect(() => ICalendar.fromString(noEndFile.readAsStringSync()),
           throwsA(isA<ICalendarEndException>()));
     });
 
     test('Missing VERSION', () {
-      expect(() async => ICalendar.fromLines(await noVersionFile.readAsLines()),
+      expect(() => ICalendar.fromLines(noVersionFile.readAsLinesSync()),
           throwsA(isA<ICalendarNoVersionException>()));
-      expect(
-          () async => ICalendar.fromString(await noVersionFile.readAsString()),
+      expect(() => ICalendar.fromString(noVersionFile.readAsStringSync()),
           throwsA(isA<ICalendarNoVersionException>()));
     });
   });
@@ -44,8 +43,7 @@ void main() {
       expect(ICalendar.objects.containsKey('TEST'), true);
 
       final obj = ICalendar.fromString(_valid);
-      final entry =
-          obj.data!.firstWhereOrNull((e) => e.containsKey('test'))!;
+      final entry = obj.data!.firstWhereOrNull((e) => e.containsKey('test'))!;
       expect(entry, isNotNull);
       expect(entry['test'], 'This is a test content');
     });
@@ -64,8 +62,7 @@ void main() {
       expect(ICalendar.objects.containsKey('TEST2'), true);
 
       final obj = ICalendar.fromString(_valid);
-      final entry = obj.data!
-          .firstWhereOrNull((e) => e.containsKey('test2'))!;
+      final entry = obj.data!.firstWhereOrNull((e) => e.containsKey('test2'))!;
       expect(entry, isNotNull);
       expect(entry['test2'], 'test');
     });
@@ -75,12 +72,17 @@ void main() {
       expect(ICalendar.objects.containsKey('TEST'), false);
     });
 
-    test('Multiple line DESCRIPTION containing colon should not loose line of text', () async {
-      final eventText = fixture('MultiLineDescriptionContainingColon.txt');
+    test(
+        'Multiple line DESCRIPTION containing colon should not loose line of text',
+        () async {
+      final eventText = fixture('MultiLineDescriptionContainingColon.ics');
       final iCalParsed = ICalendar.fromString(eventText);
-      expect(iCalParsed.data?[3]['description'], equals(r'Voorbereiden: 1.5.1 Speekselklieren: tekening benoemen op p. 60\n\n+\n\n1.6 Bouw van endocriene secretieklieren en aanpassing aan hun functie: tekening p. 63 --> benoem de aangeduide delen.'));
-
-    }
-    );
+      expect(
+        iCalParsed.data?[3]['description'],
+        equals(
+          r'Voorbereiden: 1.5.1 Speekselklieren: tekening benoemen op p. 60\n\n+\n\n1.6 Bouw van endocriene secretieklieren en aanpassing aan hun functie: tekening p. 63 --> benoem de aangeduide delen.',
+        ),
+      );
+    });
   });
 }
