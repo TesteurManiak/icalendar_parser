@@ -4,6 +4,8 @@ import 'package:collection/collection.dart' show IterableExtension;
 import 'package:icalendar_parser/icalendar_parser.dart';
 import 'package:test/test.dart';
 
+Matcher throwsTypeOf<T>() => throwsA(isA<T>());
+
 void main() {
   String readFileString(String name) =>
       File('test/test_resources/$name').readAsStringSync();
@@ -11,27 +13,15 @@ void main() {
   List<String> readFileLines(String name) =>
       File('test/test_resources/$name').readAsLinesSync();
 
-  group('Missing elements', () {
-    test('Missing BEGIN:VCALENDAR', () {
-      expect(() => ICalendar.fromLines(readFileLines('no_begin.ics')),
-          throwsA(isA<ICalendarBeginException>()));
-      expect(() => ICalendar.fromString(readFileString('no_begin.ics')),
-          throwsA(isA<ICalendarBeginException>()));
-    });
+  test('Missing elements', () {
+    expect(() => ICalendar.fromLines(readFileLines('no_begin.ics')),
+        throwsA(isA<ICalendarBeginException>()));
 
-    test('Missing END:VCALENDAR', () {
-      expect(() => ICalendar.fromLines(readFileLines('no_end.ics')),
-          throwsA(isA<ICalendarEndException>()));
-      expect(() => ICalendar.fromString(readFileString('no_end.ics')),
-          throwsA(isA<ICalendarEndException>()));
-    });
+    expect(() => ICalendar.fromString(readFileString('no_end.ics')),
+        throwsA(isA<ICalendarEndException>()));
 
-    test('Missing VERSION', () {
-      expect(() => ICalendar.fromLines(readFileLines('no_version.ics')),
-          throwsA(isA<ICalendarNoVersionException>()));
-      expect(() => ICalendar.fromString(readFileString('no_version.ics')),
-          throwsA(isA<ICalendarNoVersionException>()));
-    });
+    expect(() => ICalendar.fromLines(readFileLines('no_version.ics')),
+        throwsA(isA<ICalendarNoVersionException>()));
   });
 
   group('Register fields', () {
