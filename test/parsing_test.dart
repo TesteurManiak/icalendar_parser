@@ -13,13 +13,13 @@ void main() {
 
   test('Missing elements', () {
     expect(() => ICalendar.fromLines(readFileLines('no_begin.ics')),
-        throwsA(isA<ICalendarFormatException>()));
+        throwsA(isA<ICalendarBeginException>()));
 
     expect(() => ICalendar.fromString(readFileString('no_end.ics')),
         throwsA(isA<ICalendarFormatException>()));
 
     expect(() => ICalendar.fromLines(readFileLines('no_version.ics')),
-        throwsA(isA<ICalendarFormatException>()));
+        throwsA(isA<ICalendarNoVersionException>()));
   });
 
   group('Register fields', () {
@@ -64,8 +64,8 @@ void main() {
         'Multiple line DESCRIPTION containing colon should not loose line of text',
         () async {
       final eventText =
-          readFileString('MultiLineDescriptionContainingColon.ics');
-      final iCalParsed = ICalendar.fromString(eventText);
+          readFileLines('MultiLineDescriptionContainingColon.ics');
+      final iCalParsed = ICalendar.fromLines(eventText);
       expect(
         iCalParsed.data?[3]['description'],
         equals(
