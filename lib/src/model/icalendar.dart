@@ -267,7 +267,7 @@ class ICalendar {
       }
 
       List<String> dataLine = line.split(':');
-      if (dataLine.length < 2) {
+      if (dataLine.length < 2 || (dataLine.isNotEmpty && dataLine[0].toUpperCase() != dataLine[0] && !dataLine[0].contains(';'))) {
         if (line.isNotEmpty && currentName != null) {
           lastEvent![currentName] += line;
         }

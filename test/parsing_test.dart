@@ -5,6 +5,8 @@ import 'package:icalendar_parser/icalendar_parser.dart';
 import 'package:test/test.dart';
 
 void main() {
+  String fixture(String name) => File('test/fixtures/$name').readAsStringSync();
+
   group('Missing elements', () {
     final noBeginFile = File('test_resources/no_begin.ics');
     final noEndFile = File('test_resources/no_end.ics');
@@ -72,5 +74,13 @@ void main() {
       ICalendar.unregisterField('TEST');
       expect(ICalendar.objects.containsKey('TEST'), false);
     });
+
+    test('Multiple line DESCRIPTION containing colon should not loose line of text', () async {
+      final eventText = fixture('MultiLineDescriptionContainingColon.txt');
+      final iCalParsed = ICalendar.fromString(eventText);
+      expect(iCalParsed.data?[3]['description'], equals(r'Voorbereiden: 1.5.1 Speekselklieren: tekening benoemen op p. 60\n\n+\n\n1.6 Bouw van endocriene secretieklieren en aanpassing aan hun functie: tekening p. 63 --> benoem de aangeduide delen.'));
+
+    }
+    );
   });
 }
