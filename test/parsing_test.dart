@@ -5,31 +5,31 @@ import 'package:icalendar_parser/icalendar_parser.dart';
 import 'package:test/test.dart';
 
 void main() {
-  String fixture(String name) => File('test/fixtures/$name').readAsStringSync();
+  String readFileString(String name) =>
+      File('test/test_resources/$name').readAsStringSync();
+
+  List<String> readFileLines(String name) =>
+      File('test/test_resources/$name').readAsLinesSync();
 
   group('Missing elements', () {
-    final noBeginFile = File('test_resources/no_begin.ics');
-    final noEndFile = File('test_resources/no_end.ics');
-    final noVersionFile = File('test_resources/no_version.ics');
-
     test('Missing BEGIN:VCALENDAR', () {
-      expect(() => ICalendar.fromLines(noBeginFile.readAsLinesSync()),
+      expect(() => ICalendar.fromLines(readFileLines('no_begin.ics')),
           throwsA(isA<ICalendarBeginException>()));
-      expect(() => ICalendar.fromString(noBeginFile.readAsStringSync()),
+      expect(() => ICalendar.fromString(readFileString('no_begin.ics')),
           throwsA(isA<ICalendarBeginException>()));
     });
 
     test('Missing END:VCALENDAR', () {
-      expect(() => ICalendar.fromLines(noEndFile.readAsLinesSync()),
+      expect(() => ICalendar.fromLines(readFileLines('no_end.ics')),
           throwsA(isA<ICalendarEndException>()));
-      expect(() => ICalendar.fromString(noEndFile.readAsStringSync()),
+      expect(() => ICalendar.fromString(readFileString('no_end.ics')),
           throwsA(isA<ICalendarEndException>()));
     });
 
     test('Missing VERSION', () {
-      expect(() => ICalendar.fromLines(noVersionFile.readAsLinesSync()),
+      expect(() => ICalendar.fromLines(readFileLines('no_version.ics')),
           throwsA(isA<ICalendarNoVersionException>()));
-      expect(() => ICalendar.fromString(noVersionFile.readAsStringSync()),
+      expect(() => ICalendar.fromString(readFileString('no_version.ics')),
           throwsA(isA<ICalendarNoVersionException>()));
     });
   });
@@ -75,7 +75,8 @@ void main() {
     test(
         'Multiple line DESCRIPTION containing colon should not loose line of text',
         () async {
-      final eventText = fixture('MultiLineDescriptionContainingColon.ics');
+      final eventText =
+          readFileString('MultiLineDescriptionContainingColon.ics');
       final iCalParsed = ICalendar.fromString(eventText);
       expect(
         iCalParsed.data?[3]['description'],
