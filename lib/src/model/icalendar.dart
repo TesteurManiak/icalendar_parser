@@ -122,7 +122,7 @@ class ICalendar {
     'DTSTART': _generateDateFunction('dtstart'),
     'DTEND': _generateDateFunction('dtend'),
     'DTSTAMP': _generateDateFunction('dtstamp'),
-    'TRIGGER': _generateDateFunction('trigger'),
+    'TRIGGER': _generateSimpleParamFunction('trigger'),
     'LAST-MODIFIED': _generateDateFunction('lastModified'),
     'COMPLETED': _generateDateFunction('completed'),
     'DUE': _generateDateFunction('due'),
@@ -184,7 +184,7 @@ class ICalendar {
       lastEvent['status'] = value.trim().toIcsStatus();
       return lastEvent;
     },
-    'SEQUENCE': _generateDateFunction('sequence'),
+    'SEQUENCE': _generateSimpleParamFunction('sequence'),
     'REPEAT': _generateSimpleParamFunction('repeat'),
     'CLASS': _generateSimpleParamFunction('class'),
     'TRANSP': (String value, Map<String, String> _, List __,
