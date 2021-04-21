@@ -260,10 +260,10 @@ class ICalendar {
       if (line.isEmpty && !allowEmptyLine)
         throw const EmptyLineException('Empty line are not allowed');
 
-      final exp = RegExp(r'/^ /');
+      final exp = RegExp(r'^ ');
       while (i + 1 < lines.length && exp.hasMatch(lines[i + 1])) {
         i += 1;
-        line = lines[i].trim();
+        line += lines[i].trim();
       }
 
       List<String> dataLine = line.split(':');

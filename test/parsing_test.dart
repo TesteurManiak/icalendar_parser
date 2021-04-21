@@ -73,5 +73,17 @@ void main() {
         ),
       );
     });
+
+    test(
+        'American History',
+        () async {
+      final eventText = readFileLines('american_history.ics');
+      final iCalParsed = ICalendar.fromLines(eventText);
+      print(iCalParsed.data?[2]['location']);
+      expect(
+        iCalParsed.data?[2]['url'],
+        equals('https://americanhistorycalendar.com/eventscalendar/2,1853-emancipation-proclamation')
+      );
+    });
   });
 }
