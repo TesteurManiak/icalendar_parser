@@ -1,6 +1,6 @@
 # Changelog
 
-## [0.5.2] - 21/04/2021
+## [0.6.0] - 22/04/2021
 
 * Fixed an issue with line folding sometimes causing an exception ([#21](https://github.com/TesteurManiak/icalendar_parser/pull/21))
 * Fix TRIGGER and SEQUENCE warnings ([#22](https://github.com/TesteurManiak/icalendar_parser/pull/22))
