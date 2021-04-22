@@ -2,11 +2,12 @@
 
 ## [0.5.2] - 21/04/2021
 
-* Fix an issue with line folding sometimes causing an exception (Contributor: [simonbengtsson](https://github.com/simonbengtsson))
+* Fixed an issue with line folding sometimes causing an exception ([#21](https://github.com/TesteurManiak/icalendar_parser/pull/21))
+* Fix TRIGGER and SEQUENCE warnings ([#22](https://github.com/TesteurManiak/icalendar_parser/pull/22))
 
 ## [0.5.1] - 19/04/2021
 
-* Fix for `DESCRIPTION` text that is spanned over multiple lines and contains a `:` (Contributor: [stevenboeckmans](https://github.com/TesteurManiak/icalendar_parser/pull/19))
+* Fix for `DESCRIPTION` text that is spanned over multiple lines and contains a `:` ([#19](https://github.com/TesteurManiak/icalendar_parser/pull/19))
 
 ## [0.5.0] - 25/03/2021
 
