@@ -36,9 +36,10 @@ class ICalendar {
       {bool allowEmptyLine = true, String lineSeparator = '\r\n'}) {
     // Clean empty line end of file.
     if (allowEmptyLine) {
-      while (icsString.endsWith(lineSeparator))
+      while (icsString.endsWith(lineSeparator)) {
         icsString =
             icsString.substring(0, icsString.length - lineSeparator.length);
+      }
     }
     final lines = icsString.split(lineSeparator);
     return _linesParser(lines, allowEmptyLine);
@@ -53,7 +54,9 @@ class ICalendar {
   factory ICalendar.fromLines(List<String> lines,
       {bool allowEmptyLine = true}) {
     if (allowEmptyLine) {
-      while (lines.last.isEmpty) lines.removeLast();
+      while (lines.last.isEmpty) {
+        lines.removeLast();
+      }
     }
     return _linesParser(lines, allowEmptyLine);
   }
@@ -109,14 +112,14 @@ class ICalendar {
 
       data.add(lastEvent);
 
-      int index = events.indexOf(lastEvent);
+      final index = events.indexOf(lastEvent);
       if (index != -1) events.removeAt(index);
 
-      if (events.isEmpty)
+      if (events.isEmpty) {
         lastEvent = null;
-      else
+      } else {
         lastEvent = events.last;
-
+      }
       return lastEvent;
     },
     'DTSTART': _generateDateFunction('dtstart'),
@@ -140,8 +143,9 @@ class ICalendar {
           'name': params['CN'],
           'mail': mail,
         };
-      } else
+      } else {
         lastEvent['organizer'] = {'mail': mail};
+      }
 
       return lastEvent;
     },
@@ -214,12 +218,12 @@ class ICalendar {
             Map<String, dynamic> lastEvent)?
         function,
   }) {
-    if (_objects.containsKey(field))
+    if (_objects.containsKey(field)) {
       throw ICalendarFormatException('The field $field is already registered.');
+    }
 
-    _objects[field] = function != null
-        ? function
-        : _generateSimpleParamFunction(field.toLowerCase());
+    _objects[field] =
+        function ?? _generateSimpleParamFunction(field.toLowerCase());
   }
 
   /// Remove an existing parsing field.
@@ -227,8 +231,9 @@ class ICalendar {
   /// If there is no corresponding field the method will throw a
   /// `ICalendarFormatException`.
   static void unregisterField(String field) {
-    if (!_objects.containsKey(field))
+    if (!_objects.containsKey(field)) {
       throw ICalendarFormatException('The field $field does not exists.');
+    }
     _objects.remove(field);
   }
 
@@ -241,24 +246,26 @@ class ICalendar {
   /// If [allowEmptyLine] is false the method will throw [EmptyLineException].
   static List<dynamic> fromListToJson(List<String> lines,
       {bool allowEmptyLine = true}) {
-    List<Map<String, dynamic>> data = [];
-    Map<String, dynamic> _headData = {};
-    List events = [];
+    final data = <Map<String, dynamic>>[];
+    final _headData = <String, dynamic>{};
+    final events = [];
     Map<String, dynamic>? lastEvent = {};
     String? currentName;
 
-    if (lines.first.trim() != 'BEGIN:VCALENDAR')
+    if (lines.first.trim() != 'BEGIN:VCALENDAR') {
       throw ICalendarBeginException(
           'The first line must be BEGIN:VCALENDAR but was ${lines.first}.');
-    if (lines.last.trim() != 'END:VCALENDAR')
+    }
+    if (lines.last.trim() != 'END:VCALENDAR') {
       throw ICalendarEndException(
           'The last line must be END:VCALENDAR but was ${lines.last}.');
+    }
+    for (var i = 0; i < lines.length; i++) {
+      var line = lines[i].trim();
 
-    for (int i = 0; i < lines.length; i++) {
-      String line = lines[i].trim();
-
-      if (line.isEmpty && !allowEmptyLine)
+      if (line.isEmpty && !allowEmptyLine) {
         throw const EmptyLineException('Empty line are not allowed');
+      }
 
       final exp = RegExp(r'^ ');
       while (i + 1 < lines.length && exp.hasMatch(lines[i + 1])) {
@@ -266,7 +273,7 @@ class ICalendar {
         line += lines[i].trim();
       }
 
-      List<String> dataLine = line.split(':');
+      final dataLine = line.split(':');
       if (dataLine.length < 2 ||
           (dataLine.isNotEmpty &&
               dataLine[0].toUpperCase() != dataLine[0] &&
@@ -277,35 +284,37 @@ class ICalendar {
         continue;
       }
 
-      List<String> dataName = dataLine[0].split(';');
+      var dataName = dataLine[0].split(';');
 
       final name = dataName[0];
       dataName.removeRange(0, 1);
 
-      Map<String, String> params = {};
-      for (String e in dataName) {
-        List<String> param = e.split('=');
+      final params = <String, String>{};
+      for (final e in dataName) {
+        var param = e.split('=');
         if (param.length == 2) params[param[0]] = param[1];
       }
 
       dataLine.removeRange(0, 1);
-      String value = dataLine.join(':').replaceAll(RegExp(r'\\,'), ',');
+      final value = dataLine.join(':').replaceAll(RegExp(r'\\,'), ',');
       if (_objects.containsKey(name)) {
         currentName = name.toLowerCase();
         if (name == 'END') {
           currentName = null;
           lastEvent = _objects[name]!(value, params, events, lastEvent, data);
-        } else
+        } else {
           lastEvent =
               _objects[name]!(value, params, events, lastEvent ?? _headData);
+        }
       }
     }
-    if (!_headData.containsKey('version'))
+    if (!_headData.containsKey('version')) {
       throw const ICalendarNoVersionException(
           'The body is missing the property VERSION');
-    else if (!_headData.containsKey('prodid'))
+    } else if (!_headData.containsKey('prodid')) {
       throw const ICalendarNoProdidException(
           'The body is missing the property PRODID');
+    }
     return [_headData, data];
   }
 

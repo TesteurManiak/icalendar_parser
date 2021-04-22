@@ -126,20 +126,20 @@ class _MyHomePageState extends State<MyHomePage> {
             else
               _generateTextContent(),
             ElevatedButton(
-              child: const Text('Load File 1'),
               onPressed: () => _getAssetsFile('calendar.ics'),
+              child: const Text('Load File 1'),
             ),
             ElevatedButton(
-              child: const Text('Load File 2'),
               onPressed: () => _getAssetsFile('calendar2.ics'),
+              child: const Text('Load File 2'),
             ),
             ElevatedButton(
-              child: const Text('Load String 1'),
               onPressed: () => _getAssets('calendar.ics'),
+              child: const Text('Load String 1'),
             ),
             ElevatedButton(
-              child: const Text('Load File 3'),
               onPressed: () => _getAssetsFile('calendar3.ics'),
+              child: const Text('Load File 3'),
             ),
           ],
         ),
