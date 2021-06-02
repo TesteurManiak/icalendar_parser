@@ -16,9 +16,7 @@ void main() {
   });
 
   group('Valid calendar', () {
-    final _valid = readFileString('valid.ics');
-    final _validMultiline = readFileLines('valid_multiline.ics');
-    final _validWithAlarm = readFileString('valid_with_alarm.ics');
+    // final _validWithAlarm = readFileString('valid_with_alarm.ics');
     // final _noOrganizerName = readFileString('no_organizer_name.ics');
     // const _withCategories =
     //     'BEGIN:VCALENDAR\r\nVERSION:2.0\r\nPRODID:-//hacksw/handcal//NONSGML v1.0//EN\r\nCALSCALE:GREGORIAN\r\nMETHOD:PUBLISH\r\nBEGIN:VEVENT\r\nUID:uid1@example.com\r\nDTSTAMP:19970714T170000Z\r\nORGANIZER:MAILTO:john.doe@example.com\r\nCATEGORIES:APPOINTMENT,EDUCATION\r\nDTSTART:19970714T170000Z\r\nDTEND:19970715T035959Z\r\nSUMMARY:Bastille Day Party\r\nGEO:48.85299;2.36885\r\nEND:VEVENT\r\nEND:VCALENDAR';
@@ -30,20 +28,20 @@ void main() {
     //     'BEGIN:VCALENDAR\r\nVERSION:2.0\r\nPRODID:-//hacksw/handcal//NONSGML v1.0//EN\r\nCALSCALE:GREGORIAN\r\nMETHOD:PUBLISH\r\nBEGIN:VEVENT\r\nUID:uid1@example.com\r\nSTATUS:TENTATIVE\r\nDTSTAMP:19970714T170000Z\r\nORGANIZER;CN=John Doe:MAILTO:john.doe@example.com\r\nDTSTART:19970714T170000Z\r\nDTEND:19970715T035959Z\r\nSUMMARY:Bastille Day Party\r\nGEO:48.85299;2.36885\r\nEND:VEVENT\r\nEND:VCALENDAR';
 
     group('fromLines()', () {
+      final _valid = readFileLines('valid.ics');
+      final _validMultiline = readFileLines('valid_multiline.ics');
+
       test('base valid', () {
-        final lines = _valid.split('\r\n');
-        expect(ICalendar.fromLines(lines).data.length, 1);
+        expect(ICalendar.fromLines(_valid).data.length, 1);
       });
 
       test('ending w/ newline: authorized empty line', () {
-        final testString = '$_valid\r\n';
-        final lines = testString.split('\r\n');
+        final lines = List<String>.from(_valid)..add('');
         expect(ICalendar.fromLines(lines).data.length, 1);
       });
 
       test('ending w/ newline: unauthorized empty line', () {
-        final testString = '$_valid\r\n';
-        final lines = testString.split('\r\n');
+        final lines = List<String>.from(_valid)..add('');
         expect(() => ICalendar.fromLines(lines, allowEmptyLine: false),
             throwsA(isA<ICalendarEndException>()));
       });
@@ -59,27 +57,27 @@ void main() {
       });
     });
 
-    group('fromString()', () {
-      test('base valid', () {
-        expect(ICalendar.fromString(_valid).data.length, 1);
-      });
+    // group('fromString()', () {
+    //   test('base valid', () {
+    //     expect(ICalendar.fromString(_valid).data.length, 1);
+    //   });
 
-      test('ending w/ newline: authorized empty line', () {
-        final testString = '$_valid\r\n';
-        expect(ICalendar.fromString(testString).data.length, 1);
-      });
+    //   test('ending w/ newline: authorized empty line', () {
+    //     final testString = '$_valid\r\n';
+    //     expect(ICalendar.fromString(testString).data.length, 1);
+    //   });
 
-      test('ending w/ newline: unauthorized empty line', () {
-        final testString = '$_valid\r\n';
-        expect(() => ICalendar.fromString(testString, allowEmptyLine: false),
-            throwsA(isA<ICalendarEndException>()));
-      });
+    //   test('ending w/ newline: unauthorized empty line', () {
+    //     final testString = '$_valid\r\n';
+    //     expect(() => ICalendar.fromString(testString, allowEmptyLine: false),
+    //         throwsA(isA<ICalendarEndException>()));
+    //   });
 
-      test('parse TRIGGER', () {
-        final iCalendar = ICalendar.fromString(_validWithAlarm);
-        expect(iCalendar.data[1]['trigger'], '-PT1440M');
-      });
-    });
+    //   test('parse TRIGGER', () {
+    //     final iCalendar = ICalendar.fromString(_validWithAlarm);
+    //     expect(iCalendar.data[1]['trigger'], '-PT1440M');
+    //   });
+    // });
 
     // group('Properties', () {
     //   final iCalendar = ICalendar.fromString(_valid);
