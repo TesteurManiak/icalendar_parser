@@ -79,21 +79,21 @@ void main() {
       });
     });
 
-    // test('toString()', () {
-    //   final iCal = ICalendar.fromString(_valid);
-    //   final str = iCal.toString();
-    //   expect(str.contains('iCalendar - VERSION: 2.0 - PRODID: '), true);
-    // });
+    test('toString()', () {
+      final iCal = ICalendar.fromLines(_valid);
+      final str = iCal.toString();
+      expect(str.contains('iCalendar - VERSION: 2.0 - PRODID: '), true);
+    });
 
-    // test('toJson()', () {
-    //   final iCal = ICalendar.fromString(_valid);
-    //   final json = iCal.toJson();
-    //   expect(json['version'], '2.0');
-    //   expect(json['prodid'], '-//hacksw/handcal//NONSGML v1.0//EN');
-    //   expect(json['calscale'], 'GREGORIAN');
-    //   expect(json['method'], 'PUBLISH');
-    //   expect(json.containsKey('data'), true);
-    // });
+    test('toJson()', () {
+      final iCal = ICalendar.fromLines(_valid);
+      final json = iCal.toJson();
+      expect(json['version'], '2.0');
+      expect(json['prodid'], '-//hacksw/handcal//NONSGML v1.0//EN');
+      expect(json['calscale'], 'GREGORIAN');
+      expect(json['method'], 'PUBLISH');
+      expect(json.containsKey('data'), true);
+    });
 
     // test('without organizer name', () {
     //   final iCalendar = ICalendar.fromString(_noOrganizerName);
