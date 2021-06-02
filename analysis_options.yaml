@@ -1,4 +1,4 @@
-include: package:lint/analysis_options.yaml
+include: lint_analysis_options.yaml
 
 linter:
   rules:
