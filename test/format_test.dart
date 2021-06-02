@@ -53,27 +53,29 @@ void main() {
       });
     });
 
-    // group('fromString()', () {
-    //   test('base valid', () {
-    //     expect(ICalendar.fromString(_valid).data.length, 1);
-    //   });
+    group('fromString()', () {
+      final _valid = readFileString('valid.ics');
 
-    //   test('ending w/ newline: authorized empty line', () {
-    //     final testString = '$_valid\r\n';
-    //     expect(ICalendar.fromString(testString).data.length, 1);
-    //   });
+      test('base valid', () {
+        expect(ICalendar.fromString(_valid).data.length, 1);
+      });
 
-    //   test('ending w/ newline: unauthorized empty line', () {
-    //     final testString = '$_valid\r\n';
-    //     expect(() => ICalendar.fromString(testString, allowEmptyLine: false),
-    //         throwsA(isA<ICalendarEndException>()));
-    //   });
+      // test('ending w/ newline: authorized empty line', () {
+      //   final testString = '$_valid\r\n';
+      //   expect(ICalendar.fromString(testString).data.length, 1);
+      // });
 
-    //   test('parse TRIGGER', () {
-    //     final iCalendar = ICalendar.fromString(_validWithAlarm);
-    //     expect(iCalendar.data[1]['trigger'], '-PT1440M');
-    //   });
-    // });
+      // test('ending w/ newline: unauthorized empty line', () {
+      //   final testString = '$_valid\r\n';
+      //   expect(() => ICalendar.fromString(testString, allowEmptyLine: false),
+      //       throwsA(isA<ICalendarEndException>()));
+      // });
+
+      // test('parse TRIGGER', () {
+      //   final iCalendar = ICalendar.fromString(_validWithAlarm);
+      //   expect(iCalendar.data[1]['trigger'], '-PT1440M');
+      // });
+    });
 
     // group('Properties', () {
     //   final iCalendar = ICalendar.fromString(_valid);
