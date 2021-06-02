@@ -2,7 +2,7 @@
 
 ## [0.7.0] - 02/06/2021
 
-* `toJson()` now returns a correclty formatted JSON
+* `toJson()` now returns a correctly formatted JSON
 * Removed some irrelevant tests
 * Refacto a few unit tests so they can use real `.ics` files
 * Added lint rules to the code
