@@ -2,9 +2,10 @@ import 'package:icalendar_parser/icalendar_parser.dart';
 import 'package:icalendar_parser/src/exceptions/icalendar_exception.dart';
 import 'package:test/test.dart';
 
+import 'test_utils.dart';
+
 void main() {
-  final _noProdid =
-      'BEGIN:VCALENDAR\r\nVERSION:2.0\r\nBEGIN:VEVENT\r\nUID:uid1@example.com\r\nDTSTAMP:19970714T170000Z\r\nORGANIZER;CN=John Doe:MAILTO:john.doe@example.com\r\nDTSTART:19970714T170000Z\r\nDTEND:19970715T035959Z\r\nSUMMARY:Bastille Day Party\r\nGEO:48.85299;2.36885\r\nEND:VEVENT\r\nEND:VCALENDAR';
+  final _noProdid = readFileString('no_prodid.ics');
 
   test('Missing PRODID', () {
     final lines = _noProdid.split('\r\n');
@@ -15,37 +16,37 @@ void main() {
   });
 
   group('Valid calendar', () {
-    final _valid =
+    const _valid =
         'BEGIN:VCALENDAR\r\nVERSION:2.0\r\nPRODID:-//hacksw/handcal//NONSGML v1.0//EN\r\nCALSCALE:GREGORIAN\r\nMETHOD:PUBLISH\r\nBEGIN:VEVENT\r\nUID:uid1@example.com\r\nDTSTAMP:19970714T170000Z\r\nORGANIZER;CN=John Doe:MAILTO:john.doe@example.com\r\nDTSTART:19970714T170000Z\r\nDTEND:19970715T035959Z\r\nSUMMARY:Bastille Day Party\r\nGEO:48.85299;2.36885\r\nEND:VEVENT\r\nEND:VCALENDAR';
-    final _validMultiline =
+    const _validMultiline =
         'BEGIN:VCALENDAR\r\nVERSION:2.0\r\nPRODID:-//hacksw/handcal//NONSGML v1.0//EN\r\nBEGIN:VEVENT\r\nUID:uid1@example.com\r\nDTSTAMP:19970714T170000Z\r\nORGANIZER;CN=John Doe:MAILTO:john.doe@example.com\r\nDTSTART:19970714T170000Z\r\nDTEND:19970715T035959Z\r\nSUMMARY:Bastille Day Party\r\nDESCRIPTION:Lorem ipsum dolor sit amet, consectetur adipiscing elit.\nSed suscipit malesuada sodales.\nUt viverra metus neque, ut ullamcorper felis fermentum vel.\nSed sodales mauris nec.\r\nGEO:48.85299;2.36885\r\nEND:VEVENT\r\nEND:VCALENDAR';
-    final _validWithAlarm =
+    const _validWithAlarm =
         'BEGIN:VCALENDAR\r\nVERSION:2.0\r\nPRODID:-//hacksw/handcal//NONSGML v1.0//EN\r\nBEGIN:VEVENT\r\nUID:uid1@example.com\r\nDTSTAMP:19970714T170000Z\r\nORGANIZER;CN=John Doe:MAILTO:john.doe@example.com\r\nDTSTART:19970714T170000Z\r\nDTEND:19970715T035959Z\r\nSUMMARY:Bastille Day Party\r\nGEO:48.85299;2.36885\r\nEND:VEVENT\r\nBEGIN:VALARM\r\nTRIGGER:-PT1440M\r\nACTION:DISPLAY\r\nDESCRIPTION:Reminder\r\nEND:VALARM\r\nEND:VCALENDAR';
-    final _noOrganizerName =
+    const _noOrganizerName =
         'BEGIN:VCALENDAR\r\nVERSION:2.0\r\nPRODID:-//hacksw/handcal//NONSGML v1.0//EN\r\nCALSCALE:GREGORIAN\r\nMETHOD:PUBLISH\r\nBEGIN:VEVENT\r\nUID:uid1@example.com\r\nDTSTAMP:19970714T170000Z\r\nORGANIZER:MAILTO:john.doe@example.com\r\nDTSTART:19970714T170000Z\r\nDTEND:19970715T035959Z\r\nSUMMARY:Bastille Day Party\r\nGEO:48.85299;2.36885\r\nEND:VEVENT\r\nEND:VCALENDAR';
-    final _withCategories =
+    const _withCategories =
         'BEGIN:VCALENDAR\r\nVERSION:2.0\r\nPRODID:-//hacksw/handcal//NONSGML v1.0//EN\r\nCALSCALE:GREGORIAN\r\nMETHOD:PUBLISH\r\nBEGIN:VEVENT\r\nUID:uid1@example.com\r\nDTSTAMP:19970714T170000Z\r\nORGANIZER:MAILTO:john.doe@example.com\r\nCATEGORIES:APPOINTMENT,EDUCATION\r\nDTSTART:19970714T170000Z\r\nDTEND:19970715T035959Z\r\nSUMMARY:Bastille Day Party\r\nGEO:48.85299;2.36885\r\nEND:VEVENT\r\nEND:VCALENDAR';
-    final _withAttendee =
+    const _withAttendee =
         'BEGIN:VCALENDAR\r\nVERSION:2.0\r\nPRODID:-//hacksw/handcal//NONSGML v1.0//EN\r\nCALSCALE:GREGORIAN\r\nMETHOD:PUBLISH\r\nBEGIN:VEVENT\r\nUID:uid1@example.com\r\nDTSTAMP:19970714T170000Z\r\nORGANIZER;CN=John Doe:MAILTO:john.doe@example.com\r\nATTENDEE;ROLE=REQ-PARTICIPANT;PARTSTAT=TENTATIVE;CN=Henry Cabot\n:MAILTO:joecool@host2.com\r\nDTSTART:19970714T170000Z\r\nDTEND:19970715T035959Z\r\nSUMMARY:Bastille Day Party\r\nGEO:48.85299;2.36885\r\nEND:VEVENT\r\nEND:VCALENDAR';
-    final _withTransp =
+    const _withTransp =
         'BEGIN:VCALENDAR\r\nVERSION:2.0\r\nPRODID:-//hacksw/handcal//NONSGML v1.0//EN\r\nCALSCALE:GREGORIAN\r\nMETHOD:PUBLISH\r\nBEGIN:VEVENT\r\nUID:uid1@example.com\r\nDTSTAMP:19970714T170000Z\r\nTRANSP:TRANSPARENT\r\nORGANIZER;CN=John Doe:MAILTO:john.doe@example.com\r\nDTSTART:19970714T170000Z\r\nDTEND:19970715T035959Z\r\nSUMMARY:Bastille Day Party\r\nGEO:48.85299;2.36885\r\nEND:VEVENT\r\nEND:VCALENDAR';
-    final _withStatus =
+    const _withStatus =
         'BEGIN:VCALENDAR\r\nVERSION:2.0\r\nPRODID:-//hacksw/handcal//NONSGML v1.0//EN\r\nCALSCALE:GREGORIAN\r\nMETHOD:PUBLISH\r\nBEGIN:VEVENT\r\nUID:uid1@example.com\r\nSTATUS:TENTATIVE\r\nDTSTAMP:19970714T170000Z\r\nORGANIZER;CN=John Doe:MAILTO:john.doe@example.com\r\nDTSTART:19970714T170000Z\r\nDTEND:19970715T035959Z\r\nSUMMARY:Bastille Day Party\r\nGEO:48.85299;2.36885\r\nEND:VEVENT\r\nEND:VCALENDAR';
 
     group('fromLines()', () {
       test('base valid', () {
         final lines = _valid.split('\r\n');
-        expect(ICalendar.fromLines(lines).data!.length, 1);
+        expect(ICalendar.fromLines(lines).data.length, 1);
       });
 
       test('ending w/ newline: authorized empty line', () {
-        final testString = _valid + '\r\n';
+        const testString = '$_valid\r\n';
         final lines = testString.split('\r\n');
-        expect(ICalendar.fromLines(lines).data!.length, 1);
+        expect(ICalendar.fromLines(lines).data.length, 1);
       });
 
       test('ending w/ newline: unauthorized empty line', () {
-        final testString = _valid + '\r\n';
+        const testString = '$_valid\r\n';
         final lines = testString.split('\r\n');
         expect(() => ICalendar.fromLines(lines, allowEmptyLine: false),
             throwsA(isA<ICalendarEndException>()));
@@ -55,22 +56,22 @@ void main() {
         final lines = _validMultiline.split('\r\n');
         final iCalendarLines = ICalendar.fromLines(lines);
         expect(
-            (iCalendarLines.data!.first['description'] as String).length, 172);
+            (iCalendarLines.data.first['description'] as String).length, 172);
       });
     });
 
     group('fromString()', () {
       test('base valid', () {
-        expect(ICalendar.fromString(_valid).data!.length, 1);
+        expect(ICalendar.fromString(_valid).data.length, 1);
       });
 
       test('ending w/ newline: authorized empty line', () {
-        final testString = _valid + '\r\n';
-        expect(ICalendar.fromString(testString).data!.length, 1);
+        const testString = '$_valid\r\n';
+        expect(ICalendar.fromString(testString).data.length, 1);
       });
 
       test('ending w/ newline: unauthorized empty line', () {
-        final testString = _valid + '\r\n';
+        const testString = '$_valid\r\n';
         expect(() => ICalendar.fromString(testString, allowEmptyLine: false),
             throwsA(isA<ICalendarEndException>()));
       });
@@ -78,12 +79,12 @@ void main() {
       test('w/ multiline description', () {
         final iCalendarString = ICalendar.fromString(_validMultiline);
         expect(
-            (iCalendarString.data!.first['description'] as String).length, 172);
+            (iCalendarString.data.first['description'] as String).length, 172);
       });
 
       test('parse TRIGGER', () {
         final iCalendar = ICalendar.fromString(_validWithAlarm);
-        expect(iCalendar.data![1]['trigger'], '-PT1440M');
+        expect(iCalendar.data[1]['trigger'], '-PT1440M');
       });
     });
 
@@ -123,24 +124,26 @@ void main() {
 
     test('without organizer name', () {
       final iCalendar = ICalendar.fromString(_noOrganizerName);
-      final Map<String, dynamic> organizer = iCalendar.data!
-          .firstWhere((e) => e.containsKey('organizer'))['organizer'];
+      final Map<String, dynamic> organizer = iCalendar.data
+              .firstWhere((e) => e.containsKey('organizer'))['organizer']
+          as Map<String, dynamic>;
       expect(organizer.containsKey('name'), false);
       expect(organizer['mail'], 'john.doe@example.com');
     });
 
     test('with categories', () {
       final iCalendar = ICalendar.fromString(_withCategories);
-      final List<String> categories = iCalendar.data!
-          .firstWhere((e) => e.containsKey('categories'))['categories'];
+      final List<String> categories = iCalendar.data
+              .firstWhere((e) => e.containsKey('categories'))['categories']
+          as List<String>;
       expect(categories.length, 2);
       expect(categories, ['APPOINTMENT', 'EDUCATION']);
     });
 
     test('with attendee', () {
       final iCalendar = ICalendar.fromString(_withAttendee);
-      final List attendee = iCalendar.data!
-          .firstWhere((e) => e.containsKey('attendee'))['attendee'];
+      final List attendee = iCalendar.data
+          .firstWhere((e) => e.containsKey('attendee'))['attendee'] as List;
       expect(attendee.length, 1);
       expect(attendee[0]['mail'], 'joecool@host2.com');
       expect(attendee[0]['name'], 'Henry Cabot');
@@ -150,15 +153,15 @@ void main() {
     test('with transp', () {
       final iCalendar = ICalendar.fromString(_withTransp);
       final transp =
-          iCalendar.data!.firstWhere((e) => e.containsKey('transp'))['transp'];
-      expect(transp, IcsTransp.TRANSPARENT);
+          iCalendar.data.firstWhere((e) => e.containsKey('transp'))['transp'];
+      expect(transp, IcsTransp.transparent);
     });
 
     test('with status', () {
       final iCal = ICalendar.fromString(_withStatus);
       final status =
-          iCal.data!.firstWhere((e) => e.containsKey('status'))['status'];
-      expect(status, IcsStatus.TENTATIVE);
+          iCal.data.firstWhere((e) => e.containsKey('status'))['status'];
+      expect(status, IcsStatus.tentative);
     });
   });
 }

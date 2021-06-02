@@ -6,18 +6,18 @@ void main() {
   group('IcsStringModifier', () {
     group('toIcsStatus', () {
       test('IcsStatus.TENTATIVE', () {
-        expect('tentative'.toIcsStatus(), IcsStatus.TENTATIVE);
-        expect('TENTATIVE'.toIcsStatus(), IcsStatus.TENTATIVE);
+        expect('tentative'.toIcsStatus(), IcsStatus.tentative);
+        expect('TENTATIVE'.toIcsStatus(), IcsStatus.tentative);
       });
 
       test('IcsStatus.CONFIRMED', () {
-        expect('confirmed'.toIcsStatus(), IcsStatus.CONFIRMED);
-        expect('CONFIRMED'.toIcsStatus(), IcsStatus.CONFIRMED);
+        expect('confirmed'.toIcsStatus(), IcsStatus.confirmed);
+        expect('CONFIRMED'.toIcsStatus(), IcsStatus.confirmed);
       });
 
       test('IcsStatus.CANCELLED', () {
-        expect('cancelled'.toIcsStatus(), IcsStatus.CANCELLED);
-        expect('CANCELLED'.toIcsStatus(), IcsStatus.CANCELLED);
+        expect('cancelled'.toIcsStatus(), IcsStatus.cancelled);
+        expect('CANCELLED'.toIcsStatus(), IcsStatus.cancelled);
       });
 
       test('unknown', () {
@@ -28,13 +28,13 @@ void main() {
 
     group('toIcsTransp()', () {
       test('IcsTransp.OPAQUE', () {
-        expect('opaque'.toIcsTransp(), IcsTransp.OPAQUE);
-        expect('OPAQUE'.toIcsTransp(), IcsTransp.OPAQUE);
+        expect('opaque'.toIcsTransp(), IcsTransp.opaque);
+        expect('OPAQUE'.toIcsTransp(), IcsTransp.opaque);
       });
 
       test('IcsTransp.TRANSPARENT', () {
-        expect('transparent'.toIcsTransp(), IcsTransp.TRANSPARENT);
-        expect('TRANSPARENT'.toIcsTransp(), IcsTransp.TRANSPARENT);
+        expect('transparent'.toIcsTransp(), IcsTransp.transparent);
+        expect('TRANSPARENT'.toIcsTransp(), IcsTransp.transparent);
       });
 
       test('unknown', () {

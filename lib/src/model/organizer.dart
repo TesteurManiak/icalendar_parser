@@ -5,8 +5,8 @@ class IcsOrganizer {
   IcsOrganizer({this.name, this.mail});
 
   factory IcsOrganizer.fromJson(Map<String, dynamic> json) => IcsOrganizer(
-        name: json['name'],
-        mail: json['mail'],
+        name: json['name'] as String?,
+        mail: json['mail'] as String?,
       );
 
   Map<String, dynamic> toJson() => {
