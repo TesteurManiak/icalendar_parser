@@ -12,18 +12,12 @@ on:
     branches: [ main ]
 
 jobs:
-  build:
+  analyze:
     runs-on: ubuntu-latest
 
     steps:
       - uses: actions/checkout@v2
-
-      # Note: This workflow uses the latest stable version of the Dart SDK.
-      # You can specify other versions if desired, see documentation here:
-      # https://github.com/dart-lang/setup-dart/blob/main/README.md
-      # - uses: dart-lang/setup-dart@v1
-      - uses: dart-lang/setup-dart@9a04e6d73cca37bd455e0608d7e5092f881fd603
-
+      - uses: dart-lang/setup-dart@v1
       - name: Install dependencies
         run: dart pub get
 
@@ -35,9 +29,23 @@ jobs:
       - name: Analyze project source
         run: dart analyze
         working-directory: ./lib
-
-      # Your project will need to have tests in test/ and a dependency on
-      # package:test for this step to succeed. Note that Flutter projects will
-      # want to change this to 'flutter test'.
+        
+  test:
+    needs: analyze
+    runs-on: ubuntu-latest
+    
+    steps:
+      - uses: actions/checkout@v2
+      - uses: dart-lang/setup-dart@v1
+      - id: install
+        name: Install Dependencies
+        run: dart pub get
       - name: Run tests
-        run: dart test
+        run: dart test --coverage="coverage"
+      - name: Generate Lcov
+        run: dart pub run coverage:format_coverage --lcov --in=coverage --out=coverage/lcov.info --packages=.packages --report-on=lib
+      - name: Collect and report coverage
+        uses: coverallsapp/github-action@v1.1.2
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          
