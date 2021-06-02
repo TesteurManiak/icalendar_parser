@@ -3,36 +3,34 @@ import 'package:icalendar_parser/src/model/ics_transp.dart';
 
 extension IcsStringModifier on String {
   IcsStatus toIcsStatus() {
-    // ignore: unnecessary_this
-    switch (this.toUpperCase()) {
+    switch (toUpperCase()) {
       case 'TENTATIVE':
-        return IcsStatus.TENTATIVE;
+        return IcsStatus.tentative;
       case 'CONFIRMED':
-        return IcsStatus.CONFIRMED;
+        return IcsStatus.confirmed;
       case 'CANCELLED':
-        return IcsStatus.CANCELLED;
+        return IcsStatus.cancelled;
       case 'NEEDS-ACTION':
-        return IcsStatus.NEEDS_ACTION;
+        return IcsStatus.needsAction;
       case 'COMPLETED':
-        return IcsStatus.COMPLETED;
+        return IcsStatus.completed;
       case 'IN-PROCESS':
-        return IcsStatus.IN_PROCESS;
+        return IcsStatus.inProcess;
       case 'DRAFT':
-        return IcsStatus.DRAFT;
+        return IcsStatus.draft;
       case 'FINAL':
-        return IcsStatus.FINAL;
+        return IcsStatus.isFinal;
       default:
         throw ICalendarStatusParseException('Unknown IcsStatus: $this');
     }
   }
 
   IcsTransp toIcsTransp() {
-    // ignore: unnecessary_this
-    switch (this.toUpperCase()) {
+    switch (toUpperCase()) {
       case 'OPAQUE':
-        return IcsTransp.OPAQUE;
+        return IcsTransp.opaque;
       case 'TRANSPARENT':
-        return IcsTransp.TRANSPARENT;
+        return IcsTransp.transparent;
       default:
         throw ICalendarTranspParseException('Unknown IcsTransp: $this');
     }

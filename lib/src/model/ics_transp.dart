@@ -1,2 +1,2 @@
 /// Enumeration of all transparency types.
-enum IcsTransp { OPAQUE, TRANSPARENT }
+enum IcsTransp { opaque, transparent }

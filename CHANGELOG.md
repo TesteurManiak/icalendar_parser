@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.7.0] - 02/06/2021
+
+* `toJson()` now returns a correclty formatted JSON
+* Removed some irrelevant tests
+* Refacto a few unit tests so they can use real `.ics` files
+* Added lint rules to the code
+
 ## [0.6.0] - 22/04/2021
 
 * Fixed an issue with line folding sometimes causing an exception ([#21](https://github.com/TesteurManiak/icalendar_parser/pull/21))

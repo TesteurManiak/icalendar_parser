@@ -1,1 +1,0 @@
-enum IcsClass { PUBLIC, PRIVATE }

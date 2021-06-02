@@ -4,7 +4,7 @@ import 'package:test/test.dart';
 void main() {
   group('ICalendarFormatException', () {
     test('toString()', () {
-      final e = const ICalendarFormatException('Test error');
+      const e = ICalendarFormatException('Test error');
       expect(e.toString(), 'ICalendarFormatException: Test error');
     });
   });

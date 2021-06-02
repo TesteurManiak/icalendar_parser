@@ -1,28 +1,32 @@
+import 'dart:convert';
+
+import 'package:icalendar_parser/icalendar_parser.dart';
 import 'package:icalendar_parser/src/exceptions/icalendar_exception.dart';
-import 'package:icalendar_parser/src/extensions/string_extensions.dart';
+import 'package:icalendar_parser/src/extensions/extensions.dart';
+import 'package:icalendar_parser/src/model/ics_geo.dart';
 
 /// Core object
 class ICalendar {
   /// iCalendar's components list.
-  final List<Map<String, dynamic>>? data;
+  final List<Map<String, dynamic>> data;
 
   /// iCalendar's fields.
-  final Map<String, dynamic>? headData;
+  final Map<String, dynamic> headData;
 
   /// `VERSION` of the object.
-  String? get version => headData!['version'];
+  String get version => headData['version'] as String;
 
   /// `PRODID` of the object.
-  String? get prodid => headData!['prodid'];
+  String get prodid => headData['prodid'] as String;
 
   /// `CALSCALE` of the object.
-  String? get calscale => headData!['calscale'];
+  String? get calscale => headData['calscale'] as String?;
 
   /// `METHOD` of the object.
-  String? get method => headData!['method'];
+  String? get method => headData['method'] as String?;
 
   /// Default constructor.
-  ICalendar({this.data, this.headData});
+  ICalendar({required this.data, required this.headData});
 
   /// Parse an [ICalendar] object from a [String]. The parameter
   /// [icsString] will be split on each [lineSeparator] occurence which is by
@@ -42,7 +46,11 @@ class ICalendar {
       }
     }
     final lines = icsString.split(lineSeparator);
-    return _linesParser(lines, allowEmptyLine);
+    final parsedData = fromListToJson(lines, allowEmptyLine: allowEmptyLine);
+    return ICalendar(
+      headData: parsedData.first as Map<String, dynamic>,
+      data: parsedData.last as List<Map<String, dynamic>>,
+    );
   }
 
   /// Parse an [ICalendar] object from a [List<String>].
@@ -58,15 +66,10 @@ class ICalendar {
         lines.removeLast();
       }
     }
-    return _linesParser(lines, allowEmptyLine);
-  }
-
-  /// Method to call [fromListToJson] and parse object line by line.
-  static ICalendar _linesParser(List<String> lines, bool allowEmptyLine) {
     final parsedData = fromListToJson(lines, allowEmptyLine: allowEmptyLine);
     return ICalendar(
-      headData: parsedData.first,
-      data: parsedData.last,
+      headData: parsedData.first as Map<String, dynamic>,
+      data: parsedData.last as List<Map<String, dynamic>>,
     );
   }
 
@@ -74,12 +77,7 @@ class ICalendar {
       _generateDateFunction(String name) {
     return (String value, Map<String, String> params, List events,
         Map<String, dynamic> lastEvent) {
-      try {
-        lastEvent[name] = DateTime.parse(value);
-      } catch (_) {
-        print('Warning: $value could not be parsed, stored as String');
-        lastEvent[name] = value;
-      }
+      lastEvent[name] = DateTime.tryParse(value) ?? value;
       return lastEvent;
     };
   }
@@ -118,7 +116,7 @@ class ICalendar {
       if (events.isEmpty) {
         lastEvent = null;
       } else {
-        lastEvent = events.last;
+        lastEvent = events.last as Map<String, dynamic>?;
       }
       return lastEvent;
     },
@@ -261,7 +259,7 @@ class ICalendar {
           'The last line must be END:VCALENDAR but was ${lines.last}.');
     }
     for (var i = 0; i < lines.length; i++) {
-      var line = lines[i].trim();
+      final line = StringBuffer(lines[i].trim());
 
       if (line.isEmpty && !allowEmptyLine) {
         throw const EmptyLineException('Empty line are not allowed');
@@ -270,28 +268,28 @@ class ICalendar {
       final exp = RegExp(r'^ ');
       while (i + 1 < lines.length && exp.hasMatch(lines[i + 1])) {
         i += 1;
-        line += lines[i].trim();
+        line.write(lines[i].trim());
       }
 
-      final dataLine = line.split(':');
+      final dataLine = line.toString().split(':');
       if (dataLine.length < 2 ||
           (dataLine.isNotEmpty &&
               dataLine[0].toUpperCase() != dataLine[0] &&
               !dataLine[0].contains(';'))) {
         if (line.isNotEmpty && currentName != null) {
-          lastEvent![currentName] += line;
+          lastEvent![currentName] += line.toString();
         }
         continue;
       }
 
-      var dataName = dataLine[0].split(';');
+      final dataName = dataLine[0].split(';');
 
       final name = dataName[0];
       dataName.removeRange(0, 1);
 
       final params = <String, String>{};
       for (final e in dataName) {
-        var param = e.split('=');
+        final param = e.split('=');
         if (param.length == 2) params[param[0]] = param[1];
       }
 
@@ -301,10 +299,12 @@ class ICalendar {
         currentName = name.toLowerCase();
         if (name == 'END') {
           currentName = null;
-          lastEvent = _objects[name]!(value, params, events, lastEvent, data);
+          lastEvent = _objects[name]!(value, params, events, lastEvent, data)
+              as Map<String, dynamic>?;
         } else {
           lastEvent =
-              _objects[name]!(value, params, events, lastEvent ?? _headData);
+              _objects[name]!(value, params, events, lastEvent ?? _headData)
+                  as Map<String, dynamic>?;
         }
       }
     }
@@ -318,8 +318,8 @@ class ICalendar {
     return [_headData, data];
   }
 
-  /// Convert [ICalendar] object to a [Map] containing all its data.
-  ///
+  /// Convert [ICalendar] object to a `Map<String, dynamic>` containing all its data, formatted
+  /// into a valid JSON `Map<String, dynamic>`.
   /// ```
   /// {
   ///   "version": ICalendar.version,
@@ -327,11 +327,31 @@ class ICalendar {
   ///   "data": ICalendar.data
   /// }
   /// ```
-  Map<String, dynamic> toJson() => {
-        'version': version,
-        'prodid': prodid,
-        'data': data,
-      };
+  Map<String, dynamic> toJson() {
+    final _map = <String, dynamic>{
+      'version': version,
+      'prodid': prodid,
+    };
+    for (final entry in headData.entries) {
+      _map[entry.key] = entry.value;
+    }
+    _map['data'] = data;
+    return jsonDecode(jsonEncode(_map, toEncodable: _toEncodable))
+        as Map<String, dynamic>;
+  }
+
+  static Object? _toEncodable(Object? item) {
+    if (item is DateTime) {
+      return item.toIso8601String();
+    } else if (item is IcsTransp) {
+      return item.string;
+    } else if (item is IcsGeo) {
+      return item.toJson();
+    } else if (item is IcsStatus) {
+      return item.string;
+    }
+    return item;
+  }
 
   @override
   String toString() =>

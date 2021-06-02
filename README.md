@@ -46,7 +46,7 @@ final iCalendar = ICalendar.fromLines(lines);
 
 ### ICalendar.registerField
 
-With this method you can add custom fields to the parsing and you can specify a custom `function` to parse its content :
+With this method you can add fields that are not already supported (check [Supported Properties](#supported-properties)) to the parsing and you can specify a custom `function` to parse its content :
 
 ``` dart
 ICalendar.registerField(field: 'TEST');
@@ -66,6 +66,64 @@ With this method you can remove parsed fields to ignore them in your file :
 
 ``` dart
 ICalendar.unregisterField('TEST');
+```
+
+### ICalendar.toJson
+
+Convert [ICalendar] object to a `Map<String, dynamic>` containing all its data, formatted into a valid JSON `Map<String, dynamic>`.
+
+```dart
+final icsObj = ICalendar.fromLines(File('assets/my_file.ics').readAsLinesSync());
+print(jsonEncode(icsObj.toJson()));
+```
+
+**Input**
+
+```
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//hacksw/handcal//NONSGML v1.0//EN
+CALSCALE:GREGORIAN
+METHOD:PUBLISH
+BEGIN:VEVENT
+UID:uid1@example.com
+DTSTAMP:19970714T170000Z
+ORGANIZER;CN=John Doe:MAILTO:john.doe@example.com
+DTSTART:19970714T170000Z
+DTEND:19970715T035959Z
+SUMMARY:Bastille Day Party
+GEO:48.85299;2.36885
+END:VEVENT
+END:VCALENDAR
+```
+
+**Output**
+
+```json
+{
+   "version":"2.0",
+   "prodid":"-//hacksw/handcal//NONSGML v1.0//EN",
+   "calscale":"GREGORIAN",
+   "method":"PUBLISH",
+   "data":[
+      {
+         "type":"VEVENT",
+         "uid":"uid1@example.com",
+         "dtstamp":"1997-07-14T17:00:00.000Z",
+         "organizer":{
+            "name":"John Doe",
+            "mail":"john.doe@example.com"
+         },
+         "dtstart":"1997-07-14T17:00:00.000Z",
+         "dtend":"1997-07-15T03:59:59.000Z",
+         "summary":"Bastille Day Party",
+         "geo":{
+            "latitude":48.85299,
+            "longitude":2.36885
+         }
+      }
+   ]
+}
 ```
 
 ## Supported Properties
@@ -95,5 +153,4 @@ ICalendar.unregisterField('TEST');
 * ACTION
 * STATUS
 * SEQUENCE
-* REPEAT
 * REPEAT
