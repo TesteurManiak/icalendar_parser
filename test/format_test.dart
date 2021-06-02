@@ -16,10 +16,8 @@ void main() {
   });
 
   group('Valid calendar', () {
-    const _valid =
-        'BEGIN:VCALENDAR\r\nVERSION:2.0\r\nPRODID:-//hacksw/handcal//NONSGML v1.0//EN\r\nCALSCALE:GREGORIAN\r\nMETHOD:PUBLISH\r\nBEGIN:VEVENT\r\nUID:uid1@example.com\r\nDTSTAMP:19970714T170000Z\r\nORGANIZER;CN=John Doe:MAILTO:john.doe@example.com\r\nDTSTART:19970714T170000Z\r\nDTEND:19970715T035959Z\r\nSUMMARY:Bastille Day Party\r\nGEO:48.85299;2.36885\r\nEND:VEVENT\r\nEND:VCALENDAR';
-    const _validMultiline =
-        'BEGIN:VCALENDAR\r\nVERSION:2.0\r\nPRODID:-//hacksw/handcal//NONSGML v1.0//EN\r\nBEGIN:VEVENT\r\nUID:uid1@example.com\r\nDTSTAMP:19970714T170000Z\r\nORGANIZER;CN=John Doe:MAILTO:john.doe@example.com\r\nDTSTART:19970714T170000Z\r\nDTEND:19970715T035959Z\r\nSUMMARY:Bastille Day Party\r\nDESCRIPTION:Lorem ipsum dolor sit amet, consectetur adipiscing elit.\nSed suscipit malesuada sodales.\nUt viverra metus neque, ut ullamcorper felis fermentum vel.\nSed sodales mauris nec.\r\nGEO:48.85299;2.36885\r\nEND:VEVENT\r\nEND:VCALENDAR';
+    final _valid = readFileString('valid.ics');
+    final _validMultiline = readFileLines('valid_multiline.ics');
     const _validWithAlarm =
         'BEGIN:VCALENDAR\r\nVERSION:2.0\r\nPRODID:-//hacksw/handcal//NONSGML v1.0//EN\r\nBEGIN:VEVENT\r\nUID:uid1@example.com\r\nDTSTAMP:19970714T170000Z\r\nORGANIZER;CN=John Doe:MAILTO:john.doe@example.com\r\nDTSTART:19970714T170000Z\r\nDTEND:19970715T035959Z\r\nSUMMARY:Bastille Day Party\r\nGEO:48.85299;2.36885\r\nEND:VEVENT\r\nBEGIN:VALARM\r\nTRIGGER:-PT1440M\r\nACTION:DISPLAY\r\nDESCRIPTION:Reminder\r\nEND:VALARM\r\nEND:VCALENDAR';
     const _noOrganizerName =
@@ -40,23 +38,26 @@ void main() {
       });
 
       test('ending w/ newline: authorized empty line', () {
-        const testString = '$_valid\r\n';
+        final testString = '$_valid\r\n';
         final lines = testString.split('\r\n');
         expect(ICalendar.fromLines(lines).data.length, 1);
       });
 
       test('ending w/ newline: unauthorized empty line', () {
-        const testString = '$_valid\r\n';
+        final testString = '$_valid\r\n';
         final lines = testString.split('\r\n');
         expect(() => ICalendar.fromLines(lines, allowEmptyLine: false),
             throwsA(isA<ICalendarEndException>()));
       });
 
       test('w/ multiline description', () {
-        final lines = _validMultiline.split('\r\n');
-        final iCalendarLines = ICalendar.fromLines(lines);
+        final iCalendarLines = ICalendar.fromLines(_validMultiline);
         expect(
-            (iCalendarLines.data.first['description'] as String).length, 172);
+          iCalendarLines.data.first['description'] as String,
+          equals(
+            r'Lorem ipsum dolor sit amet, consectetur adipiscing elit.Sed suscipit malesuada sodales.Ut viverra metus neque, ut ullamcorper felis fermentum vel.Sed sodales mauris nec.',
+          ),
+        );
       });
     });
 
@@ -66,20 +67,14 @@ void main() {
       });
 
       test('ending w/ newline: authorized empty line', () {
-        const testString = '$_valid\r\n';
+        final testString = '$_valid\r\n';
         expect(ICalendar.fromString(testString).data.length, 1);
       });
 
       test('ending w/ newline: unauthorized empty line', () {
-        const testString = '$_valid\r\n';
+        final testString = '$_valid\r\n';
         expect(() => ICalendar.fromString(testString, allowEmptyLine: false),
             throwsA(isA<ICalendarEndException>()));
-      });
-
-      test('w/ multiline description', () {
-        final iCalendarString = ICalendar.fromString(_validMultiline);
-        expect(
-            (iCalendarString.data.first['description'] as String).length, 172);
       });
 
       test('parse TRIGGER', () {

@@ -261,7 +261,6 @@ class ICalendar {
         throw const EmptyLineException('Empty line are not allowed');
       }
 
-      // ignore: unnecessary_raw_strings
       final exp = RegExp(r'^ ');
       while (i + 1 < lines.length && exp.hasMatch(lines[i + 1])) {
         i += 1;

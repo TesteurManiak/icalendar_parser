@@ -3,8 +3,7 @@ import 'package:icalendar_parser/src/model/ics_transp.dart';
 
 extension IcsStringModifier on String {
   IcsStatus toIcsStatus() {
-    // ignore: unnecessary_this
-    switch (this.toUpperCase()) {
+    switch (toUpperCase()) {
       case 'TENTATIVE':
         return IcsStatus.tentative;
       case 'CONFIRMED':
@@ -27,8 +26,7 @@ extension IcsStringModifier on String {
   }
 
   IcsTransp toIcsTransp() {
-    // ignore: unnecessary_this
-    switch (this.toUpperCase()) {
+    switch (toUpperCase()) {
       case 'OPAQUE':
         return IcsTransp.opaque;
       case 'TRANSPARENT':
