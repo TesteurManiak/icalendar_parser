@@ -9,5 +9,6 @@ environment:
 
 dev_dependencies:
   test: ^1.16.8
+  coverage: ^1.0.3
 dependencies:
   collection: ^1.15.0
