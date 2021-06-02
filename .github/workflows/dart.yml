@@ -42,16 +42,6 @@ jobs:
         run: dart pub get
       - name: Run tests
         run: dart test --coverage="coverage"
-        
-  coverage:
-    needs: test
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
-      - uses: dart-lang/setup-dart@v1
-      - id: install
-        name: Install Dependencies
-        run: dart pub get
       - name: Generate Lcov
         run: dart pub run coverage:format_coverage --lcov --in=coverage --out=coverage/lcov.info --packages=.packages --report-on=lib
       - name: Collect and report coverage
