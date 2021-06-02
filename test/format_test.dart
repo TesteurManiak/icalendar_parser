@@ -12,7 +12,6 @@ void main() {
   });
 
   group('Valid calendar', () {
-    // final _validWithAlarm = readFileString('valid_with_alarm.ics');
     // final _noOrganizerName = readFileString('no_organizer_name.ics');
     // const _withCategories =
     //     'BEGIN:VCALENDAR\r\nVERSION:2.0\r\nPRODID:-//hacksw/handcal//NONSGML v1.0//EN\r\nCALSCALE:GREGORIAN\r\nMETHOD:PUBLISH\r\nBEGIN:VEVENT\r\nUID:uid1@example.com\r\nDTSTAMP:19970714T170000Z\r\nORGANIZER:MAILTO:john.doe@example.com\r\nCATEGORIES:APPOINTMENT,EDUCATION\r\nDTSTART:19970714T170000Z\r\nDTEND:19970715T035959Z\r\nSUMMARY:Bastille Day Party\r\nGEO:48.85299;2.36885\r\nEND:VEVENT\r\nEND:VCALENDAR';
@@ -26,6 +25,7 @@ void main() {
     group('fromLines()', () {
       final _valid = readFileLines('valid.ics');
       final _validMultiline = readFileLines('valid_multiline.ics');
+      final _validWithAlarm = readFileLines('valid_with_alarm.ics');
 
       test('base valid', () {
         expect(ICalendar.fromLines(_valid).data.length, 1);
@@ -51,30 +51,11 @@ void main() {
           ),
         );
       });
-    });
 
-    group('fromString()', () {
-      final _valid = readFileString('valid.ics');
-
-      test('base valid', () {
-        expect(ICalendar.fromString(_valid).data.length, 1);
+      test('parse TRIGGER', () {
+        final iCalendar = ICalendar.fromLines(_validWithAlarm);
+        expect(iCalendar.data[1]['trigger'], '-PT1440M');
       });
-
-      // test('ending w/ newline: authorized empty line', () {
-      //   final testString = '$_valid\r\n';
-      //   expect(ICalendar.fromString(testString).data.length, 1);
-      // });
-
-      // test('ending w/ newline: unauthorized empty line', () {
-      //   final testString = '$_valid\r\n';
-      //   expect(() => ICalendar.fromString(testString, allowEmptyLine: false),
-      //       throwsA(isA<ICalendarEndException>()));
-      // });
-
-      // test('parse TRIGGER', () {
-      //   final iCalendar = ICalendar.fromString(_validWithAlarm);
-      //   expect(iCalendar.data[1]['trigger'], '-PT1440M');
-      // });
     });
 
     // group('Properties', () {
