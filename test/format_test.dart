@@ -13,10 +13,6 @@ void main() {
 
   group('Valid calendar', () {
     final _valid = readFileLines('valid.ics');
-    // const _withTransp =
-    //     'BEGIN:VCALENDAR\r\nVERSION:2.0\r\nPRODID:-//hacksw/handcal//NONSGML v1.0//EN\r\nCALSCALE:GREGORIAN\r\nMETHOD:PUBLISH\r\nBEGIN:VEVENT\r\nUID:uid1@example.com\r\nDTSTAMP:19970714T170000Z\r\nTRANSP:TRANSPARENT\r\nORGANIZER;CN=John Doe:MAILTO:john.doe@example.com\r\nDTSTART:19970714T170000Z\r\nDTEND:19970715T035959Z\r\nSUMMARY:Bastille Day Party\r\nGEO:48.85299;2.36885\r\nEND:VEVENT\r\nEND:VCALENDAR';
-    // const _withStatus =
-    //     'BEGIN:VCALENDAR\r\nVERSION:2.0\r\nPRODID:-//hacksw/handcal//NONSGML v1.0//EN\r\nCALSCALE:GREGORIAN\r\nMETHOD:PUBLISH\r\nBEGIN:VEVENT\r\nUID:uid1@example.com\r\nSTATUS:TENTATIVE\r\nDTSTAMP:19970714T170000Z\r\nORGANIZER;CN=John Doe:MAILTO:john.doe@example.com\r\nDTSTART:19970714T170000Z\r\nDTEND:19970715T035959Z\r\nSUMMARY:Bastille Day Party\r\nGEO:48.85299;2.36885\r\nEND:VEVENT\r\nEND:VCALENDAR';
 
     group('fromLines()', () {
       final _validMultiline = readFileLines('valid_multiline.ics');
@@ -120,18 +116,20 @@ void main() {
       expect(attendee[0]['role'], 'REQ-PARTICIPANT');
     });
 
-    // test('with transp', () {
-    //   final iCalendar = ICalendar.fromString(_withTransp);
-    //   final transp =
-    //       iCalendar.data.firstWhere((e) => e.containsKey('transp'))['transp'];
-    //   expect(transp, IcsTransp.transparent);
-    // });
+    test('with transp', () {
+      final _withTransp = readFileLines('with_transp.ics');
+      final iCalendar = ICalendar.fromLines(_withTransp);
+      final transp =
+          iCalendar.data.firstWhere((e) => e.containsKey('transp'))['transp'];
+      expect(transp, IcsTransp.transparent);
+    });
 
-    // test('with status', () {
-    //   final iCal = ICalendar.fromString(_withStatus);
-    //   final status =
-    //       iCal.data.firstWhere((e) => e.containsKey('status'))['status'];
-    //   expect(status, IcsStatus.tentative);
-    // });
+    test('with status', () {
+      final _withStatus = readFileLines('with_status.ics');
+      final iCal = ICalendar.fromLines(_withStatus);
+      final status =
+          iCal.data.firstWhere((e) => e.containsKey('status'))['status'];
+      expect(status, IcsStatus.tentative);
+    });
   });
 }
