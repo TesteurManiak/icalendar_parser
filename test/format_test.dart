@@ -13,12 +13,6 @@ void main() {
 
   group('Valid calendar', () {
     final _valid = readFileLines('valid.ics');
-
-    // final _noOrganizerName = readFileString('no_organizer_name.ics');
-    // const _withCategories =
-    //     'BEGIN:VCALENDAR\r\nVERSION:2.0\r\nPRODID:-//hacksw/handcal//NONSGML v1.0//EN\r\nCALSCALE:GREGORIAN\r\nMETHOD:PUBLISH\r\nBEGIN:VEVENT\r\nUID:uid1@example.com\r\nDTSTAMP:19970714T170000Z\r\nORGANIZER:MAILTO:john.doe@example.com\r\nCATEGORIES:APPOINTMENT,EDUCATION\r\nDTSTART:19970714T170000Z\r\nDTEND:19970715T035959Z\r\nSUMMARY:Bastille Day Party\r\nGEO:48.85299;2.36885\r\nEND:VEVENT\r\nEND:VCALENDAR';
-    // const _withAttendee =
-    //     'BEGIN:VCALENDAR\r\nVERSION:2.0\r\nPRODID:-//hacksw/handcal//NONSGML v1.0//EN\r\nCALSCALE:GREGORIAN\r\nMETHOD:PUBLISH\r\nBEGIN:VEVENT\r\nUID:uid1@example.com\r\nDTSTAMP:19970714T170000Z\r\nORGANIZER;CN=John Doe:MAILTO:john.doe@example.com\r\nATTENDEE;ROLE=REQ-PARTICIPANT;PARTSTAT=TENTATIVE;CN=Henry Cabot\n:MAILTO:joecool@host2.com\r\nDTSTART:19970714T170000Z\r\nDTEND:19970715T035959Z\r\nSUMMARY:Bastille Day Party\r\nGEO:48.85299;2.36885\r\nEND:VEVENT\r\nEND:VCALENDAR';
     // const _withTransp =
     //     'BEGIN:VCALENDAR\r\nVERSION:2.0\r\nPRODID:-//hacksw/handcal//NONSGML v1.0//EN\r\nCALSCALE:GREGORIAN\r\nMETHOD:PUBLISH\r\nBEGIN:VEVENT\r\nUID:uid1@example.com\r\nDTSTAMP:19970714T170000Z\r\nTRANSP:TRANSPARENT\r\nORGANIZER;CN=John Doe:MAILTO:john.doe@example.com\r\nDTSTART:19970714T170000Z\r\nDTEND:19970715T035959Z\r\nSUMMARY:Bastille Day Party\r\nGEO:48.85299;2.36885\r\nEND:VEVENT\r\nEND:VCALENDAR';
     // const _withStatus =
@@ -95,33 +89,36 @@ void main() {
       expect(json.containsKey('data'), true);
     });
 
-    // test('without organizer name', () {
-    //   final iCalendar = ICalendar.fromString(_noOrganizerName);
-    //   final Map<String, dynamic> organizer = iCalendar.data
-    //           .firstWhere((e) => e.containsKey('organizer'))['organizer']
-    //       as Map<String, dynamic>;
-    //   expect(organizer.containsKey('name'), false);
-    //   expect(organizer['mail'], 'john.doe@example.com');
-    // });
+    test('without organizer name', () {
+      final _noOrganizerName = readFileLines('no_organizer_name.ics');
+      final iCalendar = ICalendar.fromLines(_noOrganizerName);
+      final Map<String, dynamic> organizer = iCalendar.data
+              .firstWhere((e) => e.containsKey('organizer'))['organizer']
+          as Map<String, dynamic>;
+      expect(organizer.containsKey('name'), false);
+      expect(organizer['mail'], 'john.doe@example.com');
+    });
 
-    // test('with categories', () {
-    //   final iCalendar = ICalendar.fromString(_withCategories);
-    //   final List<String> categories = iCalendar.data
-    //           .firstWhere((e) => e.containsKey('categories'))['categories']
-    //       as List<String>;
-    //   expect(categories.length, 2);
-    //   expect(categories, ['APPOINTMENT', 'EDUCATION']);
-    // });
+    test('with categories', () {
+      final _withCategories = readFileLines('with_categories.ics');
+      final iCalendar = ICalendar.fromLines(_withCategories);
+      final List<String> categories = iCalendar.data
+              .firstWhere((e) => e.containsKey('categories'))['categories']
+          as List<String>;
+      expect(categories.length, 2);
+      expect(categories, ['APPOINTMENT', 'EDUCATION']);
+    });
 
-    // test('with attendee', () {
-    //   final iCalendar = ICalendar.fromString(_withAttendee);
-    //   final List attendee = iCalendar.data
-    //       .firstWhere((e) => e.containsKey('attendee'))['attendee'] as List;
-    //   expect(attendee.length, 1);
-    //   expect(attendee[0]['mail'], 'joecool@host2.com');
-    //   expect(attendee[0]['name'], 'Henry Cabot');
-    //   expect(attendee[0]['role'], 'REQ-PARTICIPANT');
-    // });
+    test('with attendee', () {
+      final _withAttendee = readFileLines('with_attendee.ics');
+      final iCalendar = ICalendar.fromLines(_withAttendee);
+      final List attendee = iCalendar.data
+          .firstWhere((e) => e.containsKey('attendee'))['attendee'] as List;
+      expect(attendee.length, 1);
+      expect(attendee[0]['mail'], 'joecool@host2.com');
+      expect(attendee[0]['name'], 'Henry Cabot');
+      expect(attendee[0]['role'], 'REQ-PARTICIPANT');
+    });
 
     // test('with transp', () {
     //   final iCalendar = ICalendar.fromString(_withTransp);
