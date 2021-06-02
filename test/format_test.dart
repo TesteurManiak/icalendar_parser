@@ -5,13 +5,12 @@ import 'package:test/test.dart';
 import 'test_utils.dart';
 
 void main() {
-  final _noProdid = readFileString('no_prodid.ics');
-
   test('Missing PRODID', () {
-    final lines = _noProdid.split('\r\n');
-    expect(() => ICalendar.fromLines(lines),
+    final noProdidStr = readFileString('no_prodid.ics');
+    final noProdidLines = readFileLines('no_prodid.ics');
+    expect(() => ICalendar.fromLines(noProdidLines),
         throwsA(isA<ICalendarNoProdidException>()));
-    expect(() => ICalendar.fromString(_noProdid),
+    expect(() => ICalendar.fromString(noProdidStr),
         throwsA(isA<ICalendarNoProdidException>()));
   });
 
