@@ -3,7 +3,6 @@ import 'dart:convert';
 import 'package:icalendar_parser/icalendar_parser.dart';
 import 'package:icalendar_parser/src/exceptions/icalendar_exception.dart';
 import 'package:icalendar_parser/src/extensions/extensions.dart';
-import 'package:icalendar_parser/src/model/ics_geo.dart';
 
 /// Core object
 class ICalendar {
@@ -345,8 +344,6 @@ class ICalendar {
       return item.toIso8601String();
     } else if (item is IcsTransp) {
       return item.string;
-    } else if (item is IcsGeo) {
-      return item.toJson();
     } else if (item is IcsStatus) {
       return item.string;
     }
