@@ -325,11 +325,18 @@ class ICalendar {
   ///   "data": ICalendar.data
   /// }
   /// ```
-  Map<String, dynamic> toJson() => jsonDecode(jsonEncode({
-        'version': version,
-        'prodid': prodid,
-        'data': data,
-      }, toEncodable: _toEncodable)) as Map<String, dynamic>;
+  Map<String, dynamic> toJson() {
+    final _map = <String, dynamic>{
+      'version': version,
+      'prodid': prodid,
+    };
+    for (final entry in headData.entries) {
+      _map[entry.key] = entry.value;
+    }
+    _map['data'] = data;
+    return jsonDecode(jsonEncode(_map, toEncodable: _toEncodable))
+        as Map<String, dynamic>;
+  }
 
   static Object? _toEncodable(Object? item) {
     if (item is DateTime) {

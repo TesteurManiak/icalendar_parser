@@ -112,6 +112,8 @@ void main() {
       final json = iCal.toJson();
       expect(json['version'], '2.0');
       expect(json['prodid'], '-//hacksw/handcal//NONSGML v1.0//EN');
+      expect(json['calscale'], 'GREGORIAN');
+      expect(json['method'], 'PUBLISH');
       expect(json.containsKey('data'), true);
     });
 

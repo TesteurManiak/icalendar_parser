@@ -103,6 +103,8 @@ END:VCALENDAR
 {
    "version":"2.0",
    "prodid":"-//hacksw/handcal//NONSGML v1.0//EN",
+   "calscale":"GREGORIAN",
+   "method":"PUBLISH",
    "data":[
       {
          "type":"VEVENT",
