@@ -54,7 +54,8 @@ jobs:
         run: |
           dart pub get
           dart pub global activate coverage
-          dart pub global run coverage:format_coverage --lcov --in=coverage --out=coverage/lcov.info --packages=.packages --report-on=lib 
+      - name: Generate Lcov
+        run: dart pub global run coverage:format_coverage --lcov --in=coverage --out=coverage/lcov.info --packages=.packages --report-on=lib
       - name: Collect and report coverage
         uses: coverallsapp/github-action@v1.1.2
         with:
