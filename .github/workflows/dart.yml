@@ -41,7 +41,7 @@ jobs:
         name: Install Dependencies
         run: dart pub get
       - name: Run tests
-        run: dart test --platform vm
+        run: dart test --coverage="coverage"
         
   coverage:
     needs: test
@@ -51,10 +51,12 @@ jobs:
       - uses: dart-lang/setup-dart@v1
       - id: install
         name: Install Dependencies
-        run: dart pub get
+        run: |
+          dart pub get
+          dart pub global activate coverage
+          dart pub global run coverage:format_coverage --lcov --in=coverage --out=coverage/lcov.info --packages=.packages --report-on=lib 
       - name: Collect and report coverage
         uses: coverallsapp/github-action@v1.1.2
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
-          path-to-lcov: ${{ github.workspace }}/coverage/lcov.info
           
