@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:icalendar_parser/src/exceptions/icalendar_exception.dart';
 import 'package:icalendar_parser/src/extensions/string_extensions.dart';
 
@@ -314,8 +316,8 @@ class ICalendar {
     return [_headData, data];
   }
 
-  /// Convert [ICalendar] object to a [Map] containing all its data.
-  ///
+  /// Convert [ICalendar] object to a `Map<String, dynamic>` containing all its data, formatted
+  /// into a valid JSON `Map<String, dynamic>`.
   /// ```
   /// {
   ///   "version": ICalendar.version,
@@ -323,11 +325,18 @@ class ICalendar {
   ///   "data": ICalendar.data
   /// }
   /// ```
-  Map<String, dynamic> toJson() => {
+  Map<String, dynamic> toJson() => jsonDecode(jsonEncode({
         'version': version,
         'prodid': prodid,
         'data': data,
-      };
+      }, toEncodable: _toEncodable)) as Map<String, dynamic>;
+
+  static Object? _toEncodable(Object? item) {
+    if (item is DateTime) {
+      return item.toIso8601String();
+    }
+    return item;
+  }
 
   @override
   String toString() =>
