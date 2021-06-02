@@ -9,7 +9,7 @@ void main() {
     expect(() => ICalendar.fromLines(readFileLines('no_begin.ics')),
         throwsA(isA<ICalendarBeginException>()));
 
-    expect(() => ICalendar.fromString(readFileString('no_end.ics')),
+    expect(() => ICalendar.fromLines(readFileLines('no_end.ics')),
         throwsA(isA<ICalendarFormatException>()));
 
     expect(() => ICalendar.fromLines(readFileLines('no_version.ics')),
