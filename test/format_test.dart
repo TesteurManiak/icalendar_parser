@@ -12,6 +12,8 @@ void main() {
   });
 
   group('Valid calendar', () {
+    final _valid = readFileLines('valid.ics');
+
     // final _noOrganizerName = readFileString('no_organizer_name.ics');
     // const _withCategories =
     //     'BEGIN:VCALENDAR\r\nVERSION:2.0\r\nPRODID:-//hacksw/handcal//NONSGML v1.0//EN\r\nCALSCALE:GREGORIAN\r\nMETHOD:PUBLISH\r\nBEGIN:VEVENT\r\nUID:uid1@example.com\r\nDTSTAMP:19970714T170000Z\r\nORGANIZER:MAILTO:john.doe@example.com\r\nCATEGORIES:APPOINTMENT,EDUCATION\r\nDTSTART:19970714T170000Z\r\nDTEND:19970715T035959Z\r\nSUMMARY:Bastille Day Party\r\nGEO:48.85299;2.36885\r\nEND:VEVENT\r\nEND:VCALENDAR';
@@ -23,7 +25,6 @@ void main() {
     //     'BEGIN:VCALENDAR\r\nVERSION:2.0\r\nPRODID:-//hacksw/handcal//NONSGML v1.0//EN\r\nCALSCALE:GREGORIAN\r\nMETHOD:PUBLISH\r\nBEGIN:VEVENT\r\nUID:uid1@example.com\r\nSTATUS:TENTATIVE\r\nDTSTAMP:19970714T170000Z\r\nORGANIZER;CN=John Doe:MAILTO:john.doe@example.com\r\nDTSTART:19970714T170000Z\r\nDTEND:19970715T035959Z\r\nSUMMARY:Bastille Day Party\r\nGEO:48.85299;2.36885\r\nEND:VEVENT\r\nEND:VCALENDAR';
 
     group('fromLines()', () {
-      final _valid = readFileLines('valid.ics');
       final _validMultiline = readFileLines('valid_multiline.ics');
       final _validWithAlarm = readFileLines('valid_with_alarm.ics');
 
@@ -58,25 +59,25 @@ void main() {
       });
     });
 
-    // group('Properties', () {
-    //   final iCalendar = ICalendar.fromString(_valid);
+    group('Properties', () {
+      final iCalendar = ICalendar.fromLines(_valid);
 
-    //   test('version', () {
-    //     expect(iCalendar.version, '2.0');
-    //   });
+      test('version', () {
+        expect(iCalendar.version, '2.0');
+      });
 
-    //   test('prodid', () {
-    //     expect(iCalendar.prodid, '-//hacksw/handcal//NONSGML v1.0//EN');
-    //   });
+      test('prodid', () {
+        expect(iCalendar.prodid, '-//hacksw/handcal//NONSGML v1.0//EN');
+      });
 
-    //   test('calscale', () {
-    //     expect(iCalendar.calscale, 'GREGORIAN');
-    //   });
+      test('calscale', () {
+        expect(iCalendar.calscale, 'GREGORIAN');
+      });
 
-    //   test('method', () {
-    //     expect(iCalendar.method, 'PUBLISH');
-    //   });
-    // });
+      test('method', () {
+        expect(iCalendar.method, 'PUBLISH');
+      });
+    });
 
     // test('toString()', () {
     //   final iCal = ICalendar.fromString(_valid);
