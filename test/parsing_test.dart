@@ -77,7 +77,7 @@ void main() {
     });
   });
 
-  group('Date function', () {
+  group('IcsDateTime', () {
     final dateTimeParsing1 = readFileLines('datetime_parsing.ics');
 
     test('test 1', () {
@@ -87,6 +87,7 @@ void main() {
       final dtstart = obj.data.first['dtstart'] as IcsDateTime;
       expect(dtstart.dt, '20210607T090000');
       expect(dtstart.tzid, 'Europe/Berlin');
+      expect(dtstart.toDateTime(), isNotNull);
     });
   });
 }
