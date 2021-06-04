@@ -1,6 +1,5 @@
 import 'package:icalendar_parser/icalendar_parser.dart';
 import 'package:icalendar_parser/src/exceptions/icalendar_exception.dart';
-import 'package:icalendar_parser/src/model/ics_datetime.dart';
 import 'package:test/test.dart';
 
 import 'test_utils.dart';

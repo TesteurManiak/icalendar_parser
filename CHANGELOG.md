@@ -1,5 +1,9 @@
 # Changelog
 
+## [0.8.0] - 04/06/2021
+
+* **Breaking Change:** Added class `IcsDateTime` to replace the `DateTime.tryParse` ensuring no timezone data are lost ([#22](https://github.com/TesteurManiak/icalendar_parser/issues/27))
+
 ## [0.7.0] - 02/06/2021
 
 * `toJson()` now returns a correctly formatted JSON
