@@ -3,6 +3,8 @@ import 'dart:convert';
 import 'package:icalendar_parser/icalendar_parser.dart';
 import 'package:icalendar_parser/src/exceptions/icalendar_exception.dart';
 import 'package:icalendar_parser/src/extensions/extensions.dart';
+import 'package:icalendar_parser/src/model/ics_datetime.dart';
+import 'package:icalendar_parser/src/utils/parsing_methods.dart';
 
 /// Core object
 class ICalendar {
@@ -72,26 +74,6 @@ class ICalendar {
     );
   }
 
-  static Function(String, Map<String, String>, List, Map<String, dynamic>)
-      _generateDateFunction(String name) {
-    return (String value, Map<String, String> params, List events,
-        Map<String, dynamic> lastEvent) {
-      lastEvent[name] = DateTime.tryParse(value) ?? value;
-      return lastEvent;
-    };
-  }
-
-  /// Generate a method that return the [lastEvent] with a new entry at [name]
-  /// containing the [value] as [String].
-  static Function(String, Map<String, String>, List, Map<String, dynamic>)
-      _generateSimpleParamFunction(String name) {
-    return (String value, Map<String, String> params, List events,
-        Map<String, dynamic> lastEvent) {
-      lastEvent[name] = value.replaceAll(RegExp(r'/\\n/g'), '\n');
-      return lastEvent;
-    };
-  }
-
   /// Map containing the methods used to parse each kind of fields in the file.
   static final Map<String, Function> _objects = {
     'BEGIN': (String value, Map<String, String> params, List events,
@@ -119,18 +101,18 @@ class ICalendar {
       }
       return lastEvent;
     },
-    'DTSTART': _generateDateFunction('dtstart'),
-    'DTEND': _generateDateFunction('dtend'),
-    'DTSTAMP': _generateDateFunction('dtstamp'),
-    'TRIGGER': _generateSimpleParamFunction('trigger'),
-    'LAST-MODIFIED': _generateDateFunction('lastModified'),
-    'COMPLETED': _generateDateFunction('completed'),
-    'DUE': _generateDateFunction('due'),
-    'UID': _generateSimpleParamFunction('uid'),
-    'SUMMARY': _generateSimpleParamFunction('summary'),
-    'DESCRIPTION': _generateSimpleParamFunction('description'),
-    'LOCATION': _generateSimpleParamFunction('location'),
-    'URL': _generateSimpleParamFunction('url'),
+    'DTSTART': generateDateFunction('dtstart'),
+    'DTEND': generateDateFunction('dtend'),
+    'DTSTAMP': generateDateFunction('dtstamp'),
+    'TRIGGER': generateSimpleParamFunction('trigger'),
+    'LAST-MODIFIED': generateDateFunction('lastModified'),
+    'COMPLETED': generateDateFunction('completed'),
+    'DUE': generateDateFunction('due'),
+    'UID': generateSimpleParamFunction('uid'),
+    'SUMMARY': generateSimpleParamFunction('summary'),
+    'DESCRIPTION': generateSimpleParamFunction('description'),
+    'LOCATION': generateSimpleParamFunction('location'),
+    'URL': generateSimpleParamFunction('url'),
     'ORGANIZER': (String value, Map<String, String> params, List events,
         Map<String, dynamic> lastEvent) {
       final mail = value.replaceAll('MAILTO:', '').trim();
@@ -179,24 +161,24 @@ class ICalendar {
       (lastEvent['attendee'] as List).add(elem);
       return lastEvent;
     },
-    'ACTION': _generateSimpleParamFunction('action'),
+    'ACTION': generateSimpleParamFunction('action'),
     'STATUS': (String value, Map<String, String> _, List __,
         Map<String, dynamic> lastEvent) {
       lastEvent['status'] = value.trim().toIcsStatus();
       return lastEvent;
     },
-    'SEQUENCE': _generateSimpleParamFunction('sequence'),
-    'REPEAT': _generateSimpleParamFunction('repeat'),
-    'CLASS': _generateSimpleParamFunction('class'),
+    'SEQUENCE': generateSimpleParamFunction('sequence'),
+    'REPEAT': generateSimpleParamFunction('repeat'),
+    'CLASS': generateSimpleParamFunction('class'),
     'TRANSP': (String value, Map<String, String> _, List __,
         Map<String, dynamic> lastEvent) {
       lastEvent['transp'] = value.trim().toIcsTransp();
       return lastEvent;
     },
-    'VERSION': _generateSimpleParamFunction('version'),
-    'PRODID': _generateSimpleParamFunction('prodid'),
-    'CALSCALE': _generateSimpleParamFunction('calscale'),
-    'METHOD': _generateSimpleParamFunction('method'),
+    'VERSION': generateSimpleParamFunction('version'),
+    'PRODID': generateSimpleParamFunction('prodid'),
+    'CALSCALE': generateSimpleParamFunction('calscale'),
+    'METHOD': generateSimpleParamFunction('method'),
   };
 
   /// Managed parsing methods.
@@ -205,7 +187,7 @@ class ICalendar {
   /// Allow to add custom field to parse.
   ///
   /// If no `function` parameter to parse the field is provided the default
-  /// method `_generateSimpleParamFunction` will be used.
+  /// method `generateSimpleParamFunction` will be used.
   ///
   /// If a field with the same name already exists the method will throw a
   /// `ICalendarFormatException`.
@@ -220,7 +202,7 @@ class ICalendar {
     }
 
     _objects[field] =
-        function ?? _generateSimpleParamFunction(field.toLowerCase());
+        function ?? generateSimpleParamFunction(field.toLowerCase());
   }
 
   /// Remove an existing parsing field.
@@ -340,8 +322,8 @@ class ICalendar {
   }
 
   static Object? _toEncodable(Object? item) {
-    if (item is DateTime) {
-      return item.toIso8601String();
+    if (item is IcsDateTime) {
+      return item.toJson();
     } else if (item is IcsTransp) {
       return item.string;
     } else if (item is IcsStatus) {

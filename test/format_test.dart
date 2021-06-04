@@ -1,5 +1,6 @@
 import 'package:icalendar_parser/icalendar_parser.dart';
 import 'package:icalendar_parser/src/exceptions/icalendar_exception.dart';
+import 'package:icalendar_parser/src/model/ics_datetime.dart';
 import 'package:test/test.dart';
 
 import 'test_utils.dart';
@@ -19,7 +20,8 @@ void main() {
       final _validWithAlarm = readFileLines('valid_with_alarm.ics');
 
       test('base valid', () {
-        expect(ICalendar.fromLines(_valid).data.length, 1);
+        final obj = ICalendar.fromLines(_valid);
+        expect(obj.data.isNotEmpty, true);
       });
 
       test('ending w/ newline: authorized empty line', () {
