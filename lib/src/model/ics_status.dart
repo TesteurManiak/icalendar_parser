@@ -1,4 +1,5 @@
 /// Enumeration of all event statuses.
+///
 /// See doc: https://www.kanzaki.com/docs/ical/status.html
 enum IcsStatus {
   tentative,

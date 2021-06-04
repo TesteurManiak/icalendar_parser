@@ -1,5 +1,6 @@
 import 'package:collection/collection.dart' show IterableExtension;
 import 'package:icalendar_parser/icalendar_parser.dart';
+import 'package:icalendar_parser/src/model/ics_datetime.dart';
 import 'package:test/test.dart';
 
 import 'test_utils.dart';
@@ -73,6 +74,19 @@ void main() {
           iCalParsed.data[2]['url'],
           equals(
               'https://americanhistorycalendar.com/eventscalendar/2,1853-emancipation-proclamation'));
+    });
+  });
+
+  group('Date function', () {
+    final dateTimeParsing1 = readFileLines('datetime_parsing.ics');
+
+    test('test 1', () {
+      final obj = ICalendar.fromLines(dateTimeParsing1);
+      expect(obj.data.isNotEmpty, true);
+
+      final dtstart = obj.data.first['dtstart'] as IcsDateTime;
+      expect(dtstart.dt, '20210607T090000');
+      expect(dtstart.tzid, 'Europe/Berlin');
     });
   });
 }
