@@ -54,11 +54,12 @@ jobs:
     runs-on: ubuntu-latest
     
     steps:
-      - working-directory: ./example
       - uses: actions/checkout@v2
       - uses: subosito/flutter-action@v1.5.0
         with:
           channel: 'stable'
-      - run: flutter pub get
-      - run: flutter build apk
+      - run: |
+          cd example/
+          flutter packages get
+          flutter build apk
           
