@@ -48,18 +48,3 @@ jobs:
         uses: coverallsapp/github-action@v1.1.2
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
-    
-  build:
-    needs: test
-    runs-on: ubuntu-latest
-    
-    steps:
-      - uses: actions/checkout@v2
-      - uses: subosito/flutter-action@v1.5.0
-        with:
-          channel: 'stable'
-      - run: |
-          cd example/
-          flutter packages get
-          flutter build apk
-          
