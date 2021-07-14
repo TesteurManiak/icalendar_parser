@@ -1,5 +1,9 @@
 # Changelog
 
+## [0.8.0+1] - 14/07/2021
+
+* Export ics_datetime.dart [#29](https://github.com/TesteurManiak/icalendar_parser/pull/29)
+
 ## [0.8.0] - 04/06/2021
 
 * **Breaking Change:** Added class `IcsDateTime` to replace the `DateTime.tryParse` ensuring no timezone data are lost ([#22](https://github.com/TesteurManiak/icalendar_parser/issues/27))
