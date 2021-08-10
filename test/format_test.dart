@@ -132,5 +132,13 @@ void main() {
           iCal.data.firstWhere((e) => e.containsKey('status'))['status'];
       expect(status, IcsStatus.tentative);
     });
+
+    test('with rrule', () {
+      final _withStatus = readFileLines('with_rrule.ics');
+      final iCal = ICalendar.fromLines(_withStatus);
+      final rrule =
+          iCal.data.firstWhere((e) => e.containsKey('rrule'))['rrule'];
+      expect(rrule, "FREQ=WEEKLY;INTERVAL=2;BYDAY=TU,TH;BYMONTH=12");
+    });
   });
 }
