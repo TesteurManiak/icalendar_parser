@@ -179,6 +179,7 @@ class ICalendar {
     'PRODID': generateSimpleParamFunction('prodid'),
     'CALSCALE': generateSimpleParamFunction('calscale'),
     'METHOD': generateSimpleParamFunction('method'),
+    'RRULE': generateSimpleParamFunction('rrule'),
   };
 
   /// Managed parsing methods.
