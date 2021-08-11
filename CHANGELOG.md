@@ -1,5 +1,9 @@
 # Changelog
 
+## [0.8.1] - 11/08/2021
+
+* Added RRULE [#30](https://github.com/TesteurManiak/icalendar_parser/pull/30)
+
 ## [0.8.0+1] - 14/07/2021
 
 * Export ics_datetime.dart [#29](https://github.com/TesteurManiak/icalendar_parser/pull/29)
