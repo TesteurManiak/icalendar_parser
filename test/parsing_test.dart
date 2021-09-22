@@ -24,10 +24,9 @@ void main() {
   });
 
   group('fromString', () {
-    test('valid file', () async {
-      final bytes = await readAsBytes('datetime_parsing.ics');
-      final dtFile = String.fromCharCodes(bytes);
-      ICalendar.fromString(dtFile, lineSeparator: '\r');
+    test('valid file', () {
+      final dtFile = readFileString('datetime_parsing.ics');
+      ICalendar.fromString(dtFile);
     });
   });
 

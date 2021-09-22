@@ -30,28 +30,18 @@ class ICalendar {
   ICalendar({required this.data, required this.headData});
 
   /// Parse an [ICalendar] object from a [String]. The parameter
-  /// [icsString] will be split on each [lineSeparator] occurence which is by
-  /// default `\r\n`.
+  /// [icsString] will be split using [LineSplitter] then calling
+  /// `ICalendar.fromLines`.
   ///
   /// The first line must be `BEGIN:VCALENDAR`, and the last line must be
   /// `END:VCALENDAR`.
   ///
   /// The body MUST include the "PRODID" and "VERSION" calendar properties.
-  factory ICalendar.fromString(String icsString,
-      {bool allowEmptyLine = true, String lineSeparator = '\r\n'}) {
-    // Clean empty line end of file.
-    if (allowEmptyLine) {
-      while (icsString.endsWith(lineSeparator)) {
-        icsString =
-            icsString.substring(0, icsString.length - lineSeparator.length);
-      }
-    }
-    final lines = icsString.split(lineSeparator);
-    final parsedData = fromListToJson(lines, allowEmptyLine: allowEmptyLine);
-    return ICalendar(
-      headData: parsedData.first as Map<String, dynamic>,
-      data: parsedData.last as List<Map<String, dynamic>>,
-    );
+  factory ICalendar.fromString(String icsString, {bool allowEmptyLine = true}) {
+    final strBuffer = StringBuffer(icsString);
+    const lineSplitter = LineSplitter();
+    final lines = lineSplitter.convert(strBuffer.toString());
+    return ICalendar.fromLines(lines, allowEmptyLine: allowEmptyLine);
   }
 
   /// Parse an [ICalendar] object from a [List<String>].
@@ -60,8 +50,10 @@ class ICalendar {
   /// `END:CALENDAR`.
   ///
   /// The body MUST include the "PRODID" and "VERSION" calendar properties.
-  factory ICalendar.fromLines(List<String> lines,
-      {bool allowEmptyLine = true}) {
+  factory ICalendar.fromLines(
+    List<String> lines, {
+    bool allowEmptyLine = true,
+  }) {
     if (allowEmptyLine) {
       while (lines.last.isEmpty) {
         lines.removeLast();
