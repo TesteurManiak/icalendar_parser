@@ -6,15 +6,28 @@ import 'package:test/test.dart';
 import 'test_utils.dart';
 
 void main() {
-  test('Missing elements', () {
-    expect(() => ICalendar.fromLines(readFileLines('no_begin.ics')),
-        throwsA(isA<ICalendarBeginException>()));
+  group('Missing elements', () {
+    test('no begin', () {
+      expect(() => ICalendar.fromLines(readFileLines('no_begin.ics')),
+          throwsA(isA<ICalendarBeginException>()));
+    });
 
-    expect(() => ICalendar.fromLines(readFileLines('no_end.ics')),
-        throwsA(isA<ICalendarFormatException>()));
+    test('no end', () {
+      expect(() => ICalendar.fromLines(readFileLines('no_end.ics')),
+          throwsA(isA<ICalendarFormatException>()));
+    });
 
-    expect(() => ICalendar.fromLines(readFileLines('no_version.ics')),
-        throwsA(isA<ICalendarNoVersionException>()));
+    test('no version', () {
+      expect(() => ICalendar.fromLines(readFileLines('no_version.ics')),
+          throwsA(isA<ICalendarNoVersionException>()));
+    });
+  });
+
+  group('fromString', () {
+    test('valid file', () async {
+      final dtFile = await readFileString('datetime_parsing.ics');
+      ICalendar.fromString(dtFile);
+    });
   });
 
   group('Register fields', () {
@@ -87,11 +100,6 @@ void main() {
       expect(dtstart.dt, '20210607T090000');
       expect(dtstart.tzid, 'Europe/Berlin');
       expect(dtstart.toDateTime(), isNotNull);
-    });
-
-    test('fromString', () async {
-      final dtFile = await readFileString('datetime_parsing.ics');
-      ICalendar.fromString(dtFile);
     });
   });
 }
