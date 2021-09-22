@@ -1,5 +1,10 @@
 # Changelog
 
+## [1.0.0] - 22/09/2021
+
+* Fixed `fromString` constructor
+* Full test coverage on the package
+
 ## [0.8.1] - 11/08/2021
 
 * Added RRULE [#30](https://github.com/TesteurManiak/icalendar_parser/pull/30)
