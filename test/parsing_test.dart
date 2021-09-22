@@ -78,16 +78,20 @@ void main() {
   });
 
   group('IcsDateTime', () {
-    final dateTimeParsing1 = readFileLines('datetime_parsing.ics');
-
-    test('test 1', () {
-      final obj = ICalendar.fromLines(dateTimeParsing1);
+    test('fromLines', () {
+      final dtFile = readFileLines('datetime_parsing.ics');
+      final obj = ICalendar.fromLines(dtFile);
       expect(obj.data.isNotEmpty, true);
 
       final dtstart = obj.data.first['dtstart'] as IcsDateTime;
       expect(dtstart.dt, '20210607T090000');
       expect(dtstart.tzid, 'Europe/Berlin');
       expect(dtstart.toDateTime(), isNotNull);
+    });
+
+    test('fromString', () async {
+      final dtFile = await readFileString('datetime_parsing.ics');
+      ICalendar.fromString(dtFile);
     });
   });
 }

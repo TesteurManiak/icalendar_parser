@@ -4,8 +4,8 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart' show rootBundle;
 import 'package:icalendar_parser/icalendar_parser.dart';
+import 'package:path/path.dart' as path;
 import 'package:path_provider/path_provider.dart';
-import 'package:path/path.dart' as p;
 
 void main() {
   runApp(MyApp());
@@ -43,11 +43,11 @@ class _MyHomePageState extends State<MyHomePage> {
     setState(() => _isLoading = true);
     try {
       final directory = await getTemporaryDirectory();
-      final path = p.join(directory.path, assetName);
+      final myPath = path.join(directory.path, assetName);
       final data = await rootBundle.load('assets/$assetName');
       final bytes =
           data.buffer.asUint8List(data.offsetInBytes, data.lengthInBytes);
-      final file = await File(path).writeAsBytes(bytes);
+      final file = await File(myPath).writeAsBytes(bytes);
       final lines = await file.readAsLines();
       setState(() {
         _iCalendar = ICalendar.fromLines(lines);
