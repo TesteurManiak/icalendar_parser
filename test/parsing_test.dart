@@ -27,7 +27,7 @@ void main() {
     test('valid file', () async {
       final bytes = await readAsBytes('datetime_parsing.ics');
       final dtFile = String.fromCharCodes(bytes);
-      ICalendar.fromString(dtFile);
+      ICalendar.fromString(dtFile, lineSeparator: '\r');
     });
   });
 
