@@ -120,7 +120,7 @@ void main() {
         );
         expect(
           ICalendar.jsonEncodable(IcsStatus.draft),
-          IcsStatus.isFinal.string,
+          IcsStatus.draft.string,
         );
         expect(
           ICalendar.jsonEncodable(IcsStatus.isFinal),
