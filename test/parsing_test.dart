@@ -6,15 +6,28 @@ import 'package:test/test.dart';
 import 'test_utils.dart';
 
 void main() {
-  test('Missing elements', () {
-    expect(() => ICalendar.fromLines(readFileLines('no_begin.ics')),
-        throwsA(isA<ICalendarBeginException>()));
+  group('Missing elements', () {
+    test('no begin', () {
+      expect(() => ICalendar.fromLines(readFileLines('no_begin.ics')),
+          throwsA(isA<ICalendarBeginException>()));
+    });
 
-    expect(() => ICalendar.fromLines(readFileLines('no_end.ics')),
-        throwsA(isA<ICalendarFormatException>()));
+    test('no end', () {
+      expect(() => ICalendar.fromLines(readFileLines('no_end.ics')),
+          throwsA(isA<ICalendarFormatException>()));
+    });
 
-    expect(() => ICalendar.fromLines(readFileLines('no_version.ics')),
-        throwsA(isA<ICalendarNoVersionException>()));
+    test('no version', () {
+      expect(() => ICalendar.fromLines(readFileLines('no_version.ics')),
+          throwsA(isA<ICalendarNoVersionException>()));
+    });
+  });
+
+  group('fromString', () {
+    test('valid file', () {
+      final dtFile = readFileString('datetime_parsing.ics');
+      ICalendar.fromString(dtFile);
+    });
   });
 
   group('Register fields', () {
@@ -78,10 +91,9 @@ void main() {
   });
 
   group('IcsDateTime', () {
-    final dateTimeParsing1 = readFileLines('datetime_parsing.ics');
-
-    test('test 1', () {
-      final obj = ICalendar.fromLines(dateTimeParsing1);
+    test('fromLines', () {
+      final dtFile = readFileLines('datetime_parsing.ics');
+      final obj = ICalendar.fromLines(dtFile);
       expect(obj.data.isNotEmpty, true);
 
       final dtstart = obj.data.first['dtstart'] as IcsDateTime;

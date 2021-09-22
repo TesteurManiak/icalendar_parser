@@ -1,6 +1,6 @@
 import 'package:icalendar_parser/icalendar_parser.dart';
-import 'package:test/test.dart';
 import 'package:icalendar_parser/src/extensions/extensions.dart';
+import 'package:test/test.dart';
 
 void main() {
   group('IcsStringModifier', () {
