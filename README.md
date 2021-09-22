@@ -14,7 +14,7 @@ Implementation of [AnyFetch's ics-parser](https://github.com/AnyFetch/ics-parser
 
 Add `icalendar_parser` to your pubspec.yaml:
 
-``` bash
+```bash
 icalendar_parser: any
 ```
 
@@ -26,9 +26,7 @@ You can refer to the `example/` folder for a complete example implemented in Flu
 
 ### ICalendar.fromString
 
-**Warning: For unknown reason the command `dart test` on GitHub Actions will generate errors so try to prefer using `ICalendar.fromLines` in your unit tests.**
-
-``` dart
+```dart
 import 'package:flutter/services.dart' show rootBundle;
 import 'package:icalendar_parser/icalendar_parser.dart';
 
@@ -38,7 +36,7 @@ final iCalendar = ICalendar.fromString(icsString);
 
 ### ICalendar.fromLines
 
-``` dart
+```dart
 final icsLines = await File('your_file.ics').readAsLines();
 final iCalendar = ICalendar.fromLines(lines);
 ```
@@ -49,7 +47,7 @@ final iCalendar = ICalendar.fromLines(lines);
 
 With this method you can add fields that are not already supported (check [Supported Properties](#supported-properties)) to the parsing and you can specify a custom `function` to parse its content :
 
-``` dart
+```dart
 ICalendar.registerField(field: 'TEST');
 
 ICalendar.registerField(
@@ -65,13 +63,13 @@ ICalendar.registerField(
 
 With this method you can remove parsed fields to ignore them in your file :
 
-``` dart
+```dart
 ICalendar.unregisterField('TEST');
 ```
 
 ### ICalendar.toJson
 
-Convert [ICalendar] object to a `Map<String, dynamic>` containing all its data, formatted into a valid JSON `Map<String, dynamic>`.
+Convert [ICalendar] object to a `Map<String, dynamic>` containing all its data, formatted into a valid JSON `Map<String, dynamic>` .
 
 ```dart
 final icsObj = ICalendar.fromLines(File('assets/my_file.ics').readAsLinesSync());
@@ -133,8 +131,8 @@ END:VCALENDAR
 * PRODID
 * CALSCALE
 * METHOD
-* COMPONENT:BEGIN
-* COMPONENT:END
+* COMPONENT: BEGIN
+* COMPONENT: END
 * DTSTART
 * DTEND
 * DTSTAMP
