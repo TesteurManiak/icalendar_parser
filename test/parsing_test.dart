@@ -61,9 +61,22 @@ void main() {
       expect(entry['test2'], 'test');
     });
 
+    test('already registered field', () {
+      expect(ICalendar.objects.containsKey('TEST'), true);
+      expect(() => ICalendar.registerField(field: 'TEST'),
+          throwsA(isA<ICalendarFormatException>()));
+    });
+
     test('unregister field', () {
+      expect(ICalendar.objects.containsKey('TEST'), true);
       ICalendar.unregisterField('TEST');
       expect(ICalendar.objects.containsKey('TEST'), false);
+    });
+
+    test('unregister non existing field', () {
+      expect(ICalendar.objects.containsKey('TEST'), false);
+      expect(() => ICalendar.unregisterField('TEST'),
+          throwsA(isA<ICalendarFormatException>()));
     });
 
     test(

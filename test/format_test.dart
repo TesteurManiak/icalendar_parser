@@ -76,6 +76,59 @@ void main() {
       expect(str.contains('iCalendar - VERSION: 2.0 - PRODID: '), true);
     });
 
+    group('jsonEncodable()', () {
+      test('IcsDateTime', () {
+        final icsDt = IcsDateTime(dt: DateTime.now().toIso8601String());
+        expect(ICalendar.jsonEncodable(icsDt), icsDt.toJson());
+      });
+
+      test('IcsTransp', () {
+        expect(
+          ICalendar.jsonEncodable(IcsTransp.opaque),
+          IcsTransp.opaque.string,
+        );
+        expect(
+          ICalendar.jsonEncodable(IcsTransp.transparent),
+          IcsTransp.transparent.string,
+        );
+      });
+
+      test('IcsStatus', () {
+        expect(
+          ICalendar.jsonEncodable(IcsStatus.tentative),
+          IcsStatus.tentative.string,
+        );
+        expect(
+          ICalendar.jsonEncodable(IcsStatus.confirmed),
+          IcsStatus.confirmed.string,
+        );
+        expect(
+          ICalendar.jsonEncodable(IcsStatus.cancelled),
+          IcsStatus.cancelled.string,
+        );
+        expect(
+          ICalendar.jsonEncodable(IcsStatus.needsAction),
+          IcsStatus.needsAction.string,
+        );
+        expect(
+          ICalendar.jsonEncodable(IcsStatus.completed),
+          IcsStatus.completed.string,
+        );
+        expect(
+          ICalendar.jsonEncodable(IcsStatus.inProcess),
+          IcsStatus.inProcess.string,
+        );
+        expect(
+          ICalendar.jsonEncodable(IcsStatus.draft),
+          IcsStatus.draft.string,
+        );
+        expect(
+          ICalendar.jsonEncodable(IcsStatus.isFinal),
+          IcsStatus.isFinal.string,
+        );
+      });
+    });
+
     test('toJson()', () {
       final iCal = ICalendar.fromLines(_valid);
       final json = iCal.toJson();
