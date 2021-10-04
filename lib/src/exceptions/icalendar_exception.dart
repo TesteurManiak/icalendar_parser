@@ -21,7 +21,7 @@ class ICalendarEndException extends ICalendarFormatException {
 
 /// Exception thrown when there is an empty line.
 class EmptyLineException extends ICalendarFormatException {
-  const EmptyLineException(String msg) : super(msg);
+  const EmptyLineException() : super('Empty line are not allowed');
 }
 
 /// Exception thrown when `VERSION` is missing.

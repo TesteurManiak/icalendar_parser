@@ -93,7 +93,7 @@ void main() {
       );
     });
 
-    test('American History', () async {
+    test('American History', () {
       final eventText = readFileLines('american_history.ics');
       final iCalParsed = ICalendar.fromLines(eventText);
       expect(

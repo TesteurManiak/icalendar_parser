@@ -223,19 +223,23 @@ class ICalendar {
     Map<String, dynamic>? lastEvent = {};
     String? currentName;
 
+    // Ensure first line is BEGIN:VCALENDAR
     if (lines.first.trim() != 'BEGIN:VCALENDAR') {
       throw ICalendarBeginException(
           'The first line must be BEGIN:VCALENDAR but was ${lines.first}.');
     }
+
+    // Ensure last line is END:VCALENDAR
     if (lines.last.trim() != 'END:VCALENDAR') {
       throw ICalendarEndException(
           'The last line must be END:VCALENDAR but was ${lines.last}.');
     }
+
     for (var i = 0; i < lines.length; i++) {
       final line = StringBuffer(lines[i].trim());
 
       if (line.isEmpty && !allowEmptyLine) {
-        throw const EmptyLineException('Empty line are not allowed');
+        throw const EmptyLineException();
       }
 
       final exp = RegExp(r'^ ');
@@ -245,7 +249,7 @@ class ICalendar {
       }
 
       final dataLine = line.toString().split(':');
-      if (dataLine.length < 2 ||
+      if ((dataLine.length < 2 && !dataLine[0].contains(';')) ||
           (dataLine.isNotEmpty &&
               dataLine[0].toUpperCase() != dataLine[0] &&
               !dataLine[0].contains(';'))) {
@@ -256,7 +260,6 @@ class ICalendar {
       }
 
       final dataName = dataLine[0].split(';');
-
       final name = dataName[0];
       dataName.removeRange(0, 1);
 
