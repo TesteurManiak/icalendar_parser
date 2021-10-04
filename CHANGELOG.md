@@ -1,5 +1,9 @@
 # Changelog
 
+## [1.0.1] - 04/10/2021
+
+* Fixed [issue #33](https://github.com/TesteurManiak/icalendar_parser/issues/33): Exception on ORGANIZER field parsing
+
 ## [1.0.0] - 22/09/2021
 
 * Fixed `fromString` constructor
