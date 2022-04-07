@@ -1,8 +1,6 @@
 import 'dart:convert';
 
 import 'package:icalendar_parser/icalendar_parser.dart';
-import 'package:icalendar_parser/src/exceptions/icalendar_exception.dart';
-import 'package:icalendar_parser/src/model/ics_datetime.dart';
 import 'package:icalendar_parser/src/utils/parsing_methods.dart';
 
 /// Core object
@@ -67,8 +65,12 @@ class ICalendar {
 
   /// Map containing the methods used to parse each kind of fields in the file.
   static final Map<String, Function> _objects = {
-    'BEGIN': (String value, Map<String, String> params, List events,
-        Map<String, dynamic> lastEvent) {
+    'BEGIN': (
+      String value,
+      Map<String, String> params,
+      List events,
+      Map<String, dynamic> lastEvent,
+    ) {
       if (value == 'VCALENDAR') return null;
 
       lastEvent = {'type': value};
@@ -76,8 +78,13 @@ class ICalendar {
 
       return lastEvent;
     },
-    'END': (String value, Map<String, String> params, List events,
-        Map<String, dynamic>? lastEvent, List<Map<String, dynamic>?> data) {
+    'END': (
+      String value,
+      Map<String, String> params,
+      List events,
+      Map<String, dynamic>? lastEvent,
+      List<Map<String, dynamic>?> data,
+    ) {
       if (value == 'VCALENDAR') return lastEvent;
 
       data.add(lastEvent);
@@ -104,8 +111,12 @@ class ICalendar {
     'DESCRIPTION': generateSimpleParamFunction('description'),
     'LOCATION': generateSimpleParamFunction('location'),
     'URL': generateSimpleParamFunction('url'),
-    'ORGANIZER': (String value, Map<String, String> params, List events,
-        Map<String, dynamic> lastEvent) {
+    'ORGANIZER': (
+      String value,
+      Map<String, String> params,
+      List events,
+      Map<String, dynamic> lastEvent,
+    ) {
       final mail = value.replaceAll('MAILTO:', '').trim();
 
       if (params.containsKey('CN')) {
@@ -119,23 +130,36 @@ class ICalendar {
 
       return lastEvent;
     },
-    'GEO': (String value, Map<String, String> params, List events,
-        Map<String, dynamic> lastEvent) {
+    'GEO': (
+      String value,
+      Map<String, String> params,
+      List events,
+      Map<String, dynamic> lastEvent,
+    ) {
       final pos = value.split(';');
       if (pos.length != 2) return lastEvent;
 
-      lastEvent['geo'] = {};
-      lastEvent['geo']['latitude'] = num.parse(pos[0]);
-      lastEvent['geo']['longitude'] = num.parse(pos[1]);
+      final geo = <String, dynamic>{};
+      geo['latitude'] = num.parse(pos[0]);
+      geo['longitude'] = num.parse(pos[1]);
+      lastEvent['geo'] = geo;
       return lastEvent;
     },
-    'CATEGORIES': (String value, Map<String, String> params, List events,
-        Map<String, dynamic> lastEvent) {
+    'CATEGORIES': (
+      String value,
+      Map<String, String> params,
+      List events,
+      Map<String, dynamic> lastEvent,
+    ) {
       lastEvent['categories'] = value.split(',');
       return lastEvent;
     },
-    'ATTENDEE': (String value, Map<String, String> params, List _,
-        Map<String, dynamic> lastEvent) {
+    'ATTENDEE': (
+      String value,
+      Map<String, String> params,
+      _,
+      Map<String, dynamic> lastEvent,
+    ) {
       lastEvent['attendee'] ??= [];
 
       final mail = value.replaceAll('MAILTO:', '').trim();
@@ -153,16 +177,14 @@ class ICalendar {
       return lastEvent;
     },
     'ACTION': generateSimpleParamFunction('action'),
-    'STATUS': (String value, Map<String, String> _, List __,
-        Map<String, dynamic> lastEvent) {
+    'STATUS': (String value, _, __, Map<String, dynamic> lastEvent) {
       lastEvent['status'] = value.trim().toIcsStatus();
       return lastEvent;
     },
     'SEQUENCE': generateSimpleParamFunction('sequence'),
     'REPEAT': generateSimpleParamFunction('repeat'),
     'CLASS': generateSimpleParamFunction('class'),
-    'TRANSP': (String value, Map<String, String> _, List __,
-        Map<String, dynamic> lastEvent) {
+    'TRANSP': (String value, _, __, Map<String, dynamic> lastEvent) {
       lastEvent['transp'] = value.trim().toIcsTransp();
       return lastEvent;
     },
@@ -185,8 +207,12 @@ class ICalendar {
   /// `ICalendarFormatException`.
   static void registerField({
     required String field,
-    Function(String value, Map<String, String> params, List event,
-            Map<String, dynamic> lastEvent)?
+    Function(
+      String value,
+      Map<String, String> params,
+      List event,
+      Map<String, dynamic> lastEvent,
+    )?
         function,
   }) {
     if (_objects.containsKey(field)) {
@@ -215,8 +241,10 @@ class ICalendar {
   /// `List<Map<String, dynamic>> data`.
   ///
   /// If [allowEmptyLine] is false the method will throw [EmptyLineException].
-  static List<dynamic> fromListToJson(List<String> lines,
-      {bool allowEmptyLine = true}) {
+  static List<dynamic> fromListToJson(
+    List<String> lines, {
+    bool allowEmptyLine = true,
+  }) {
     final data = <Map<String, dynamic>>[];
     final _headData = <String, dynamic>{};
     final events = [];
@@ -226,13 +254,15 @@ class ICalendar {
     // Ensure first line is BEGIN:VCALENDAR
     if (lines.first.trim() != 'BEGIN:VCALENDAR') {
       throw ICalendarBeginException(
-          'The first line must be BEGIN:VCALENDAR but was ${lines.first}.');
+        'The first line must be BEGIN:VCALENDAR but was ${lines.first}.',
+      );
     }
 
     // Ensure last line is END:VCALENDAR
     if (lines.last.trim() != 'END:VCALENDAR') {
       throw ICalendarEndException(
-          'The last line must be END:VCALENDAR but was ${lines.last}.');
+        'The last line must be END:VCALENDAR but was ${lines.last}.',
+      );
     }
 
     for (var i = 0; i < lines.length; i++) {
@@ -242,7 +272,7 @@ class ICalendar {
         throw const EmptyLineException();
       }
 
-      final exp = RegExp(r'^ ');
+      final exp = RegExp('^ ');
       while (i + 1 < lines.length && exp.hasMatch(lines[i + 1])) {
         i += 1;
         line.write(lines[i].trim());
@@ -254,7 +284,9 @@ class ICalendar {
               dataLine[0].toUpperCase() != dataLine[0] &&
               !dataLine[0].contains(';'))) {
         if (line.isNotEmpty && currentName != null) {
-          lastEvent![currentName] += line.toString();
+          final buffer = StringBuffer(lastEvent![currentName] as String);
+          buffer.write(line.toString());
+          lastEvent[currentName] = buffer.toString();
         }
         continue;
       }
@@ -271,25 +303,38 @@ class ICalendar {
 
       dataLine.removeRange(0, 1);
       final value = dataLine.join(':').replaceAll(RegExp(r'\\,'), ',');
-      if (_objects.containsKey(name)) {
+      final nameFunc = _objects[name];
+      if (_objects.containsKey(name) && nameFunc != null) {
         currentName = name.toLowerCase();
         if (name == 'END') {
+          final func = nameFunc as Map<String, dynamic>? Function(
+            String,
+            Map<String, String>,
+            List,
+            Map<String, dynamic>?,
+            List<Map<String, dynamic>>,
+          );
           currentName = null;
-          lastEvent = _objects[name]!(value, params, events, lastEvent, data)
-              as Map<String, dynamic>?;
+          lastEvent = func(value, params, events, lastEvent, data);
         } else {
-          lastEvent =
-              _objects[name]!(value, params, events, lastEvent ?? _headData)
-                  as Map<String, dynamic>?;
+          final func = nameFunc as Map<String, dynamic>? Function(
+            String,
+            Map<String, String>,
+            List,
+            Map<String, dynamic>,
+          );
+          lastEvent = func(value, params, events, lastEvent ?? _headData);
         }
       }
     }
     if (!_headData.containsKey('version')) {
       throw const ICalendarNoVersionException(
-          'The body is missing the property VERSION');
+        'The body is missing the property VERSION',
+      );
     } else if (!_headData.containsKey('prodid')) {
       throw const ICalendarNoProdidException(
-          'The body is missing the property PRODID');
+        'The body is missing the property PRODID',
+      );
     }
     return [_headData, data];
   }

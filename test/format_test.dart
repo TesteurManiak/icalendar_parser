@@ -1,5 +1,4 @@
 import 'package:icalendar_parser/icalendar_parser.dart';
-import 'package:icalendar_parser/src/exceptions/icalendar_exception.dart';
 import 'package:test/test.dart';
 
 import 'test_utils.dart';
@@ -7,8 +6,10 @@ import 'test_utils.dart';
 void main() {
   test('Missing PRODID', () {
     final noProdidLines = readFileLines('no_prodid.ics');
-    expect(() => ICalendar.fromLines(noProdidLines),
-        throwsA(isA<ICalendarNoProdidException>()));
+    expect(
+      () => ICalendar.fromLines(noProdidLines),
+      throwsA(isA<ICalendarNoProdidException>()),
+    );
   });
 
   group('Valid calendar', () {
@@ -30,8 +31,10 @@ void main() {
 
       test('ending w/ newline: unauthorized empty line', () {
         final lines = List<String>.from(_valid)..add('');
-        expect(() => ICalendar.fromLines(lines, allowEmptyLine: false),
-            throwsA(isA<ICalendarEndException>()));
+        expect(
+          () => ICalendar.fromLines(lines, allowEmptyLine: false),
+          throwsA(isA<ICalendarEndException>()),
+        );
       });
 
       test('w/ multiline description', () {
@@ -39,7 +42,7 @@ void main() {
         expect(
           iCalendarLines.data.first['description'] as String,
           equals(
-            r'Lorem ipsum dolor sit amet, consectetur adipiscing elit.Sed suscipit malesuada sodales.Ut viverra metus neque, ut ullamcorper felis fermentum vel.Sed sodales mauris nec.',
+            'Lorem ipsum dolor sit amet, consectetur adipiscing elit.Sed suscipit malesuada sodales.Ut viverra metus neque, ut ullamcorper felis fermentum vel.Sed sodales mauris nec.',
           ),
         );
       });
@@ -162,12 +165,14 @@ void main() {
     test('with attendee', () {
       final _withAttendee = readFileLines('with_attendee.ics');
       final iCalendar = ICalendar.fromLines(_withAttendee);
-      final List attendee = iCalendar.data
+      final attendees = iCalendar.data
           .firstWhere((e) => e.containsKey('attendee'))['attendee'] as List;
-      expect(attendee.length, 1);
-      expect(attendee[0]['mail'], 'joecool@host2.com');
-      expect(attendee[0]['name'], 'Henry Cabot');
-      expect(attendee[0]['role'], 'REQ-PARTICIPANT');
+      expect(attendees.length, 1);
+
+      final attendee = attendees[0] as Map<String, dynamic>;
+      expect(attendee['mail'], 'joecool@host2.com');
+      expect(attendee['name'], 'Henry Cabot');
+      expect(attendee['role'], 'REQ-PARTICIPANT');
     });
 
     test('with transp', () {
