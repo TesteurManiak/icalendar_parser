@@ -1,6 +1,5 @@
 import 'package:collection/collection.dart' show IterableExtension;
 import 'package:icalendar_parser/icalendar_parser.dart';
-import 'package:icalendar_parser/src/model/ics_datetime.dart';
 import 'package:test/test.dart';
 
 import 'test_utils.dart';
@@ -8,18 +7,24 @@ import 'test_utils.dart';
 void main() {
   group('Missing elements', () {
     test('no begin', () {
-      expect(() => ICalendar.fromLines(readFileLines('no_begin.ics')),
-          throwsA(isA<ICalendarBeginException>()));
+      expect(
+        () => ICalendar.fromLines(readFileLines('no_begin.ics')),
+        throwsA(isA<ICalendarBeginException>()),
+      );
     });
 
     test('no end', () {
-      expect(() => ICalendar.fromLines(readFileLines('no_end.ics')),
-          throwsA(isA<ICalendarFormatException>()));
+      expect(
+        () => ICalendar.fromLines(readFileLines('no_end.ics')),
+        throwsA(isA<ICalendarFormatException>()),
+      );
     });
 
     test('no version', () {
-      expect(() => ICalendar.fromLines(readFileLines('no_version.ics')),
-          throwsA(isA<ICalendarNoVersionException>()));
+      expect(
+        () => ICalendar.fromLines(readFileLines('no_version.ics')),
+        throwsA(isA<ICalendarNoVersionException>()),
+      );
     });
   });
 
@@ -63,8 +68,10 @@ void main() {
 
     test('already registered field', () {
       expect(ICalendar.objects.containsKey('TEST'), true);
-      expect(() => ICalendar.registerField(field: 'TEST'),
-          throwsA(isA<ICalendarFormatException>()));
+      expect(
+        () => ICalendar.registerField(field: 'TEST'),
+        throwsA(isA<ICalendarFormatException>()),
+      );
     });
 
     test('unregister field', () {
@@ -75,8 +82,10 @@ void main() {
 
     test('unregister non existing field', () {
       expect(ICalendar.objects.containsKey('TEST'), false);
-      expect(() => ICalendar.unregisterField('TEST'),
-          throwsA(isA<ICalendarFormatException>()));
+      expect(
+        () => ICalendar.unregisterField('TEST'),
+        throwsA(isA<ICalendarFormatException>()),
+      );
     });
 
     test(
@@ -97,9 +106,11 @@ void main() {
       final eventText = readFileLines('american_history.ics');
       final iCalParsed = ICalendar.fromLines(eventText);
       expect(
-          iCalParsed.data[2]['url'],
-          equals(
-              'https://americanhistorycalendar.com/eventscalendar/2,1853-emancipation-proclamation'));
+        iCalParsed.data[2]['url'],
+        equals(
+          'https://americanhistorycalendar.com/eventscalendar/2,1853-emancipation-proclamation',
+        ),
+      );
     });
   });
 

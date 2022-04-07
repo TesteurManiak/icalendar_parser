@@ -20,8 +20,10 @@ void main() {
       });
 
       test('unknown', () {
-        expect(() => ''.toIcsStatus(),
-            throwsA(const TypeMatcher<ICalendarStatusParseException>()));
+        expect(
+          () => ''.toIcsStatus(),
+          throwsA(const TypeMatcher<ICalendarStatusParseException>()),
+        );
       });
     });
 
@@ -37,8 +39,10 @@ void main() {
       });
 
       test('unknown', () {
-        expect(() => ''.toIcsTransp(),
-            throwsA(const TypeMatcher<ICalendarTranspParseException>()));
+        expect(
+          () => ''.toIcsTransp(),
+          throwsA(const TypeMatcher<ICalendarTranspParseException>()),
+        );
       });
     });
   });

@@ -6,26 +6,16 @@
 name: Dart
 
 on:
-  push:
-    branches: [ main ]
-  pull_request:
-    branches: [ main ]
+  push
 
 jobs:
   analyze:
     runs-on: ubuntu-latest
-
     steps:
       - uses: actions/checkout@v2
       - uses: dart-lang/setup-dart@v1
       - name: Install dependencies
         run: dart pub get
-
-      # Uncomment this step to verify the use of 'dart format' on each commit.
-      # - name: Verify formatting
-      #   run: dart format --output=none --set-exit-if-changed .
-
-      # Consider passing '--fatal-infos' for slightly stricter analysis.
       - name: Analyze project source
         run: dart analyze
         working-directory: ./lib
@@ -33,7 +23,6 @@ jobs:
   test:
     needs: analyze
     runs-on: ubuntu-latest
-    
     steps:
       - uses: actions/checkout@v2
       - uses: dart-lang/setup-dart@v1
