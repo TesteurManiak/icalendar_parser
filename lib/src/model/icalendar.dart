@@ -3,6 +3,21 @@ import 'dart:convert';
 import 'package:icalendar_parser/icalendar_parser.dart';
 import 'package:icalendar_parser/src/utils/parsing_methods.dart';
 
+typedef ClosureFunction = Map<String, dynamic>? Function(
+  String,
+  Map<String, String>,
+  List,
+  Map<String, dynamic>?,
+  List<Map<String, dynamic>>,
+);
+
+typedef GenericFunction = Map<String, dynamic>? Function(
+  String,
+  Map<String, String>,
+  List,
+  Map<String, dynamic>,
+);
+
 /// Core object
 class ICalendar {
   /// iCalendar's components list.
@@ -319,22 +334,11 @@ class ICalendar {
       if (_objects.containsKey(name) && nameFunc != null) {
         currentName = name.toLowerCase();
         if (name == 'END') {
-          final func = nameFunc as Map<String, dynamic>? Function(
-            String,
-            Map<String, String>,
-            List,
-            Map<String, dynamic>?,
-            List<Map<String, dynamic>>,
-          );
+          final func = nameFunc as ClosureFunction;
           currentName = null;
           lastEvent = func(value, params, events, lastEvent, data);
         } else {
-          final func = nameFunc as Map<String, dynamic>? Function(
-            String,
-            Map<String, String>,
-            List,
-            Map<String, dynamic>,
-          );
+          final func = nameFunc as GenericFunction;
           lastEvent = func(value, params, events, lastEvent ?? _headData);
         }
       }
