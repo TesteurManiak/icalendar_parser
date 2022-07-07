@@ -198,5 +198,17 @@ void main() {
           iCal.data.firstWhere((e) => e.containsKey('rrule'))['rrule'];
       expect(rrule, "FREQ=WEEKLY;INTERVAL=2;BYDAY=TU,TH;BYMONTH=12");
     });
+
+    test('with exdate', () {
+      final _withStatus = readFileLines('with_exdate.ics');
+      final iCal = ICalendar.fromLines(_withStatus);
+      final exdate =
+          iCal.data.firstWhere((e) => e.containsKey('exdate'))['exdate'];
+      expect(exdate, [
+        IcsDateTime(dt: "20220415T145500", tzid: "Europe/Zurich"),
+        IcsDateTime(dt: "20220527T145500", tzid: "Europe/Zurich"),
+        IcsDateTime(dt: "20220422T145500", tzid: "Europe/Zurich"),
+      ]);
+    });
   });
 }

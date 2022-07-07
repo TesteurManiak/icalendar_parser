@@ -199,7 +199,7 @@ class ICalendar {
       List events,
       Map<String, dynamic> lastEvent,
     ) {
-      lastEvent['EXDATE'] = value
+      lastEvent['exdate'] = value
           .split(',')
           .map((e) => IcsDateTime(dt: e, tzid: params['TZID']))
           .toList();
