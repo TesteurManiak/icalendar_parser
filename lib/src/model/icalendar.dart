@@ -193,6 +193,18 @@ class ICalendar {
     'CALSCALE': generateSimpleParamFunction('calscale'),
     'METHOD': generateSimpleParamFunction('method'),
     'RRULE': generateSimpleParamFunction('rrule'),
+    'EXDATE': (
+      String value,
+      Map<String, String> params,
+      List events,
+      Map<String, dynamic> lastEvent,
+    ) {
+      lastEvent['EXDATE'] = value
+          .split(',')
+          .map((e) => IcsDateTime(dt: e, tzid: params['TZID']))
+          .toList();
+      return lastEvent;
+    },
   };
 
   /// Managed parsing methods.
