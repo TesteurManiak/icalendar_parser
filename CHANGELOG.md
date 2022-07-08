@@ -1,5 +1,10 @@
 # Changelog
 
+## [1.0.2] - 08/07/2022
+
+* Added EXDATE ([#37](https://github.com/TesteurManiak/icalendar_parser/pull/37) from [LucaCoduriV](https://github.com/LucaCoduriV))
+* Removed dependency to [collection](https://pub.dev/packages/collection)
+
 ## [1.0.1+1] - 07/04/2022
 
 * Updated linting rules
