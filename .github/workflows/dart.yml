@@ -5,8 +5,7 @@
 
 name: Dart
 
-on:
-  push
+on: [push, pull_request]
 
 jobs:
   analyze:
