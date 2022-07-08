@@ -100,57 +100,58 @@ END:VCALENDAR
 
 ```json
 {
-   "version":"2.0",
-   "prodid":"-//hacksw/handcal//NONSGML v1.0//EN",
-   "calscale":"GREGORIAN",
-   "method":"PUBLISH",
-   "data":[
-      {
-         "type":"VEVENT",
-         "uid":"uid1@example.com",
-         "dtstamp":"1997-07-14T17:00:00.000Z",
-         "organizer":{
-            "name":"John Doe",
-            "mail":"john.doe@example.com"
-         },
-         "dtstart":"1997-07-14T17:00:00.000Z",
-         "dtend":"1997-07-15T03:59:59.000Z",
-         "summary":"Bastille Day Party",
-         "geo":{
-            "latitude":48.85299,
-            "longitude":2.36885
-         }
-      }
-   ]
+    "version": "2.0",
+    "prodid": "-//hacksw/handcal//NONSGML v1.0//EN",
+    "calscale": "GREGORIAN",
+    "method": "PUBLISH",
+    "data": [
+        {
+            "type": "VEVENT",
+            "uid": "uid1@example.com",
+            "dtstamp": "1997-07-14T17:00:00.000Z",
+            "organizer": {
+                "name": "John Doe",
+                "mail": "john.doe@example.com"
+            },
+            "dtstart": "1997-07-14T17:00:00.000Z",
+            "dtend": "1997-07-15T03:59:59.000Z",
+            "summary": "Bastille Day Party",
+            "geo": {
+                "latitude": 48.85299,
+                "longitude": 2.36885
+            }
+        }
+    ]
 }
 ```
 
 ## Supported Properties
 
-* VERSION
-* PRODID
-* CALSCALE
-* METHOD
-* COMPONENT: BEGIN
-* COMPONENT: END
-* DTSTART
-* DTEND
-* DTSTAMP
-* TRIGGER
-* LAST-MODIFIED
-* COMPLETED
-* DUE
-* UID
-* SUMMARY
-* DESCRIPTION
-* LOCATION
-* URL
-* ORGANIZER
-* GEO
-* CATEGORIES
-* ATTENDEE
-* ACTION
-* STATUS
-* SEQUENCE
-* REPEAT
-* RRULE
+-   VERSION
+-   PRODID
+-   CALSCALE
+-   METHOD
+-   COMPONENT: BEGIN
+-   COMPONENT: END
+-   DTSTART
+-   DTEND
+-   DTSTAMP
+-   TRIGGER
+-   LAST-MODIFIED
+-   COMPLETED
+-   DUE
+-   UID
+-   SUMMARY
+-   DESCRIPTION
+-   LOCATION
+-   URL
+-   ORGANIZER
+-   GEO
+-   CATEGORIES
+-   ATTENDEE
+-   ACTION
+-   STATUS
+-   SEQUENCE
+-   REPEAT
+-   RRULE
+-   EXDATE
