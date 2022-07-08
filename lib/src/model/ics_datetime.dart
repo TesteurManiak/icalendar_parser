@@ -37,4 +37,17 @@ class IcsDateTime {
     if (tzid != null) json['tzid'] = tzid;
     return json;
   }
+
+  /// Compare this object with another [IcsDateTime] object.
+  @override
+  bool operator ==(Object other) =>
+      other is IcsDateTime && (other.dt == dt && other.tzid == tzid);
+
+  @override
+  int get hashCode => Object.hash(dt, tzid);
+
+  @override
+  String toString() {
+    return 'IcsDateTime{tzid: $tzid, dt: $dt}';
+  }
 }
