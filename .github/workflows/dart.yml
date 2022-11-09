@@ -18,7 +18,7 @@ jobs:
       - name: Analyze project source
         run: dart analyze
         working-directory: ./lib
-        
+
   test:
     needs: analyze
     runs-on: ubuntu-latest
@@ -29,10 +29,4 @@ jobs:
         name: Install Dependencies
         run: dart pub get
       - name: Run tests
-        run: dart test --coverage="coverage"
-      - name: Generate Lcov
-        run: dart pub run coverage:format_coverage --lcov --in=coverage --out=coverage/lcov.info --packages=.packages --report-on=lib
-      - name: Collect and report coverage
-        uses: coverallsapp/github-action@v1.1.2
-        with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
+        run: dart test
