@@ -4,18 +4,18 @@ import 'package:icalendar_parser/icalendar_parser.dart';
 import 'package:icalendar_parser/src/utils/parsing_methods.dart';
 
 typedef ClosureFunction = Map<String, dynamic>? Function(
-  String,
-  Map<String, String>,
-  List,
-  Map<String, dynamic>?,
+  String value,
+  Map<String, String> params,
+  List events,
+  Map<String, dynamic>? lastEvent,
   List<Map<String, dynamic>>,
 );
 
 typedef GenericFunction = Map<String, dynamic>? Function(
-  String,
-  Map<String, String>,
-  List,
-  Map<String, dynamic>,
+  String value,
+  Map<String, String> params,
+  List events,
+  Map<String, dynamic> lastEvent,
 );
 
 /// Core object
@@ -214,10 +214,17 @@ class ICalendar {
       List events,
       Map<String, dynamic> lastEvent,
     ) {
-      lastEvent['exdate'] = value
+      final dates = value
           .split(',')
           .map((e) => IcsDateTime(dt: e, tzid: params['TZID']))
           .toList();
+
+      if (lastEvent.containsKey('exdate')) {
+        (lastEvent['exdate'] as List).addAll(dates);
+      } else {
+        lastEvent['exdate'] = dates;
+      }
+
       return lastEvent;
     },
   };
@@ -234,13 +241,7 @@ class ICalendar {
   /// `ICalendarFormatException`.
   static void registerField({
     required String field,
-    Function(
-      String value,
-      Map<String, String> params,
-      List event,
-      Map<String, dynamic> lastEvent,
-    )?
-        function,
+    GenericFunction? function,
   }) {
     if (_objects.containsKey(field)) {
       throw ICalendarFormatException('The field $field is already registered.');
@@ -273,7 +274,7 @@ class ICalendar {
     bool allowEmptyLine = true,
   }) {
     final data = <Map<String, dynamic>>[];
-    final _headData = <String, dynamic>{};
+    final headData = <String, dynamic>{};
     final events = [];
     Map<String, dynamic>? lastEvent = {};
     String? currentName;
@@ -339,20 +340,20 @@ class ICalendar {
           lastEvent = func(value, params, events, lastEvent, data);
         } else {
           final func = nameFunc as GenericFunction;
-          lastEvent = func(value, params, events, lastEvent ?? _headData);
+          lastEvent = func(value, params, events, lastEvent ?? headData);
         }
       }
     }
-    if (!_headData.containsKey('version')) {
+    if (!headData.containsKey('version')) {
       throw const ICalendarNoVersionException(
         'The body is missing the property VERSION',
       );
-    } else if (!_headData.containsKey('prodid')) {
+    } else if (!headData.containsKey('prodid')) {
       throw const ICalendarNoProdidException(
         'The body is missing the property PRODID',
       );
     }
-    return [_headData, data];
+    return [headData, data];
   }
 
   /// Convert [ICalendar] object to a `Map<String, dynamic>` containing all its data, formatted
@@ -365,15 +366,15 @@ class ICalendar {
   /// }
   /// ```
   Map<String, dynamic> toJson() {
-    final _map = <String, dynamic>{
+    final map = <String, dynamic>{
       'version': version,
       'prodid': prodid,
     };
     for (final entry in headData.entries) {
-      _map[entry.key] = entry.value;
+      map[entry.key] = entry.value;
     }
-    _map['data'] = data;
-    return jsonDecode(jsonEncode(_map, toEncodable: jsonEncodable))
+    map['data'] = data;
+    return jsonDecode(jsonEncode(map, toEncodable: jsonEncodable))
         as Map<String, dynamic>;
   }
 
@@ -381,9 +382,9 @@ class ICalendar {
     if (item is IcsDateTime) {
       return item.toJson();
     } else if (item is IcsTransp) {
-      return item.string;
+      return item.key;
     } else if (item is IcsStatus) {
-      return item.string;
+      return item.key;
     }
     return item;
   }
@@ -394,37 +395,6 @@ class ICalendar {
 }
 
 extension IcsStringModifier on String {
-  IcsStatus toIcsStatus() {
-    switch (toUpperCase()) {
-      case 'TENTATIVE':
-        return IcsStatus.tentative;
-      case 'CONFIRMED':
-        return IcsStatus.confirmed;
-      case 'CANCELLED':
-        return IcsStatus.cancelled;
-      case 'NEEDS-ACTION':
-        return IcsStatus.needsAction;
-      case 'COMPLETED':
-        return IcsStatus.completed;
-      case 'IN-PROCESS':
-        return IcsStatus.inProcess;
-      case 'DRAFT':
-        return IcsStatus.draft;
-      case 'FINAL':
-        return IcsStatus.isFinal;
-      default:
-        throw ICalendarStatusParseException('Unknown IcsStatus: $this');
-    }
-  }
-
-  IcsTransp toIcsTransp() {
-    switch (toUpperCase()) {
-      case 'OPAQUE':
-        return IcsTransp.opaque;
-      case 'TRANSPARENT':
-        return IcsTransp.transparent;
-      default:
-        throw ICalendarTranspParseException('Unknown IcsTransp: $this');
-    }
-  }
+  IcsStatus toIcsStatus() => IcsStatus.fromString(this);
+  IcsTransp toIcsTransp() => IcsTransp.fromString(this);
 }

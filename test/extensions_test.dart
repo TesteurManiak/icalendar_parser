@@ -46,24 +46,4 @@ void main() {
       });
     });
   });
-
-  group('IcsTranspModifier', () {
-    test('string', () {
-      expect(IcsTransp.opaque.string, 'OPAQUE');
-      expect(IcsTransp.transparent.string, 'TRANSPARENT');
-    });
-  });
-
-  group('IcsStatusModifier', () {
-    test('string', () {
-      expect(IcsStatus.cancelled.string, 'CANCELLED');
-      expect(IcsStatus.completed.string, 'COMPLETED');
-      expect(IcsStatus.confirmed.string, 'CONFIRMED');
-      expect(IcsStatus.draft.string, 'DRAFT');
-      expect(IcsStatus.inProcess.string, 'IN-PROCESS');
-      expect(IcsStatus.isFinal.string, 'FINAL');
-      expect(IcsStatus.needsAction.string, 'NEEDS-ACTION');
-      expect(IcsStatus.tentative.string, 'TENTATIVE');
-    });
-  });
 }
