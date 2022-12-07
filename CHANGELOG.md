@@ -1,5 +1,11 @@
 # Changelog
 
+## [1.1.0] - 07/12/2022
+
+* Fixed EXDATE parsing ([#44](https://github.com/TesteurManiak/icalendar_parser/pull/44)
+* Upgraded dev dependencies
+* Refactored some code to beneficiate from enhanced enums
+
 ## [1.0.2] - 08/07/2022
 
 * Added EXDATE ([#37](https://github.com/TesteurManiak/icalendar_parser/pull/37) from [LucaCoduriV](https://github.com/LucaCoduriV))
