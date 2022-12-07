@@ -214,10 +214,17 @@ class ICalendar {
       List events,
       Map<String, dynamic> lastEvent,
     ) {
-      lastEvent['exdate'] = value
+      final dates = value
           .split(',')
           .map((e) => IcsDateTime(dt: e, tzid: params['TZID']))
           .toList();
+
+      if (lastEvent.containsKey('exdate')) {
+        (lastEvent['exdate'] as List).addAll(dates);
+      } else {
+        lastEvent['exdate'] = dates;
+      }
+
       return lastEvent;
     },
   };

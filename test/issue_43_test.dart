@@ -10,14 +10,16 @@ void main() {
       final eventText = readFileLines('multi_line_exdate.ics');
       final iCal = ICalendar.fromLines(eventText);
 
-      final exdates = iCal.data
-          .where((e) => e.containsKey('exdate'))
-          .map((e) => e['exdate']);
+      final exdates =
+          iCal.data.firstWhere((e) => e.containsKey('exdate'))['exdate'];
 
-      expect(exdates, [
-        IcsDateTime(dt: "20221210T000000", tzid: "Europe/Berlin"),
-        IcsDateTime(dt: "20221208T000000", tzid: "Europe/Berlin"),
-      ]);
+      expect(
+        exdates,
+        [
+          IcsDateTime(dt: "20221210T000000", tzid: "Europe/Berlin"),
+          IcsDateTime(dt: "20221208T000000", tzid: "Europe/Berlin"),
+        ],
+      );
     });
   });
 }
