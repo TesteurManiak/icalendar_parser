@@ -4,18 +4,18 @@ import 'package:icalendar_parser/icalendar_parser.dart';
 import 'package:icalendar_parser/src/utils/parsing_methods.dart';
 
 typedef ClosureFunction = Map<String, dynamic>? Function(
-  String,
-  Map<String, String>,
-  List,
-  Map<String, dynamic>?,
+  String value,
+  Map<String, String> params,
+  List events,
+  Map<String, dynamic>? lastEvent,
   List<Map<String, dynamic>>,
 );
 
 typedef GenericFunction = Map<String, dynamic>? Function(
-  String,
-  Map<String, String>,
-  List,
-  Map<String, dynamic>,
+  String value,
+  Map<String, String> params,
+  List events,
+  Map<String, dynamic> lastEvent,
 );
 
 /// Core object
@@ -234,13 +234,7 @@ class ICalendar {
   /// `ICalendarFormatException`.
   static void registerField({
     required String field,
-    Function(
-      String value,
-      Map<String, String> params,
-      List event,
-      Map<String, dynamic> lastEvent,
-    )?
-        function,
+    GenericFunction? function,
   }) {
     if (_objects.containsKey(field)) {
       throw ICalendarFormatException('The field $field is already registered.');
@@ -260,6 +254,8 @@ class ICalendar {
     }
     _objects.remove(field);
   }
+
+  // static void overrideField(String)
 
   /// Parse a list of icalendar object from a [List<String>].
   ///
@@ -394,28 +390,7 @@ class ICalendar {
 }
 
 extension IcsStringModifier on String {
-  IcsStatus toIcsStatus() {
-    switch (toUpperCase()) {
-      case 'TENTATIVE':
-        return IcsStatus.tentative;
-      case 'CONFIRMED':
-        return IcsStatus.confirmed;
-      case 'CANCELLED':
-        return IcsStatus.cancelled;
-      case 'NEEDS-ACTION':
-        return IcsStatus.needsAction;
-      case 'COMPLETED':
-        return IcsStatus.completed;
-      case 'IN-PROCESS':
-        return IcsStatus.inProcess;
-      case 'DRAFT':
-        return IcsStatus.draft;
-      case 'FINAL':
-        return IcsStatus.isFinal;
-      default:
-        throw ICalendarStatusParseException('Unknown IcsStatus: $this');
-    }
-  }
+  IcsStatus toIcsStatus() => IcsStatus.fromString(this);
 
   IcsTransp toIcsTransp() {
     switch (toUpperCase()) {
