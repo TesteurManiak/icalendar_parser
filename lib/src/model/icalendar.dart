@@ -255,8 +255,6 @@ class ICalendar {
     _objects.remove(field);
   }
 
-  // static void overrideField(String)
-
   /// Parse a list of icalendar object from a [List<String>].
   ///
   /// It will return a list containing at `first` the
@@ -379,7 +377,7 @@ class ICalendar {
     } else if (item is IcsTransp) {
       return item.string;
     } else if (item is IcsStatus) {
-      return item.string;
+      return item.key;
     }
     return item;
   }

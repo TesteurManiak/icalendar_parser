@@ -56,14 +56,14 @@ void main() {
 
   group('IcsStatusModifier', () {
     test('string', () {
-      expect(IcsStatus.cancelled.string, 'CANCELLED');
-      expect(IcsStatus.completed.string, 'COMPLETED');
-      expect(IcsStatus.confirmed.string, 'CONFIRMED');
-      expect(IcsStatus.draft.string, 'DRAFT');
-      expect(IcsStatus.inProcess.string, 'IN-PROCESS');
-      expect(IcsStatus.isFinal.string, 'FINAL');
-      expect(IcsStatus.needsAction.string, 'NEEDS-ACTION');
-      expect(IcsStatus.tentative.string, 'TENTATIVE');
+      expect(IcsStatus.cancelled.key, 'CANCELLED');
+      expect(IcsStatus.completed.key, 'COMPLETED');
+      expect(IcsStatus.confirmed.key, 'CONFIRMED');
+      expect(IcsStatus.draft.key, 'DRAFT');
+      expect(IcsStatus.inProcess.key, 'IN-PROCESS');
+      expect(IcsStatus.isFinal.key, 'FINAL');
+      expect(IcsStatus.needsAction.key, 'NEEDS-ACTION');
+      expect(IcsStatus.tentative.key, 'TENTATIVE');
     });
   });
 }
