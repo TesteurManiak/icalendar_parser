@@ -37,19 +37,19 @@ void main() {
 
   group('Register fields', () {
     test('test field - default method', () {
-      final _valid = readFileLines('valid_with_custom_field.ics');
+      final valid = readFileLines('valid_with_custom_field.ics');
 
       ICalendar.registerField(field: 'TEST');
       expect(ICalendar.objects.containsKey('TEST'), true);
 
-      final obj = ICalendar.fromLines(_valid);
+      final obj = ICalendar.fromLines(valid);
       final entry = obj.data.firstWhereOrNull((e) => e.containsKey('test'))!;
       expect(entry, isNotNull);
       expect(entry['test'], 'This is a test content');
     });
 
     test('test2 field - custom method', () {
-      final _valid = readFileLines('valid_with_custom_field_2.ics');
+      final valid = readFileLines('valid_with_custom_field_2.ics');
 
       ICalendar.registerField(
         field: 'TEST2',
@@ -60,7 +60,7 @@ void main() {
       );
       expect(ICalendar.objects.containsKey('TEST2'), true);
 
-      final obj = ICalendar.fromLines(_valid);
+      final obj = ICalendar.fromLines(valid);
       final entry = obj.data.firstWhereOrNull((e) => e.containsKey('test2'))!;
       expect(entry, isNotNull);
       expect(entry['test2'], 'test');

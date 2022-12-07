@@ -273,7 +273,7 @@ class ICalendar {
     bool allowEmptyLine = true,
   }) {
     final data = <Map<String, dynamic>>[];
-    final _headData = <String, dynamic>{};
+    final headData = <String, dynamic>{};
     final events = [];
     Map<String, dynamic>? lastEvent = {};
     String? currentName;
@@ -339,20 +339,20 @@ class ICalendar {
           lastEvent = func(value, params, events, lastEvent, data);
         } else {
           final func = nameFunc as GenericFunction;
-          lastEvent = func(value, params, events, lastEvent ?? _headData);
+          lastEvent = func(value, params, events, lastEvent ?? headData);
         }
       }
     }
-    if (!_headData.containsKey('version')) {
+    if (!headData.containsKey('version')) {
       throw const ICalendarNoVersionException(
         'The body is missing the property VERSION',
       );
-    } else if (!_headData.containsKey('prodid')) {
+    } else if (!headData.containsKey('prodid')) {
       throw const ICalendarNoProdidException(
         'The body is missing the property PRODID',
       );
     }
-    return [_headData, data];
+    return [headData, data];
   }
 
   /// Convert [ICalendar] object to a `Map<String, dynamic>` containing all its data, formatted
@@ -365,15 +365,15 @@ class ICalendar {
   /// }
   /// ```
   Map<String, dynamic> toJson() {
-    final _map = <String, dynamic>{
+    final map = <String, dynamic>{
       'version': version,
       'prodid': prodid,
     };
     for (final entry in headData.entries) {
-      _map[entry.key] = entry.value;
+      map[entry.key] = entry.value;
     }
-    _map['data'] = data;
-    return jsonDecode(jsonEncode(_map, toEncodable: jsonEncodable))
+    map['data'] = data;
+    return jsonDecode(jsonEncode(map, toEncodable: jsonEncodable))
         as Map<String, dynamic>;
   }
 
