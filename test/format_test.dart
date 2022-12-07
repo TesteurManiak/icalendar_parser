@@ -88,11 +88,11 @@ void main() {
       test('IcsTransp', () {
         expect(
           ICalendar.jsonEncodable(IcsTransp.opaque),
-          IcsTransp.opaque.string,
+          IcsTransp.opaque.key,
         );
         expect(
           ICalendar.jsonEncodable(IcsTransp.transparent),
-          IcsTransp.transparent.string,
+          IcsTransp.transparent.key,
         );
       });
 

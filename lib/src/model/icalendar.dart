@@ -375,7 +375,7 @@ class ICalendar {
     if (item is IcsDateTime) {
       return item.toJson();
     } else if (item is IcsTransp) {
-      return item.string;
+      return item.key;
     } else if (item is IcsStatus) {
       return item.key;
     }
@@ -389,15 +389,5 @@ class ICalendar {
 
 extension IcsStringModifier on String {
   IcsStatus toIcsStatus() => IcsStatus.fromString(this);
-
-  IcsTransp toIcsTransp() {
-    switch (toUpperCase()) {
-      case 'OPAQUE':
-        return IcsTransp.opaque;
-      case 'TRANSPARENT':
-        return IcsTransp.transparent;
-      default:
-        throw ICalendarTranspParseException('Unknown IcsTransp: $this');
-    }
-  }
+  IcsTransp toIcsTransp() => IcsTransp.fromString(this);
 }
