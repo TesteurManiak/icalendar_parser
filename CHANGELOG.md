@@ -1,5 +1,9 @@
 # Changelog
 
+## [1.1.X]
+
+* Added CREATED ([#46](https://github.com/TesteurManiak/icalendar_parser/issues/46))
+
 ## [1.1.0] - 07/12/2022
 
 * Fixed EXDATE parsing ([#44](https://github.com/TesteurManiak/icalendar_parser/pull/44)
