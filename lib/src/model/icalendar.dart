@@ -227,6 +227,7 @@ class ICalendar {
 
       return lastEvent;
     },
+    'CREATED': generateDateFunction('created'),
   };
 
   /// Managed parsing methods.
@@ -356,13 +357,13 @@ class ICalendar {
     return [headData, data];
   }
 
-  /// Convert [ICalendar] object to a `Map<String, dynamic>` containing all its data, formatted
-  /// into a valid JSON `Map<String, dynamic>`.
-  /// ```
+  /// Convert [ICalendar] object to a `Map<String, dynamic>` containing all its
+  /// data, formatted into a valid JSON `Map<String, dynamic>`.
+  /// ```json
   /// {
-  ///   "version": ICalendar.version,
-  ///   "prodid": ICalendar.prodid,
-  ///   "data": ICalendar.data
+  ///   "version": "2.0",
+  ///   "prodid": "-//hacksw/handcal//NONSGML v1.0//EN",
+  ///   "data": []
   /// }
   /// ```
   Map<String, dynamic> toJson() {
