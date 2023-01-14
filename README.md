@@ -155,3 +155,8 @@ END:VCALENDAR
 -   RRULE
 -   EXDATE
 -   CREATED
+
+## Contributors
+
+<!-- readme: contributors -start -->
+<!-- readme: contributors -end -->
