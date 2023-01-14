@@ -159,4 +159,49 @@ END:VCALENDAR
 ## Contributors
 
 <!-- readme: contributors -start -->
+<table>
+<tr>
+    <td align="center">
+        <a href="https://github.com/TesteurManiak">
+            <img src="https://avatars.githubusercontent.com/u/14369698?v=4" width="100;" alt="TesteurManiak"/>
+            <br />
+            <sub><b>Guillaume Roux</b></sub>
+        </a>
+    </td>
+    <td align="center">
+        <a href="https://github.com/LucaCoduriV">
+            <img src="https://avatars.githubusercontent.com/u/43602144?v=4" width="100;" alt="LucaCoduriV"/>
+            <br />
+            <sub><b>Luca</b></sub>
+        </a>
+    </td>
+    <td align="center">
+        <a href="https://github.com/simonbengtsson">
+            <img src="https://avatars.githubusercontent.com/u/3586691?v=4" width="100;" alt="simonbengtsson"/>
+            <br />
+            <sub><b>Simon Bengtsson</b></sub>
+        </a>
+    </td>
+    <td align="center">
+        <a href="https://github.com/Levi-Lesches">
+            <img src="https://avatars.githubusercontent.com/u/20747538?v=4" width="100;" alt="Levi-Lesches"/>
+            <br />
+            <sub><b>Levi Lesches</b></sub>
+        </a>
+    </td>
+    <td align="center">
+        <a href="https://github.com/jjchiw">
+            <img src="https://avatars.githubusercontent.com/u/642319?v=4" width="100;" alt="jjchiw"/>
+            <br />
+            <sub><b>Null</b></sub>
+        </a>
+    </td>
+    <td align="center">
+        <a href="https://github.com/stevenboeckmans">
+            <img src="https://avatars.githubusercontent.com/u/10263529?v=4" width="100;" alt="stevenboeckmans"/>
+            <br />
+            <sub><b>Null</b></sub>
+        </a>
+    </td></tr>
+</table>
 <!-- readme: contributors -end -->
