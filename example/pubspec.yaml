@@ -7,15 +7,15 @@ publish_to: "none" # Remove this line if you wish to publish to pub.dev
 version: 1.0.0+1
 
 environment:
-  sdk: ">=2.7.0 <3.0.0"
+  sdk: ">=3.0.0 <4.0.0"
 
 dependencies:
-  cupertino_icons: ^1.0.0
+  cupertino_icons: ^1.0.5
   flutter:
     sdk: flutter
   icalendar_parser:
     path: ../
-  path_provider: ^1.6.22
+  path_provider: ^2.0.15
 
 dev_dependencies:
   flutter_test:

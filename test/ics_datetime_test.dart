@@ -15,5 +15,13 @@ void main() {
         },
       );
     });
+
+    test('toString', () {
+      final d1 = IcsDateTime(tzid: 'Europe/Zurich', dt: '20220415T145500');
+      expect(
+        d1.toString(),
+        'IcsDateTime{tzid: Europe/Zurich, dt: 20220415T145500}',
+      );
+    });
   });
 }

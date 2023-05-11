@@ -73,12 +73,6 @@ void main() {
       });
     });
 
-    test('toString()', () {
-      final iCal = ICalendar.fromLines(valid);
-      final str = iCal.toString();
-      expect(str.contains('iCalendar - VERSION: 2.0 - PRODID: '), true);
-    });
-
     group('jsonEncodable()', () {
       test('IcsDateTime', () {
         final icsDt = IcsDateTime(dt: DateTime.now().toIso8601String());

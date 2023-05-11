@@ -11,13 +11,6 @@ typedef ClosureFunction = Map<String, dynamic>? Function(
   List<Map<String, dynamic>>,
 );
 
-typedef GenericFunction = Map<String, dynamic>? Function(
-  String value,
-  Map<String, String> params,
-  List events,
-  Map<String, dynamic> lastEvent,
-);
-
 /// Core object
 class ICalendar {
   /// iCalendar's components list.
@@ -79,7 +72,7 @@ class ICalendar {
   }
 
   /// Map containing the methods used to parse each kind of fields in the file.
-  static final Map<String, Function> _objects = {
+  static final _objects = <String, Function>{
     'BEGIN': (
       String value,
       Map<String, String> params,
@@ -93,27 +86,7 @@ class ICalendar {
 
       return lastEvent;
     },
-    'END': (
-      String value,
-      Map<String, String> params,
-      List events,
-      Map<String, dynamic>? lastEvent,
-      List<Map<String, dynamic>?> data,
-    ) {
-      if (value == 'VCALENDAR') return lastEvent;
-
-      data.add(lastEvent);
-
-      final index = events.indexOf(lastEvent);
-      if (index != -1) events.removeAt(index);
-
-      if (events.isEmpty) {
-        lastEvent = null;
-      } else {
-        lastEvent = events.last as Map<String, dynamic>?;
-      }
-      return lastEvent;
-    },
+    'END': parseEndField,
     'DTSTART': generateDateFunction('dtstart'),
     'DTEND': generateDateFunction('dtend'),
     'DTSTAMP': generateDateFunction('dtstamp'),
@@ -126,25 +99,7 @@ class ICalendar {
     'DESCRIPTION': generateSimpleParamFunction('description'),
     'LOCATION': generateSimpleParamFunction('location'),
     'URL': generateSimpleParamFunction('url'),
-    'ORGANIZER': (
-      String value,
-      Map<String, String> params,
-      List events,
-      Map<String, dynamic> lastEvent,
-    ) {
-      final mail = value.replaceAll('MAILTO:', '').trim();
-
-      if (params.containsKey('CN')) {
-        lastEvent['organizer'] = {
-          'name': params['CN'],
-          'mail': mail,
-        };
-      } else {
-        lastEvent['organizer'] = {'mail': mail};
-      }
-
-      return lastEvent;
-    },
+    'ORGANIZER': parseOrganizerField,
     'GEO': (
       String value,
       Map<String, String> params,
@@ -178,17 +133,20 @@ class ICalendar {
       lastEvent['attendee'] ??= [];
 
       final mail = value.replaceAll('MAILTO:', '').trim();
-      final elem = <String, String>{};
-      if (params.containsKey('CN')) {
-        elem['name'] = params['CN']!.trim();
+      final cn = params['CN'];
+
+      final elem = <String, String>{
+        if (cn != null) 'name': cn.trim(),
+        for (final entry in params.entries)
+          if (entry.key != 'CN') entry.key.toLowerCase(): entry.value.trim(),
+        'mail': mail,
+      };
+
+      final attendee = lastEvent['attendee'];
+      if (attendee is List) {
+        attendee.add(elem);
       }
-      params.forEach((key, value) {
-        if (key != 'CN') {
-          elem[key.toLowerCase()] = value.trim();
-        }
-      });
-      elem['mail'] = mail;
-      (lastEvent['attendee'] as List).add(elem);
+
       return lastEvent;
     },
     'ACTION': generateSimpleParamFunction('action'),
@@ -242,7 +200,7 @@ class ICalendar {
   /// `ICalendarFormatException`.
   static void registerField({
     required String field,
-    GenericFunction? function,
+    SimpleParamFunction? function,
   }) {
     if (_objects.containsKey(field)) {
       throw ICalendarFormatException('The field $field is already registered.');
@@ -340,7 +298,7 @@ class ICalendar {
           currentName = null;
           lastEvent = func(value, params, events, lastEvent, data);
         } else {
-          final func = nameFunc as GenericFunction;
+          final func = nameFunc as SimpleParamFunction;
           lastEvent = func(value, params, events, lastEvent ?? headData);
         }
       }
@@ -370,11 +328,9 @@ class ICalendar {
     final map = <String, dynamic>{
       'version': version,
       'prodid': prodid,
+      for (final entry in headData.entries) entry.key: entry.value,
+      'data': data,
     };
-    for (final entry in headData.entries) {
-      map[entry.key] = entry.value;
-    }
-    map['data'] = data;
     return jsonDecode(jsonEncode(map, toEncodable: jsonEncodable))
         as Map<String, dynamic>;
   }
@@ -391,8 +347,7 @@ class ICalendar {
   }
 
   @override
-  String toString() =>
-      'iCalendar - VERSION: $version - PRODID: $prodid - DATA: $data';
+  String toString() => jsonEncode(toJson());
 }
 
 extension IcsStringModifier on String {

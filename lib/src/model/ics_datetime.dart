@@ -33,15 +33,17 @@ class IcsDateTime {
   DateTime? toDateTime() => DateTime.tryParse(dt);
 
   Map<String, dynamic> toJson() {
-    final json = <String, dynamic>{'dt': dt};
-    if (tzid != null) json['tzid'] = tzid;
-    return json;
+    return {
+      'dt': dt,
+      if (tzid != null) 'tzid': tzid,
+    };
   }
 
   /// Compare this object with another [IcsDateTime] object.
   @override
-  bool operator ==(Object other) =>
-      other is IcsDateTime && (other.dt == dt && other.tzid == tzid);
+  bool operator ==(Object other) {
+    return other is IcsDateTime && (other.dt == dt && other.tzid == tzid);
+  }
 
   @override
   int get hashCode => Object.hash(dt, tzid);

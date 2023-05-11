@@ -17,26 +17,20 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Flutter Demo',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-        visualDensity: VisualDensity.adaptivePlatformDensity,
-      ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
+      home: const MyHomePage(),
     );
   }
 }
 
 class MyHomePage extends StatefulWidget {
-  const MyHomePage({Key key, this.title}) : super(key: key);
-
-  final String title;
+  const MyHomePage({super.key});
 
   @override
   _MyHomePageState createState() => _MyHomePageState();
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  ICalendar _iCalendar;
+  ICalendar? _iCalendar;
   bool _isLoading = false;
 
   Future<void> _getAssetsFile(String assetName) async {
@@ -59,45 +53,9 @@ class _MyHomePageState extends State<MyHomePage> {
     }
   }
 
-  Widget _generateTextContent() {
-    const style = TextStyle(color: Colors.black);
-    return RichText(
-      text: TextSpan(
-        children: [
-          TextSpan(
-              text: 'VERSION: ${_iCalendar.version}\n',
-              style: style.copyWith(fontWeight: FontWeight.bold)),
-          TextSpan(
-              text: 'PRODID: ${_iCalendar.prodid}\n',
-              style: style.copyWith(fontWeight: FontWeight.bold)),
-          TextSpan(
-              text: 'CALSCALE: ${_iCalendar.calscale}\n',
-              style: style.copyWith(fontWeight: FontWeight.bold)),
-          TextSpan(
-              text: 'METHOD: ${_iCalendar.method}\n',
-              style: style.copyWith(fontWeight: FontWeight.bold)),
-          TextSpan(
-              children: _iCalendar.data
-                  .map((e) => TextSpan(
-                        children: e.keys
-                            .map((f) => TextSpan(children: [
-                                  TextSpan(
-                                      text: '${f.toUpperCase()}: ',
-                                      style: style.copyWith(
-                                          fontWeight: FontWeight.bold)),
-                                  TextSpan(text: '${e[f]}\n')
-                                ]))
-                            .toList(),
-                      ))
-                  .toList()),
-        ],
-        style: style,
-      ),
-    );
-  }
-
   Future<void> _getAssets(String assetName) async {
     setState(() => _isLoading = true);
+
     try {
       final icsString = await rootBundle.loadString('assets/$assetName');
       final iCalendar = ICalendar.fromString(icsString);
@@ -113,18 +71,15 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
+    final calendar = _iCalendar;
+
     return Scaffold(
-      appBar: AppBar(
-        title: Text(widget.title),
-      ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16),
         child: Column(
           children: [
-            if (_isLoading || _iCalendar == null)
-              const Center(child: CircularProgressIndicator())
-            else
-              _generateTextContent(),
+            if (_isLoading) const Center(child: CircularProgressIndicator()),
+            if (calendar != null) IcsTextContent(calendar),
             ElevatedButton(
               onPressed: () => _getAssetsFile('calendar.ics'),
               child: const Text('Load File 1'),
@@ -143,6 +98,49 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
           ],
         ),
+      ),
+    );
+  }
+}
+
+class IcsTextContent extends StatelessWidget {
+  const IcsTextContent(
+    this.iCalendar, {
+    super.key,
+  });
+
+  final ICalendar iCalendar;
+
+  @override
+  Widget build(BuildContext context) {
+    return Text.rich(
+      TextSpan(
+        children: [
+          TextSpan(
+            style: TextStyle(fontWeight: FontWeight.bold),
+            children: [
+              TextSpan(text: 'VERSION: ${iCalendar.version}\n'),
+              TextSpan(text: 'PRODID: ${iCalendar.prodid}\n'),
+              TextSpan(text: 'CALSCALE: ${iCalendar.calscale}\n'),
+              TextSpan(text: 'METHOD: ${iCalendar.method}\n'),
+            ],
+          ),
+          TextSpan(
+            children: [
+              for (final entry in iCalendar.data)
+                for (final key in entry.keys)
+                  TextSpan(
+                    children: [
+                      TextSpan(
+                        text: '${key.toUpperCase()}: ',
+                        style: TextStyle(fontWeight: FontWeight.bold),
+                      ),
+                      TextSpan(text: '${entry[key]}\n'),
+                    ],
+                  ),
+            ],
+          ),
+        ],
       ),
     );
   }
