@@ -199,9 +199,9 @@ void main() {
       final exdate =
           iCal.data.firstWhere((e) => e.containsKey('exdate'))['exdate'];
       expect(exdate, [
-        IcsDateTime(dt: "20220415T145500", tzid: "Europe/Zurich"),
-        IcsDateTime(dt: "20220527T145500", tzid: "Europe/Zurich"),
-        IcsDateTime(dt: "20220422T145500", tzid: "Europe/Zurich"),
+        const IcsDateTime(dt: "20220415T145500", tzid: "Europe/Zurich"),
+        const IcsDateTime(dt: "20220527T145500", tzid: "Europe/Zurich"),
+        const IcsDateTime(dt: "20220422T145500", tzid: "Europe/Zurich"),
       ]);
     });
   });

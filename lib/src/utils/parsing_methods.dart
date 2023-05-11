@@ -25,7 +25,7 @@ SimpleParamFunction generateSimpleParamFunction(String name) {
   return (
     String value,
     Map<String, String> params,
-    List events,
+    List<Object?> events,
     Map<String, dynamic> lastEvent,
   ) {
     lastEvent[name] = value.replaceAll(RegExp(r'/\\n/g'), '\n');
@@ -56,7 +56,7 @@ Map<String, dynamic>? parseEndField(
 Map<String, dynamic> parseOrganizerField(
   String value,
   Map<String, String> params,
-  List events,
+  List<Object?> events,
   Map<String, dynamic> lastEvent,
 ) {
   final mail = value.replaceAll('MAILTO:', '').trim();

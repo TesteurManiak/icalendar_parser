@@ -84,6 +84,7 @@ PRODID:-//hacksw/handcal//NONSGML v1.0//EN
 CALSCALE:GREGORIAN
 METHOD:PUBLISH
 BEGIN:VEVENT
+CREATED:19960329T133000Z
 UID:uid1@example.com
 DTSTAMP:19970714T170000Z
 ORGANIZER;CN=John Doe:MAILTO:john.doe@example.com
@@ -106,14 +107,23 @@ END:VCALENDAR
     "data": [
         {
             "type": "VEVENT",
+            "created": {
+                "dt": "19960329T133000Z"
+            },
             "uid": "uid1@example.com",
-            "dtstamp": "1997-07-14T17:00:00.000Z",
+            "dtstamp": {
+                "dt": "19970714T170000Z"
+            },
             "organizer": {
                 "name": "John Doe",
                 "mail": "john.doe@example.com"
             },
-            "dtstart": "1997-07-14T17:00:00.000Z",
-            "dtend": "1997-07-15T03:59:59.000Z",
+            "dtstart": {
+                "dt": "19970714T170000Z"
+            },
+            "dtend": {
+                "dt": "19970715T035959Z"
+            },
             "summary": "Bastille Day Party",
             "geo": {
                 "latitude": 48.85299,

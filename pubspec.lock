@@ -73,6 +73,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "3.0.3"
+  fd_lints:
+    dependency: "direct dev"
+    description:
+      name: fd_lints
+      sha256: f02e8fc7a0f31037ecc26483bcd3c22136539c5dc16a0ed437c9ce1a1c2a06fe
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.0.2"
   file:
     dependency: transitive
     description:
@@ -137,14 +145,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.6.7"
-  lint:
-    dependency: "direct dev"
-    description:
-      name: lint
-      sha256: f55edc698b3b0058e016232a487a72652c3fa01a504a8c5b10f66add0e72bfb9
-      url: "https://pub.dev"
-    source: hosted
-    version: "2.1.1"
   logging:
     dependency: transitive
     description:
@@ -162,7 +162,7 @@ packages:
     source: hosted
     version: "0.12.15"
   meta:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: meta
       sha256: "3c74dbf8763d36539f114c799d8a2d87343b5067e9d796ca22b5eb8437090ee3"

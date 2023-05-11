@@ -1,9 +1,9 @@
 /// Exception thrown when there is a formatting error while parsing the
 /// [ICalendar] object.
 class ICalendarFormatException implements Exception {
-  final String msg;
-
   const ICalendarFormatException(this.msg);
+
+  final String msg;
 
   @override
   String toString() => 'ICalendarFormatException: $msg';

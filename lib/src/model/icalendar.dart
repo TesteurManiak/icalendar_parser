@@ -6,31 +6,13 @@ import 'package:icalendar_parser/src/utils/parsing_methods.dart';
 typedef ClosureFunction = Map<String, dynamic>? Function(
   String value,
   Map<String, String> params,
-  List events,
+  List<Object?> events,
   Map<String, dynamic>? lastEvent,
   List<Map<String, dynamic>>,
 );
 
 /// Core object
 class ICalendar {
-  /// iCalendar's components list.
-  final List<Map<String, dynamic>> data;
-
-  /// iCalendar's fields.
-  final Map<String, dynamic> headData;
-
-  /// `VERSION` of the object.
-  String get version => headData['version'] as String;
-
-  /// `PRODID` of the object.
-  String get prodid => headData['prodid'] as String;
-
-  /// `CALSCALE` of the object.
-  String? get calscale => headData['calscale'] as String?;
-
-  /// `METHOD` of the object.
-  String? get method => headData['method'] as String?;
-
   /// Default constructor.
   ICalendar({required this.data, required this.headData});
 
@@ -71,12 +53,30 @@ class ICalendar {
     );
   }
 
+  /// iCalendar's components list.
+  final List<Map<String, dynamic>> data;
+
+  /// iCalendar's fields.
+  final Map<String, dynamic> headData;
+
+  /// `VERSION` of the object.
+  String get version => headData['version'] as String;
+
+  /// `PRODID` of the object.
+  String get prodid => headData['prodid'] as String;
+
+  /// `CALSCALE` of the object.
+  String? get calscale => headData['calscale'] as String?;
+
+  /// `METHOD` of the object.
+  String? get method => headData['method'] as String?;
+
   /// Map containing the methods used to parse each kind of fields in the file.
   static final _objects = <String, Function>{
     'BEGIN': (
       String value,
       Map<String, String> params,
-      List events,
+      List<Object?> events,
       Map<String, dynamic> lastEvent,
     ) {
       if (value == 'VCALENDAR') return null;
@@ -103,7 +103,7 @@ class ICalendar {
     'GEO': (
       String value,
       Map<String, String> params,
-      List events,
+      List<Object?> events,
       Map<String, dynamic> lastEvent,
     ) {
       final pos = value.split(';');
@@ -118,7 +118,7 @@ class ICalendar {
     'CATEGORIES': (
       String value,
       Map<String, String> params,
-      List events,
+      List<Object?> events,
       Map<String, dynamic> lastEvent,
     ) {
       lastEvent['categories'] = value.split(',');
@@ -130,7 +130,7 @@ class ICalendar {
       _,
       Map<String, dynamic> lastEvent,
     ) {
-      lastEvent['attendee'] ??= [];
+      lastEvent['attendee'] ??= <Map<String, String>>[];
 
       final mail = value.replaceAll('MAILTO:', '').trim();
       final cn = params['CN'];
@@ -169,7 +169,7 @@ class ICalendar {
     'EXDATE': (
       String value,
       Map<String, String> params,
-      List events,
+      List<Object?> events,
       Map<String, dynamic> lastEvent,
     ) {
       final dates = value
@@ -177,8 +177,9 @@ class ICalendar {
           .map((e) => IcsDateTime(dt: e, tzid: params['TZID']))
           .toList();
 
-      if (lastEvent.containsKey('exdate')) {
-        (lastEvent['exdate'] as List).addAll(dates);
+      final exdate = lastEvent['exdate'];
+      if (exdate != null && exdate is List<IcsDateTime>) {
+        exdate.addAll(dates);
       } else {
         lastEvent['exdate'] = dates;
       }
@@ -234,7 +235,7 @@ class ICalendar {
   }) {
     final data = <Map<String, dynamic>>[];
     final headData = <String, dynamic>{};
-    final events = [];
+    final events = <Object?>[];
     Map<String, dynamic>? lastEvent = {};
     String? currentName;
 
@@ -270,9 +271,9 @@ class ICalendar {
           (dataLine.isNotEmpty &&
               dataLine[0].toUpperCase() != dataLine[0] &&
               !dataLine[0].contains(';'))) {
-        if (line.isNotEmpty && currentName != null) {
-          final buffer = StringBuffer(lastEvent![currentName] as String);
-          buffer.write(line.toString());
+        if (lastEvent != null && line.isNotEmpty && currentName != null) {
+          final buffer = StringBuffer(lastEvent[currentName] as String)
+            ..write(line.toString());
           lastEvent[currentName] = buffer.toString();
         }
         continue;

@@ -1,0 +1,33 @@
+{
+    "version": "2.0",
+    "prodid": "-//hacksw/handcal//NONSGML v1.0//EN",
+    "calscale": "GREGORIAN",
+    "method": "PUBLISH",
+    "data": [
+        {
+            "type": "VEVENT",
+            "created": {
+                "dt": "19960329T133000Z"
+            },
+            "uid": "uid1@example.com",
+            "dtstamp": {
+                "dt": "19970714T170000Z"
+            },
+            "organizer": {
+                "name": "John Doe",
+                "mail": "john.doe@example.com"
+            },
+            "dtstart": {
+                "dt": "19970714T170000Z"
+            },
+            "dtend": {
+                "dt": "19970715T035959Z"
+            },
+            "summary": "Bastille Day Party",
+            "geo": {
+                "latitude": 48.85299,
+                "longitude": 2.36885
+            }
+        }
+    ]
+}

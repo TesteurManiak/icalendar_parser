@@ -16,8 +16,8 @@ void main() {
       expect(
         exdates,
         [
-          IcsDateTime(dt: "20221210T000000", tzid: "Europe/Berlin"),
-          IcsDateTime(dt: "20221208T000000", tzid: "Europe/Berlin"),
+          const IcsDateTime(dt: "20221210T000000", tzid: "Europe/Berlin"),
+          const IcsDateTime(dt: "20221208T000000", tzid: "Europe/Berlin"),
         ],
       );
     });
