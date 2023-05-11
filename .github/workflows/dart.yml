@@ -15,8 +15,8 @@ jobs:
   analyze:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-      - uses: dart-lang/setup-dart@v1
+      - uses: actions/checkout@v3
+      - uses: dart-lang/setup-dart@v1.3
       - name: Install dependencies
         run: dart pub get
       - name: Analyze project source
@@ -27,10 +27,23 @@ jobs:
     needs: analyze
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-      - uses: dart-lang/setup-dart@v1
+      - uses: actions/checkout@v3
+      - uses: dart-lang/setup-dart@v1.3
       - id: install
         name: Install Dependencies
         run: dart pub get
       - name: Run tests
-        run: dart test
+        run: dart run coverage:test_with_coverage
+      - name: Collect and report coverage
+        uses: coverallsapp/github-action@1.1.3
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+
+  contributors:
+    needs: test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Contribute List
+        uses: akhilmhdh/contributors-readme-action@v2.3.6
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

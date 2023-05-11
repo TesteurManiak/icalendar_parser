@@ -3,7 +3,7 @@
 [![Pub Version](https://img.shields.io/pub/v/icalendar_parser?color=blue&logo=dart)](https://pub.dev/packages/icalendar_parser)
 [![Stars](https://img.shields.io/github/stars/TesteurManiak/icalendar_parser)](https://github.com/TesteurManiak/icalendar_parser/stargazers)
 [![Dart](https://github.com/TesteurManiak/icalendar_parser/actions/workflows/dart.yml/badge.svg)](https://github.com/TesteurManiak/icalendar_parser/actions/workflows/dart.yml)
-[![Issues](https://img.shields.io/github/issues/TesteurManiak/icalendar_parser)](https://github.com/TesteurManiak/icalendar_parser/issues)
+[![Coverage Status](https://coveralls.io/repos/github/TesteurManiak/icalendar_parser/badge.svg?branch=main)](https://coveralls.io/github/TesteurManiak/icalendar_parser?branch=main)
 
 Package to parse iCalendar (.ics) files written in pure Dart.
 
@@ -154,3 +154,54 @@ END:VCALENDAR
 -   REPEAT
 -   RRULE
 -   EXDATE
+-   CREATED
+
+## Contributors
+
+<!-- readme: contributors -start -->
+<table>
+<tr>
+    <td align="center">
+        <a href="https://github.com/TesteurManiak">
+            <img src="https://avatars.githubusercontent.com/u/14369698?v=4" width="100;" alt="TesteurManiak"/>
+            <br />
+            <sub><b>Guillaume Roux</b></sub>
+        </a>
+    </td>
+    <td align="center">
+        <a href="https://github.com/LucaCoduriV">
+            <img src="https://avatars.githubusercontent.com/u/43602144?v=4" width="100;" alt="LucaCoduriV"/>
+            <br />
+            <sub><b>Luca</b></sub>
+        </a>
+    </td>
+    <td align="center">
+        <a href="https://github.com/simonbengtsson">
+            <img src="https://avatars.githubusercontent.com/u/3586691?v=4" width="100;" alt="simonbengtsson"/>
+            <br />
+            <sub><b>Simon Bengtsson</b></sub>
+        </a>
+    </td>
+    <td align="center">
+        <a href="https://github.com/Levi-Lesches">
+            <img src="https://avatars.githubusercontent.com/u/20747538?v=4" width="100;" alt="Levi-Lesches"/>
+            <br />
+            <sub><b>Levi Lesches</b></sub>
+        </a>
+    </td>
+    <td align="center">
+        <a href="https://github.com/jjchiw">
+            <img src="https://avatars.githubusercontent.com/u/642319?v=4" width="100;" alt="jjchiw"/>
+            <br />
+            <sub><b>Null</b></sub>
+        </a>
+    </td>
+    <td align="center">
+        <a href="https://github.com/stevenboeckmans">
+            <img src="https://avatars.githubusercontent.com/u/10263529?v=4" width="100;" alt="stevenboeckmans"/>
+            <br />
+            <sub><b>Null</b></sub>
+        </a>
+    </td></tr>
+</table>
+<!-- readme: contributors -end -->
