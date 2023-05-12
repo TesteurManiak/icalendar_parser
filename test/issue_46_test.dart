@@ -15,7 +15,7 @@ void main() {
 
       expect(
         created,
-        IcsDateTime(dt: "19960329T133000Z"),
+        const IcsDateTime(dt: "19960329T133000Z"),
       );
     });
   });

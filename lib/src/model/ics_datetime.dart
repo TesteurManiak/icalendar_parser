@@ -1,3 +1,5 @@
+import 'package:meta/meta.dart';
+
 /// This value type is used to identify values that specify a precise calendar
 /// date and time of day.
 ///
@@ -14,7 +16,13 @@
 /// final icsDt = IcsDateTime(/* ... */);
 /// final date = tz.TZDateTime.parse(tz.getLocation(icsDt.tzid), icsDt.dt);
 /// ```
+@immutable
 class IcsDateTime {
+  const IcsDateTime({
+    this.tzid,
+    required this.dt,
+  });
+
   /// This property specifies the text value that uniquely identifies the
   /// "VTIMEZONE" calendar component.
   ///
@@ -24,8 +32,6 @@ class IcsDateTime {
   /// Datetime value parsed from the ics file.
   final String dt;
 
-  IcsDateTime({this.tzid, required this.dt});
-
   /// Use [DateTime.tryParse] to parse the `dt` property.
   ///
   /// **Warning:** This method does not use the `tzid` as [DateTime] does not
@@ -33,15 +39,17 @@ class IcsDateTime {
   DateTime? toDateTime() => DateTime.tryParse(dt);
 
   Map<String, dynamic> toJson() {
-    final json = <String, dynamic>{'dt': dt};
-    if (tzid != null) json['tzid'] = tzid;
-    return json;
+    return {
+      'dt': dt,
+      if (tzid != null) 'tzid': tzid,
+    };
   }
 
   /// Compare this object with another [IcsDateTime] object.
   @override
-  bool operator ==(Object other) =>
-      other is IcsDateTime && (other.dt == dt && other.tzid == tzid);
+  bool operator ==(Object other) {
+    return other is IcsDateTime && (other.dt == dt && other.tzid == tzid);
+  }
 
   @override
   int get hashCode => Object.hash(dt, tzid);

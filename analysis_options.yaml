@@ -1,13 +1,1 @@
-include: package:lint/analysis_options_package.yaml
-
-linter:
-  rules:
-    # Util classes are awesome!
-    # avoid_classes_with_only_static_members: false
-    
-    # Make constructors the first thing in every class
-    # sort_constructors_first: true
-
-    # Choose wisely, but you don't have to
-    # prefer_double_quotes: true
-    # prefer_single_quotes: true
+include: package:fd_lints/dart.yaml

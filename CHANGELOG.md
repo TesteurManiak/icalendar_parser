@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.0.0]
+
+* Fixed `toJson()` format
+* Updated linting
+* Updated example to be a Dart executable
+* Updated Dart SDK constraint to `>=3.0.0 <4.0.0`
+
 ## [1.1.1]
 
 * Added CREATED ([#46](https://github.com/TesteurManiak/icalendar_parser/issues/46))
