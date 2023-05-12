@@ -19,7 +19,7 @@ class PeriodOfTime {
     final parts = value.split('/');
 
     if (parts.length != 2) {
-      throw ArgumentError.value(value, 'value', 'Invalid period of time');
+      throw FormatException('Invalid period of time format: $value');
     }
 
     final start = IcalDateTime.parse(parts[0]);
@@ -28,11 +28,15 @@ class PeriodOfTime {
     final endDt = IcalDateTime.tryParse(parts[1]);
     final endDuration = IcalDuration.tryParse(parts[1]);
     if (endDt != null) {
+      if (endDt.isBefore(start)) {
+        throw FormatException('Invalid period of time format: $value');
+      }
+
       end = EndOfPeriodDateTime(endDt);
     } else if (endDuration != null) {
       end = EndOfPeriodDuration(IcalDuration.parse(parts[1]));
     } else {
-      throw ArgumentError.value(value, 'value', 'Invalid period of time');
+      throw FormatException('Invalid period of time format: $value');
     }
 
     return PeriodOfTime(start: start, end: end);
@@ -40,6 +44,18 @@ class PeriodOfTime {
 
   final IcalDateTime start;
   final EndOfPeriod end;
+
+  static PeriodOfTime? tryParse(String? value) {
+    if (value == null) {
+      return null;
+    }
+
+    try {
+      return PeriodOfTime.parse(value);
+    } on FormatException {
+      return null;
+    }
+  }
 }
 
 /// Union type for [IcalDateTime] and [Duration].
@@ -57,13 +73,6 @@ sealed class EndOfPeriod {
       case EndOfPeriodDuration(value: final value):
         return duration(value);
     }
-  }
-
-  bool isBefore(IcalDateTime time) {
-    return when(
-      dateTime: (value) => value.isBefore(time),
-      duration: (value) => false,
-    );
   }
 }
 
