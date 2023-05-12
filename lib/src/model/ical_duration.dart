@@ -1,3 +1,7 @@
+/// This value type is used to identify properties that contain a duration of
+/// time.
+///
+/// See doc: https://icalendar.org/iCalendar-RFC-5545/3-3-6-duration.html
 class IcalDuration extends Duration {
   const IcalDuration({
     super.days,

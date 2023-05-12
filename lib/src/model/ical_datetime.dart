@@ -4,8 +4,6 @@ import 'package:meta/meta.dart';
 /// This value type is used to identify values that specify a precise calendar
 /// date and time of day.
 ///
-/// See doc: https://www.kanzaki.com/docs/ical/dateTime.html
-///
 /// To have access to as fully-parsed date and time you can use the package
 /// [timezone](https://pub.dev/packages/timezone) which gives you access to a
 /// [TimeZone aware DateTime](https://pub.dev/packages/timezone#timezone-aware-datetime)
@@ -17,6 +15,8 @@ import 'package:meta/meta.dart';
 /// final icsDt = IcsDateTime(/* ... */);
 /// final date = tz.TZDateTime.parse(tz.getLocation(icsDt.tzid), icsDt.dt);
 /// ```
+///
+/// See doc: https://icalendar.org/iCalendar-RFC-5545/3-3-5-date-time.html
 @immutable
 class IcalDateTime {
   const IcalDateTime({
@@ -32,14 +32,14 @@ class IcalDateTime {
     final match = regex.firstMatch(value);
 
     if (match == null) {
-      throw ArgumentError.value(value, 'value', 'Invalid date time');
+      throw FormatException('Invalid date time format: $value');
     }
 
     final tzid = match.namedGroup('tzid');
     final dt = match.namedGroup('dt');
 
-    if (dt == null) {
-      throw ArgumentError.value(value, 'value', 'Invalid date time');
+    if (dt == null || DateTime.tryParse(dt) == null) {
+      throw FormatException('Invalid date time format: $value');
     }
 
     return IcalDateTime(
@@ -69,11 +69,11 @@ class IcalDateTime {
     }
   }
 
-  /// Use [DateTime.tryParse] to parse the `dt` property.
+  /// Use [DateTime.parse] to parse the `dt` property.
   ///
   /// **Warning:** This method does not use the `tzid` as [DateTime] does not
   /// support timezones.
-  DateTime? toDateTime() => DateTime.tryParse(dt);
+  DateTime toDateTime() => DateTime.parse(dt);
 
   Map<String, dynamic> toJson() {
     return {
@@ -92,15 +92,15 @@ class IcalDateTime {
   int get hashCode => Object.hash(dt, tzid);
 
   bool isBefore(IcalDateTime other) {
-    final otherDt = other.toDateTime() ?? DateTime(0);
-    final thisDt = toDateTime() ?? DateTime(0);
+    final otherDt = other.toDateTime();
+    final thisDt = toDateTime();
 
     return thisDt.isBefore(otherDt);
   }
 
   bool isAfter(IcalDateTime other) {
-    final otherDt = other.toDateTime() ?? DateTime(0);
-    final thisDt = toDateTime() ?? DateTime(0);
+    final otherDt = other.toDateTime();
+    final thisDt = toDateTime();
 
     return thisDt.isAfter(otherDt);
   }
