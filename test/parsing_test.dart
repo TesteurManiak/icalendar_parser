@@ -120,7 +120,7 @@ void main() {
       final obj = ICalendar.fromLines(dtFile);
       expect(obj.data.isNotEmpty, true);
 
-      final dtstart = obj.data.first['dtstart'] as IcsDateTime;
+      final dtstart = obj.data.first['dtstart'] as IcalDateTime;
       expect(dtstart.dt, '20210607T090000');
       expect(dtstart.tzid, 'Europe/Berlin');
       expect(dtstart.toDateTime(), isNotNull);

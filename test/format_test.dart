@@ -75,7 +75,7 @@ void main() {
 
     group('jsonEncodable()', () {
       test('IcsDateTime', () {
-        final icsDt = IcsDateTime(dt: DateTime.now().toIso8601String());
+        final icsDt = IcalDateTime(dt: DateTime.now().toIso8601String());
         expect(ICalendar.jsonEncodable(icsDt), icsDt.toJson());
       });
 
@@ -199,9 +199,9 @@ void main() {
       final exdate =
           iCal.data.firstWhere((e) => e.containsKey('exdate'))['exdate'];
       expect(exdate, [
-        const IcsDateTime(dt: "20220415T145500", tzid: "Europe/Zurich"),
-        const IcsDateTime(dt: "20220527T145500", tzid: "Europe/Zurich"),
-        const IcsDateTime(dt: "20220422T145500", tzid: "Europe/Zurich"),
+        const IcalDateTime(dt: "20220415T145500", tzid: "Europe/Zurich"),
+        const IcalDateTime(dt: "20220527T145500", tzid: "Europe/Zurich"),
+        const IcalDateTime(dt: "20220422T145500", tzid: "Europe/Zurich"),
       ]);
     });
   });

@@ -9,13 +9,16 @@ Package to parse iCalendar (.ics) files written in pure Dart.
 
 Implementation of [AnyFetch's ics-parser](https://github.com/AnyFetch/ics-parser) in JavaScript.
 
-## Getting Started
+## iCalendar to Dart type mapping
 
-Add `icalendar_parser` to your pubspec.yaml:
-
-```bash
-icalendar_parser: any
-```
+| iCalendar type | Dart type      |
+| -------------- | -------------- |
+| DATE           | `DateTime`     |
+| DATE-TIME      | `IcalDateTime` |
+| DURATION       | `IcalDuration` |
+| FLOAT          | `double`       |
+| INTEGER        | `int`          |
+| PERIOD         | `PeriodOfTime` |
 
 ## How to use
 

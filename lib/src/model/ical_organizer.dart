@@ -1,4 +1,3 @@
-import 'package:icalendar_parser/src/model/calendar_user_address.dart';
 import 'package:icalendar_parser/src/utils/extensions.dart';
 
 /// This property defines the organizer for a calendar component.
@@ -6,20 +5,25 @@ import 'package:icalendar_parser/src/utils/extensions.dart';
 /// Example: `CN=John Smith:mailto:jsmith@example.com`
 ///
 /// See doc: https://icalendar.org/iCalendar-RFC-5545/3-8-4-3-organizer.html
-class ICalOrganizer extends CalendarUserAddress {
-  ICalOrganizer(
-    super.value, {
+class ICalOrganizer {
+  ICalOrganizer({
     this.cn,
     this.dir,
     this.sentBy,
     this.other,
+    this.value,
+    this.language,
   });
 
   factory ICalOrganizer.parse(String value) {
     try {
       final mailtoIndex = value.indexOf(':mailto:');
-      final mailto = Uri.parse(value.substring(mailtoIndex + 1));
-      final parts = value.substring(0, mailtoIndex).split(';');
+      final mailto = mailtoIndex != -1
+          ? Uri.parse(value.substring(mailtoIndex + 1))
+          : null;
+      final parts = mailtoIndex != -1
+          ? value.substring(0, mailtoIndex).split(';')
+          : value.split(';');
       final mappedParts = Map<String, String>.fromEntries(
         parts.map((part) {
           final keyValue = part.splitFirst('=');
@@ -28,16 +32,17 @@ class ICalOrganizer extends CalendarUserAddress {
       );
 
       return ICalOrganizer(
-        mailto,
+        value: mailto,
         cn: mappedParts['CN'],
         dir: mappedParts['DIR'],
         sentBy: mappedParts['SENT-BY'],
+        language: mappedParts['LANGUAGE'],
         other: mappedParts.entries
             .where((e) => e.key != 'CN' && e.key != 'DIR' && e.key != 'SENT-BY')
             .map((e) => '${e.key}=${e.value}')
             .toList(),
       );
-    } catch (e) {
+    } catch (_) {
       throw FormatException('Invalid ICalOrganizer value: $value');
     }
   }
@@ -46,6 +51,8 @@ class ICalOrganizer extends CalendarUserAddress {
   final String? dir;
   final String? sentBy;
   final List<String>? other;
+  final Uri? value;
+  final String? language;
 
   static ICalOrganizer? tryParse(String? value) {
     if (value == null) return null;
@@ -58,7 +65,6 @@ class ICalOrganizer extends CalendarUserAddress {
     }
   }
 
-  @override
   Map<String, dynamic> toJson() {
     return {
       'value': value.toString(),

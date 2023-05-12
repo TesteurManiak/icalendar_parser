@@ -179,11 +179,11 @@ class ICalendar {
     ) {
       final dates = value
           .split(',')
-          .map((e) => IcsDateTime(dt: e, tzid: params['TZID']))
+          .map((e) => IcalDateTime(dt: e, tzid: params['TZID']))
           .toList();
 
       final exdate = lastEvent['exdate'];
-      if (exdate != null && exdate is List<IcsDateTime>) {
+      if (exdate != null && exdate is List<IcalDateTime>) {
         exdate.addAll(dates);
       } else {
         lastEvent['exdate'] = dates;
@@ -342,7 +342,7 @@ class ICalendar {
   }
 
   static Object? jsonEncodable(Object? item) {
-    if (item is IcsDateTime) {
+    if (item is IcalDateTime) {
       return item.toJson();
     } else if (item is IcsTransp) {
       return item.key;

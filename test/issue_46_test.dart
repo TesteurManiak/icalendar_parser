@@ -1,5 +1,5 @@
+import 'package:icalendar_parser/src/model/ical_datetime.dart';
 import 'package:icalendar_parser/src/model/icalendar.dart';
-import 'package:icalendar_parser/src/model/ics_datetime.dart';
 import 'package:test/test.dart';
 
 import 'test_utils.dart';
@@ -15,7 +15,7 @@ void main() {
 
       expect(
         created,
-        const IcsDateTime(dt: "19960329T133000Z"),
+        const IcalDateTime(dt: "19960329T133000Z"),
       );
     });
   });

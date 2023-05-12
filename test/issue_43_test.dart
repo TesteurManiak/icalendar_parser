@@ -1,5 +1,5 @@
+import 'package:icalendar_parser/src/model/ical_datetime.dart';
 import 'package:icalendar_parser/src/model/icalendar.dart';
-import 'package:icalendar_parser/src/model/ics_datetime.dart';
 import 'package:test/test.dart';
 
 import 'test_utils.dart';
@@ -16,8 +16,8 @@ void main() {
       expect(
         exdates,
         [
-          const IcsDateTime(dt: "20221210T000000", tzid: "Europe/Berlin"),
-          const IcsDateTime(dt: "20221208T000000", tzid: "Europe/Berlin"),
+          const IcalDateTime(dt: "20221210T000000", tzid: "Europe/Berlin"),
+          const IcalDateTime(dt: "20221208T000000", tzid: "Europe/Berlin"),
         ],
       );
     });

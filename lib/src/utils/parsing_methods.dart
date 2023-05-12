@@ -1,4 +1,4 @@
-import 'package:icalendar_parser/src/model/ics_datetime.dart';
+import 'package:icalendar_parser/src/model/ical_datetime.dart';
 
 typedef SimpleParamFunction = Map<String, dynamic>? Function(
   String value,
@@ -14,7 +14,7 @@ SimpleParamFunction generateDateFunction(String name) {
     List<Object?> events,
     Map<String, dynamic> lastEvent,
   ) {
-    lastEvent[name] = IcsDateTime(dt: value, tzid: params['TZID']);
+    lastEvent[name] = IcalDateTime(dt: value, tzid: params['TZID']);
     return lastEvent;
   };
 }
