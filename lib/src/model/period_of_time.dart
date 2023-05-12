@@ -6,7 +6,7 @@ import 'package:icalendar_parser/src/model/ical_duration.dart';
 ///
 /// The [start] MUST be before the [end].
 ///
-/// [end] can be either a [IcalDateTime] or a [Duration].
+/// [end] can be either a [IcalDateTime] or a [IcalDuration].
 ///
 /// See doc: https://icalendar.org/iCalendar-RFC-5545/3-3-9-period-of-time.html
 class PeriodOfTime {
@@ -56,6 +56,9 @@ class PeriodOfTime {
       return null;
     }
   }
+
+  @override
+  String toString() => '$start/$end';
 }
 
 /// Union type for [IcalDateTime] and [Duration].
@@ -74,16 +77,27 @@ sealed class EndOfPeriod {
         return duration(value);
     }
   }
+
+  String _formattedString();
+
+  @override
+  String toString() => _formattedString();
 }
 
 class EndOfPeriodDateTime extends EndOfPeriod {
   const EndOfPeriodDateTime(this.value);
 
   final IcalDateTime value;
+
+  @override
+  String _formattedString() => value.toString();
 }
 
 class EndOfPeriodDuration extends EndOfPeriod {
   const EndOfPeriodDuration(this.value);
 
-  final Duration value;
+  final IcalDuration value;
+
+  @override
+  String _formattedString() => value.toString();
 }

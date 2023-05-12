@@ -91,6 +91,18 @@ class IcalDateTime {
   @override
   int get hashCode => Object.hash(dt, tzid);
 
+  @override
+  String toString() {
+    final buffer = StringBuffer();
+
+    if (tzid != null) {
+      buffer.write('TZID=$tzid:');
+    }
+    buffer.write(dt);
+
+    return buffer.toString();
+  }
+
   bool isBefore(IcalDateTime other) {
     final otherDt = other.toDateTime();
     final thisDt = toDateTime();

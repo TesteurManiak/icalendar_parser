@@ -53,7 +53,7 @@ class VFreeBusy extends ICalComponent {
       'url': url?.toString(),
       'attendees': attendees,
       'comments': comments,
-      'freebusies': freebusies,
+      'freebusy': freebusies?.map((e) => e.toString()).toList(),
       'rstatuses': rstatuses,
       'xProps': xProps,
       'ianaProps': ianaProps,
