@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:icalendar_parser/icalendar_parser.dart';
 import 'package:icalendar_parser/src/utils/parsing_methods.dart';
+import 'package:meta/meta.dart';
 
 typedef ClosureFunction = Map<String, dynamic>? Function(
   String value,
@@ -12,9 +13,13 @@ typedef ClosureFunction = Map<String, dynamic>? Function(
 );
 
 /// Core object
+@immutable
 class ICalendar {
   /// Default constructor.
-  ICalendar({required this.data, required this.headData});
+  const ICalendar({
+    required this.data,
+    required this.headData,
+  });
 
   /// Parse an [ICalendar] object from a [String]. The parameter
   /// [icsString] will be split using [LineSplitter] then calling
