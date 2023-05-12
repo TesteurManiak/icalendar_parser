@@ -1,6 +1,7 @@
 import 'package:icalendar_parser/icalendar_parser.dart';
 import 'package:icalendar_parser/src/components/ical_component.dart';
 import 'package:icalendar_parser/src/model/ical_organizer.dart';
+import 'package:icalendar_parser/src/model/period_of_time.dart';
 import 'package:icalendar_parser/src/utils/extensions.dart';
 
 /// A component that represents either a request for free or busy time
@@ -34,10 +35,7 @@ class VFreeBusy extends ICalComponent {
   final Uri? url;
   final List<Uri>? attendees;
   final List<String>? comments;
-
-  // TODO: use Period value type
-  final List<String>? freebusies;
-
+  final List<PeriodOfTime>? freebusies;
   final List<String>? rstatuses;
   final List<String>? xProps;
   final List<String>? ianaProps;
