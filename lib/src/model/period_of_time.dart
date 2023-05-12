@@ -1,4 +1,4 @@
-import 'package:icalendar_parser/icalendar_parser.dart';
+import 'package:icalendar_parser/src/model/ical_datetime.dart';
 import 'package:icalendar_parser/src/model/ical_duration.dart';
 
 /// This value type is used to identify values that contain a precise period of

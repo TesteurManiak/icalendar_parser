@@ -1,5 +1,5 @@
-import 'package:icalendar_parser/icalendar_parser.dart';
 import 'package:icalendar_parser/src/components/ical_component.dart';
+import 'package:icalendar_parser/src/model/ical_datetime.dart';
 import 'package:icalendar_parser/src/model/ical_organizer.dart';
 import 'package:icalendar_parser/src/model/period_of_time.dart';
 import 'package:icalendar_parser/src/utils/extensions.dart';
