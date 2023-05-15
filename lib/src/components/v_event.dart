@@ -19,13 +19,6 @@ class VEvent extends ICalComponent {
     List<String> lines, {
     bool allowEmptyLines = true,
   }) {
-    final params = genericParser(
-      lines: lines,
-      allowEmptyLines: allowEmptyLines,
-      shouldStartWith: (line) => line.startsWith('BEGIN:VEVENT'),
-      shouldEndWith: (line) => line.startsWith('END:VEVENT'),
-    );
-
     // TODO: finish this
     throw UnimplementedError();
   }
