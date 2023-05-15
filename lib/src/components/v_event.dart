@@ -1,7 +1,4 @@
-import 'package:icalendar_parser/src/components/ical_component.dart';
-import 'package:icalendar_parser/src/model/classification.dart';
-import 'package:icalendar_parser/src/model/ical_datetime.dart';
-import 'package:icalendar_parser/src/utils/extensions.dart';
+part of 'ical_component.dart';
 
 /// See doc: https://icalendar.org/iCalendar-RFC-5545/3-6-1-event-component.html
 class VEvent extends ICalComponent {
