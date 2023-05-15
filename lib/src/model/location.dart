@@ -9,12 +9,9 @@ class Location {
   });
 
   factory Location.parse(String str) {
-    // Should parse the following format:
     // - Conference Room - F123\, Bldg. 002
     // - ALTREP="http://xyzcorp.com/conf-rooms/f123.vcf":Conference Room - F123\, Bldg. 002
     // - LANGUAGE=en:Conference Room - F123\, Bldg. 002
-    // Params are always before the value and separated by a colon.
-    // The value is after the last ":" character.
 
     final params = <String, String>{};
     final parts = str.splitLast(':');
