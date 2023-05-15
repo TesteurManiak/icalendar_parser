@@ -15,10 +15,7 @@ class VEvent extends ICalComponent {
     this.otherParams,
   }) : super('VEVENT');
 
-  factory VEvent.parse(
-    List<String> lines, {
-    bool allowEmptyLines = true,
-  }) {
+  factory VEvent.parse() {
     // TODO: finish this
     throw UnimplementedError();
   }
@@ -36,7 +33,7 @@ class VEvent extends ICalComponent {
 
   static VEvent? tryParse(List<String> lines) {
     try {
-      return VEvent.parse(lines);
+      return VEvent.parse();
     } catch (_) {
       return null;
     }
@@ -54,14 +51,10 @@ class VEvent extends ICalComponent {
       'classification': classification.toString(),
       'created': created?.toString(),
       'description': description,
-      'geo': geo?.toJson(),
+      'geo': geo?.serialize(),
       'last-modified': lastModified?.toString(),
       'location': location?.toString(),
       if (localOtherParams != null) ...localOtherParams,
     }.toValidMap();
   }
-}
-
-extension on (double, double) {
-  String toJson() => '${this.$1};${this.$2}';
 }

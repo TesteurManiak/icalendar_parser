@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:icalendar_parser/icalendar_parser.dart';
+import 'package:icalendar_parser/src/model/geographic_position.dart';
 import 'package:icalendar_parser/src/utils/parsing_methods.dart';
 import 'package:meta/meta.dart';
 
@@ -110,13 +111,8 @@ class ICalendar {
       List<Object?> events,
       Map<String, dynamic> lastEvent,
     ) {
-      final pos = value.split(';');
-      if (pos.length != 2) return lastEvent;
-
-      final geo = <String, dynamic>{};
-      geo['latitude'] = num.parse(pos[0]);
-      geo['longitude'] = num.parse(pos[1]);
-      lastEvent['geo'] = geo;
+      final pos = GeographicPosition.parse(value);
+      lastEvent['geo'] = pos.serialize();
       return lastEvent;
     },
     'CATEGORIES': (

@@ -1,4 +1,5 @@
 import 'package:icalendar_parser/src/model/classification.dart';
+import 'package:icalendar_parser/src/model/geographic_position.dart';
 import 'package:icalendar_parser/src/model/ical_datetime.dart';
 import 'package:icalendar_parser/src/model/ical_organizer.dart';
 import 'package:icalendar_parser/src/model/location.dart';

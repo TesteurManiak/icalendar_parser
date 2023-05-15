@@ -18,3 +18,7 @@ final class GeographicPosition {
     }
   }
 }
+
+extension GeographicPositionExtension on (double, double) {
+  String serialize() => '${this.$1};${this.$2}';
+}

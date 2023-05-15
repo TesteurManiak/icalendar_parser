@@ -24,10 +24,7 @@
                 "dt": "19970715T035959Z"
             },
             "summary": "Bastille Day Party",
-            "geo": {
-                "latitude": 48.85299,
-                "longitude": 2.36885
-            }
+            "geo": "48.85299;2.36885"
         }
     ]
 }
