@@ -31,8 +31,7 @@ class ICalendar {
   /// The body MUST include the "PRODID" and "VERSION" calendar properties.
   factory ICalendar.fromString(String icsString, {bool allowEmptyLine = true}) {
     final strBuffer = StringBuffer(icsString);
-    const lineSplitter = LineSplitter();
-    final lines = lineSplitter.convert(strBuffer.toString());
+    final lines = const LineSplitter().convert(strBuffer.toString());
     return ICalendar.fromLines(lines, allowEmptyLine: allowEmptyLine);
   }
 
