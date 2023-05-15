@@ -22,4 +22,18 @@ void main() {
       });
     });
   });
+
+  group('StringExtensions', () {
+    group('splitFirst', () {
+      test('should split the string on the first separator only', () {
+        const str = 'a:b:c';
+        expect(str.splitFirst(':'), equals(['a', 'b:c']));
+      });
+
+      test('if the separator is not found should return the string', () {
+        const str = 'abc';
+        expect(str.splitFirst(':'), equals(['abc']));
+      });
+    });
+  });
 }
