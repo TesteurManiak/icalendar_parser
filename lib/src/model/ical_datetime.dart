@@ -109,11 +109,4 @@ class IcalDateTime {
 
     return thisDt.isBefore(otherDt);
   }
-
-  bool isAfter(IcalDateTime other) {
-    final otherDt = other.toDateTime();
-    final thisDt = toDateTime();
-
-    return thisDt.isAfter(otherDt);
-  }
 }

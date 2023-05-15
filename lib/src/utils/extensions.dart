@@ -4,12 +4,12 @@ extension MapExtensions<K, V> on Map<K, V> {
     return Map.fromEntries(
       entries.where((e) {
         final value = e.value;
-
-        if (value == null) return false;
-        if (value is Iterable) {
-          return value.isNotEmpty;
-        }
-        return true;
+        return switch (value) {
+          null => false,
+          Iterable() when value.isEmpty => false,
+          String() when value.isEmpty => false,
+          _ => true,
+        };
       }),
     );
   }
