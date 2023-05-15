@@ -8,9 +8,45 @@ class Location {
     this.language,
   });
 
+  factory Location.parse(String str) {
+    // Should parse the following format:
+    // - Conference Room - F123\, Bldg. 002
+    // - ALTREP="http://xyzcorp.com/conf-rooms/f123.vcf":Conference Room - F123\, Bldg. 002
+    // - LANGUAGE=en:Conference Room - F123\, Bldg. 002
+    // Params are always before the value and separated by a colon.
+    // The value is after the last ":" character.
+
+    final params = <String, String>{};
+    final parts = str.splitLast(':');
+    final value = parts.last;
+
+    if (parts.first != value) {
+      final paramParts = parts.first.split(';');
+      for (final part in paramParts) {
+        final param = part.splitFirst('=');
+        params[param[0].toUpperCase()] = param[1];
+      }
+    }
+
+    return Location(
+      value: value,
+      altRep: params['ALTREP'],
+      language: params['LANGUAGE'],
+    );
+  }
+
   final String? altRep;
   final String? language;
   final String value;
+
+  static Location? tryParse(String? str) {
+    if (str == null) return null;
+    try {
+      return Location.parse(str);
+    } catch (_) {
+      return null;
+    }
+  }
 
   @override
   String toString() {

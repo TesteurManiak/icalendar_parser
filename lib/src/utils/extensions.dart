@@ -29,4 +29,11 @@ extension StringExtensions on String {
 
     return [substring(0, index), substring(index + 1)];
   }
+
+  List<String> splitLast(String separator) {
+    final index = lastIndexOf(separator);
+    if (index == -1) return [this];
+
+    return [substring(0, index), substring(index + 1)];
+  }
 }
