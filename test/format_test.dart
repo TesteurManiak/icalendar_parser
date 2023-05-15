@@ -81,12 +81,12 @@ void main() {
 
       test('IcsTransp', () {
         expect(
-          ICalendar.jsonEncodable(IcsTransp.opaque),
-          IcsTransp.opaque.key,
+          ICalendar.jsonEncodable(TimeTransparency.opaque),
+          TimeTransparency.opaque.value,
         );
         expect(
-          ICalendar.jsonEncodable(IcsTransp.transparent),
-          IcsTransp.transparent.key,
+          ICalendar.jsonEncodable(TimeTransparency.transparent),
+          TimeTransparency.transparent.value,
         );
       });
 
@@ -174,7 +174,7 @@ void main() {
       final iCalendar = ICalendar.fromLines(withTransp);
       final transp =
           iCalendar.data.firstWhere((e) => e.containsKey('transp'))['transp'];
-      expect(transp, IcsTransp.transparent);
+      expect(transp, TimeTransparency.transparent);
     });
 
     test('with status', () {

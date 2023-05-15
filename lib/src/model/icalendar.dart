@@ -344,8 +344,8 @@ class ICalendar {
   static Object? jsonEncodable(Object? item) {
     if (item is IcalDateTime) {
       return item.toJson();
-    } else if (item is IcsTransp) {
-      return item.key;
+    } else if (item is TimeTransparency) {
+      return item.value;
     } else if (item is IcsStatus) {
       return item.key;
     }
@@ -358,5 +358,5 @@ class ICalendar {
 
 extension IcsStringModifier on String {
   IcsStatus toIcsStatus() => IcsStatus.fromString(this);
-  IcsTransp toIcsTransp() => IcsTransp.fromString(this);
+  TimeTransparency toIcsTransp() => TimeTransparency.parse(this);
 }

@@ -29,19 +29,19 @@ void main() {
 
     group('toIcsTransp()', () {
       test('IcsTransp.OPAQUE', () {
-        expect('opaque'.toIcsTransp(), IcsTransp.opaque);
-        expect('OPAQUE'.toIcsTransp(), IcsTransp.opaque);
+        expect('opaque'.toIcsTransp(), TimeTransparency.opaque);
+        expect('OPAQUE'.toIcsTransp(), TimeTransparency.opaque);
       });
 
       test('IcsTransp.TRANSPARENT', () {
-        expect('transparent'.toIcsTransp(), IcsTransp.transparent);
-        expect('TRANSPARENT'.toIcsTransp(), IcsTransp.transparent);
+        expect('transparent'.toIcsTransp(), TimeTransparency.transparent);
+        expect('TRANSPARENT'.toIcsTransp(), TimeTransparency.transparent);
       });
 
       test('unknown', () {
         expect(
           () => ''.toIcsTransp(),
-          throwsA(const TypeMatcher<ICalendarTranspParseException>()),
+          throwsArgumentError,
         );
       });
     });

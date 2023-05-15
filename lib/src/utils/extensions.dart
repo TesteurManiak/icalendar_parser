@@ -15,6 +15,13 @@ extension MapExtensions<K, V> on Map<K, V> {
   }
 }
 
+extension MapParamsExtension on Map<String, String> {
+  /// Concatenate the parameters to a string, each separated by a ";".
+  String concatenateParams() {
+    return entries.map((e) => '${e.key}=${e.value}').join(';');
+  }
+}
+
 extension StringExtensions on String {
   List<String> splitFirst(String separator) {
     final index = indexOf(separator);
