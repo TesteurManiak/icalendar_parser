@@ -155,14 +155,14 @@ class ICalendar {
     },
     'ACTION': generateSimpleParamFunction('action'),
     'STATUS': (String value, _, __, Map<String, dynamic> lastEvent) {
-      lastEvent['status'] = value.trim().toIcsStatus();
+      lastEvent['status'] = IcsStatus.parse(value);
       return lastEvent;
     },
     'SEQUENCE': generateSimpleParamFunction('sequence'),
     'REPEAT': generateSimpleParamFunction('repeat'),
     'CLASS': generateSimpleParamFunction('class'),
     'TRANSP': (String value, _, __, Map<String, dynamic> lastEvent) {
-      lastEvent['transp'] = value.trim().toIcsTransp();
+      lastEvent['transp'] = TimeTransparency.parse(value);
       return lastEvent;
     },
     'VERSION': generateSimpleParamFunction('version'),
@@ -346,16 +346,11 @@ class ICalendar {
     } else if (item is TimeTransparency) {
       return item.value;
     } else if (item is IcsStatus) {
-      return item.key;
+      return item.value;
     }
     return item;
   }
 
   @override
   String toString() => jsonEncode(toJson());
-}
-
-extension IcsStringModifier on String {
-  IcsStatus toIcsStatus() => IcsStatus.fromString(this);
-  TimeTransparency toIcsTransp() => TimeTransparency.parse(this);
 }

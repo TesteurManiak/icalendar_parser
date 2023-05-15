@@ -1,8 +1,11 @@
-import 'package:icalendar_parser/src/exceptions/icalendar_exception.dart';
-
-/// Enumeration of all event statuses.
+/// This property defines the overall status or confirmation for the calendar
+/// component.
 ///
-/// See doc: https://www.kanzaki.com/docs/ical/status.html
+/// Example:
+/// - `TENTATIVE`
+/// - `NEEDS-ACTION`
+///
+/// See doc: https://icalendar.org/iCalendar-RFC-5545/3-8-1-11-status.html
 enum IcsStatus {
   tentative('TENTATIVE'),
   confirmed('CONFIRMED'),
@@ -13,16 +16,18 @@ enum IcsStatus {
   draft('DRAFT'),
   isFinal('FINAL');
 
-  const IcsStatus(this.key);
-  final String key;
+  const IcsStatus(this.value);
 
-  static IcsStatus fromString(String key) {
+  final String value;
+
+  static IcsStatus parse(String key) {
     final effectiveKey = key.toUpperCase();
     return IcsStatus.values.firstWhere(
-      (e) => e.key == effectiveKey,
-      orElse: () {
-        throw ICalendarStatusParseException('Unknown IcsStatus: $key');
-      },
+      (e) => e.value == effectiveKey,
+      orElse: () => throw ArgumentError.value(key, 'key', 'Invalid value.'),
     );
   }
+
+  @override
+  String toString() => value;
 }

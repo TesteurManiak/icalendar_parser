@@ -93,35 +93,35 @@ void main() {
       test('IcsStatus', () {
         expect(
           ICalendar.jsonEncodable(IcsStatus.tentative),
-          IcsStatus.tentative.key,
+          IcsStatus.tentative.value,
         );
         expect(
           ICalendar.jsonEncodable(IcsStatus.confirmed),
-          IcsStatus.confirmed.key,
+          IcsStatus.confirmed.value,
         );
         expect(
           ICalendar.jsonEncodable(IcsStatus.cancelled),
-          IcsStatus.cancelled.key,
+          IcsStatus.cancelled.value,
         );
         expect(
           ICalendar.jsonEncodable(IcsStatus.needsAction),
-          IcsStatus.needsAction.key,
+          IcsStatus.needsAction.value,
         );
         expect(
           ICalendar.jsonEncodable(IcsStatus.completed),
-          IcsStatus.completed.key,
+          IcsStatus.completed.value,
         );
         expect(
           ICalendar.jsonEncodable(IcsStatus.inProcess),
-          IcsStatus.inProcess.key,
+          IcsStatus.inProcess.value,
         );
         expect(
           ICalendar.jsonEncodable(IcsStatus.draft),
-          IcsStatus.draft.key,
+          IcsStatus.draft.value,
         );
         expect(
           ICalendar.jsonEncodable(IcsStatus.isFinal),
-          IcsStatus.isFinal.key,
+          IcsStatus.isFinal.value,
         );
       });
     });

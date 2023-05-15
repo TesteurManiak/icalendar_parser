@@ -4,14 +4,14 @@ import 'package:test/test.dart';
 void main() {
   group('IcsStatusModifier', () {
     test('string', () {
-      expect(IcsStatus.cancelled.key, 'CANCELLED');
-      expect(IcsStatus.completed.key, 'COMPLETED');
-      expect(IcsStatus.confirmed.key, 'CONFIRMED');
-      expect(IcsStatus.draft.key, 'DRAFT');
-      expect(IcsStatus.inProcess.key, 'IN-PROCESS');
-      expect(IcsStatus.isFinal.key, 'FINAL');
-      expect(IcsStatus.needsAction.key, 'NEEDS-ACTION');
-      expect(IcsStatus.tentative.key, 'TENTATIVE');
+      expect(IcsStatus.cancelled.value, 'CANCELLED');
+      expect(IcsStatus.completed.value, 'COMPLETED');
+      expect(IcsStatus.confirmed.value, 'CONFIRMED');
+      expect(IcsStatus.draft.value, 'DRAFT');
+      expect(IcsStatus.inProcess.value, 'IN-PROCESS');
+      expect(IcsStatus.isFinal.value, 'FINAL');
+      expect(IcsStatus.needsAction.value, 'NEEDS-ACTION');
+      expect(IcsStatus.tentative.value, 'TENTATIVE');
     });
   });
 }
