@@ -14,8 +14,8 @@
                 "dt": "19970714T170000Z"
             },
             "organizer": {
-                "name": "John Doe",
-                "mail": "john.doe@example.com"
+                "value": "mailto:john.doe@example.com",
+                "cn": "John Doe"
             },
             "dtstart": {
                 "dt": "19970714T170000Z"

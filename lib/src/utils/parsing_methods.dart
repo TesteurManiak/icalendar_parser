@@ -1,4 +1,4 @@
-import 'package:icalendar_parser/src/model/ical_datetime.dart';
+import 'package:icalendar_parser/icalendar_parser.dart';
 
 typedef SimpleParamFunction = Map<String, dynamic>? Function(
   String value,
@@ -7,7 +7,7 @@ typedef SimpleParamFunction = Map<String, dynamic>? Function(
   Map<String, dynamic> lastEvent,
 );
 
-SimpleParamFunction generateDateFunction(String name) {
+SimpleParamFunction parseDateFunction(String name) {
   return (
     String value,
     Map<String, String> params,
@@ -59,16 +59,10 @@ Map<String, dynamic> parseOrganizerField(
   List<Object?> events,
   Map<String, dynamic> lastEvent,
 ) {
-  final mail = value.replaceAll('MAILTO:', '').trim();
-
-  if (params.containsKey('CN')) {
-    lastEvent['organizer'] = {
-      'name': params['CN'],
-      'mail': mail,
-    };
-  } else {
-    lastEvent['organizer'] = {'mail': mail};
-  }
-
+  final organizer = ICalOrganizer(
+    cn: params['CN'],
+    value: Uri.tryParse(value),
+  );
+  lastEvent['organizer'] = organizer.toJson();
   return lastEvent;
 }

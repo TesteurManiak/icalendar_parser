@@ -67,7 +67,7 @@ class ICalOrganizer {
 
   Map<String, dynamic> toJson() {
     return {
-      'value': value.toString(),
+      'value': value?.toString(),
       'cn': cn,
       'dir': dir,
       'sentBy': sentBy,

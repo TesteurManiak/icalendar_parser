@@ -1,6 +1,5 @@
 library icalendar_parser;
 
-export 'src/components/ical_component.dart';
 export 'src/exceptions/icalendar_exception.dart';
 export 'src/model/ical_datetime.dart';
 export 'src/model/ical_duration.dart';

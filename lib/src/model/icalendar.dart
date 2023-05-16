@@ -92,13 +92,13 @@ class ICalendar {
       return lastEvent;
     },
     'END': parseEndField,
-    'DTSTART': generateDateFunction('dtstart'),
-    'DTEND': generateDateFunction('dtend'),
-    'DTSTAMP': generateDateFunction('dtstamp'),
+    'DTSTART': parseDateFunction('dtstart'),
+    'DTEND': parseDateFunction('dtend'),
+    'DTSTAMP': parseDateFunction('dtstamp'),
     'TRIGGER': generateSimpleParamFunction('trigger'),
-    'LAST-MODIFIED': generateDateFunction('lastModified'),
-    'COMPLETED': generateDateFunction('completed'),
-    'DUE': generateDateFunction('due'),
+    'LAST-MODIFIED': parseDateFunction('lastModified'),
+    'COMPLETED': parseDateFunction('completed'),
+    'DUE': parseDateFunction('due'),
     'UID': generateSimpleParamFunction('uid'),
     'SUMMARY': generateSimpleParamFunction('summary'),
     'DESCRIPTION': generateSimpleParamFunction('description'),
@@ -186,7 +186,7 @@ class ICalendar {
 
       return lastEvent;
     },
-    'CREATED': generateDateFunction('created'),
+    'CREATED': parseDateFunction('created'),
   };
 
   /// Managed parsing methods.
