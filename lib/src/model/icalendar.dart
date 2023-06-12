@@ -12,6 +12,11 @@ typedef ClosureFunction = Map<String, dynamic>? Function(
   List<Map<String, dynamic>>,
 );
 
+typedef JsonData = ({
+  Map<String, dynamic> headData,
+  List<Map<String, dynamic>> data,
+});
+
 /// Core object
 @immutable
 class ICalendar {
@@ -52,9 +57,10 @@ class ICalendar {
       }
     }
     final parsedData = fromListToJson(lines, allowEmptyLine: allowEmptyLine);
+
     return ICalendar(
-      headData: parsedData.first as Map<String, dynamic>,
-      data: parsedData.last as List<Map<String, dynamic>>,
+      headData: parsedData.headData,
+      data: parsedData.data,
     );
   }
 
@@ -65,16 +71,44 @@ class ICalendar {
   final Map<String, dynamic> headData;
 
   /// `VERSION` of the object.
-  String get version => headData['version'] as String;
+  String get version {
+    final version = headData['version'];
+    if (version is! String) {
+      throw const FormatException('The version field is not a String');
+    }
+
+    return version;
+  }
 
   /// `PRODID` of the object.
-  String get prodid => headData['prodid'] as String;
+  String get prodid {
+    final prodid = headData['prodid'];
+    if (prodid is! String) {
+      throw const FormatException('The prodid field is not a String');
+    }
+
+    return prodid;
+  }
 
   /// `CALSCALE` of the object.
-  String? get calscale => headData['calscale'] as String?;
+  String? get calscale {
+    final calscale = headData['calscale'];
+    if (calscale is! String?) {
+      throw const FormatException('The calscale field is not a String');
+    }
+
+    return calscale;
+  }
 
   /// `METHOD` of the object.
-  String? get method => headData['method'] as String?;
+  String? get method {
+    final method = headData['method'];
+    if (method is! String?) {
+      throw const FormatException('The method field is not a String');
+    }
+
+    return method;
+  }
 
   /// Map containing the methods used to parse each kind of fields in the file.
   static final _objects = <String, Function>{
@@ -234,13 +268,14 @@ class ICalendar {
   /// `List<Map<String, dynamic>> data`.
   ///
   /// If [allowEmptyLine] is false the method will throw [EmptyLineException].
-  static List<dynamic> fromListToJson(
+  static JsonData fromListToJson(
     List<String> lines, {
     bool allowEmptyLine = true,
   }) {
     final data = <Map<String, dynamic>>[];
     final headData = <String, dynamic>{};
     final events = <Object?>[];
+
     Map<String, dynamic>? lastEvent = {};
     String? currentName;
 
@@ -277,8 +312,9 @@ class ICalendar {
               dataLine[0].toUpperCase() != dataLine[0] &&
               !dataLine[0].contains(';'))) {
         if (lastEvent != null && line.isNotEmpty && currentName != null) {
-          final buffer = StringBuffer(lastEvent[currentName] as String)
-            ..write(line.toString());
+          final content = lastEvent[currentName];
+          if (content is! String) continue;
+          final buffer = StringBuffer(content)..write(line.toString());
           lastEvent[currentName] = buffer.toString();
         }
         continue;
@@ -299,13 +335,11 @@ class ICalendar {
       final nameFunc = _objects[name];
       if (_objects.containsKey(name) && nameFunc != null) {
         currentName = name.toLowerCase();
-        if (name == 'END') {
-          final func = nameFunc as ClosureFunction;
+        if (name == 'END' && nameFunc is ClosureFunction) {
           currentName = null;
-          lastEvent = func(value, params, events, lastEvent, data);
-        } else {
-          final func = nameFunc as SimpleParamFunction;
-          lastEvent = func(value, params, events, lastEvent ?? headData);
+          lastEvent = nameFunc(value, params, events, lastEvent, data);
+        } else if (nameFunc is SimpleParamFunction) {
+          lastEvent = nameFunc(value, params, events, lastEvent ?? headData);
         }
       }
     }
@@ -318,7 +352,8 @@ class ICalendar {
         'The body is missing the property PRODID',
       );
     }
-    return [headData, data];
+
+    return (headData: headData, data: data);
   }
 
   /// Convert [ICalendar] object to a `Map<String, dynamic>` containing all its
@@ -337,8 +372,15 @@ class ICalendar {
       for (final entry in headData.entries) entry.key: entry.value,
       'data': data,
     };
-    return jsonDecode(jsonEncode(map, toEncodable: jsonEncodable))
-        as Map<String, dynamic>;
+    final decodedJson = jsonDecode(jsonEncode(map, toEncodable: jsonEncodable));
+
+    if (decodedJson is! Map<String, dynamic>) {
+      throw const ICalendarFormatException(
+        'The decoded JSON is not a Map<String, dynamic>',
+      );
+    }
+
+    return decodedJson;
   }
 
   static Object? jsonEncodable(Object? item) {

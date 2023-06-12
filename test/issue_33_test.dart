@@ -11,7 +11,12 @@ void main() {
       expect(iCal.data.length, 1);
 
       final event = iCal.data[0];
-      final organizer = event['organizer'] as Map<String, dynamic>;
+      final organizer = event['organizer'];
+
+      if (organizer is! Map<String, dynamic>) {
+        fail('organizer is not a Map<String, dynamic>');
+      }
+
       expect(organizer['name'], 'Joe Jackson');
       expect(organizer['mail'], '');
     });
@@ -22,7 +27,12 @@ void main() {
       expect(iCal.data.length, 1);
 
       final event = iCal.data[0];
-      final organizer = event['organizer'] as Map<String, dynamic>;
+      final organizer = event['organizer'];
+
+      if (organizer is! Map<String, dynamic>) {
+        fail('organizer is not a Map<String, dynamic>');
+      }
+
       expect(organizer['name'], 'Joe Jackson');
       expect(organizer['mail'], '');
     });

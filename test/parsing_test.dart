@@ -43,9 +43,10 @@ void main() {
       expect(ICalendar.objects.containsKey('TEST'), true);
 
       final obj = ICalendar.fromLines(valid);
-      final entry = obj.data.firstWhereOrNull((e) => e.containsKey('test'))!;
+      final entry = obj.data.firstWhereOrNull((e) => e.containsKey('test'));
+
       expect(entry, isNotNull);
-      expect(entry['test'], 'This is a test content');
+      expect(entry?['test'], 'This is a test content');
     });
 
     test('test2 field - custom method', () {
@@ -61,9 +62,10 @@ void main() {
       expect(ICalendar.objects.containsKey('TEST2'), true);
 
       final obj = ICalendar.fromLines(valid);
-      final entry = obj.data.firstWhereOrNull((e) => e.containsKey('test2'))!;
+      final entry = obj.data.firstWhereOrNull((e) => e.containsKey('test2'));
+
       expect(entry, isNotNull);
-      expect(entry['test2'], 'test');
+      expect(entry?['test2'], 'test');
     });
 
     test('already registered field', () {
@@ -120,7 +122,11 @@ void main() {
       final obj = ICalendar.fromLines(dtFile);
       expect(obj.data.isNotEmpty, true);
 
-      final dtstart = obj.data.first['dtstart'] as IcsDateTime;
+      final dtstart = obj.data.first['dtstart'];
+      if (dtstart is! IcsDateTime) {
+        fail('dtstart is not IcsDateTime');
+      }
+
       expect(dtstart.dt, '20210607T090000');
       expect(dtstart.tzid, 'Europe/Berlin');
       expect(dtstart.toDateTime(), isNotNull);

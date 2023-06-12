@@ -40,7 +40,7 @@ void main() {
       test('w/ multiline description', () {
         final iCalendarLines = ICalendar.fromLines(validMultiline);
         expect(
-          iCalendarLines.data.first['description'] as String,
+          iCalendarLines.data.first['description'],
           equals(
             'Lorem ipsum dolor sit amet, consectetur adipiscing elit.Sed suscipit malesuada sodales.Ut viverra metus neque, ut ullamcorper felis fermentum vel.Sed sodales mauris nec.',
           ),
@@ -139,9 +139,13 @@ void main() {
     test('without organizer name', () {
       final noOrganizerName = readFileLines('no_organizer_name.ics');
       final iCalendar = ICalendar.fromLines(noOrganizerName);
-      final Map<String, dynamic> organizer = iCalendar.data
-              .firstWhere((e) => e.containsKey('organizer'))['organizer']
-          as Map<String, dynamic>;
+      final organizer = iCalendar.data
+          .firstWhere((e) => e.containsKey('organizer'))['organizer'];
+
+      if (organizer is! Map<String, dynamic>) {
+        fail('organizer is not a Map<String, dynamic>');
+      }
+
       expect(organizer.containsKey('name'), false);
       expect(organizer['mail'], 'john.doe@example.com');
     });
@@ -149,9 +153,13 @@ void main() {
     test('with categories', () {
       final withCategories = readFileLines('with_categories.ics');
       final iCalendar = ICalendar.fromLines(withCategories);
-      final List<String> categories = iCalendar.data
-              .firstWhere((e) => e.containsKey('categories'))['categories']
-          as List<String>;
+      final categories = iCalendar.data
+          .firstWhere((e) => e.containsKey('categories'))['categories'];
+
+      if (categories is! List<String>) {
+        fail('categories is not a List<String>');
+      }
+
       expect(categories.length, 2);
       expect(categories, ['APPOINTMENT', 'EDUCATION']);
     });
@@ -160,10 +168,20 @@ void main() {
       final withAttendee = readFileLines('with_attendee.ics');
       final iCalendar = ICalendar.fromLines(withAttendee);
       final attendees = iCalendar.data
-          .firstWhere((e) => e.containsKey('attendee'))['attendee'] as List;
+          .firstWhere((e) => e.containsKey('attendee'))['attendee'];
+
+      if (attendees is! List) {
+        fail('attendees is not a List');
+      }
+
       expect(attendees.length, 1);
 
-      final attendee = attendees[0] as Map<String, dynamic>;
+      final attendee = attendees[0];
+
+      if (attendee is! Map<String, dynamic>) {
+        fail('attendee is not a Map<String, dynamic>');
+      }
+
       expect(attendee['mail'], 'joecool@host2.com');
       expect(attendee['name'], 'Henry Cabot');
       expect(attendee['role'], 'REQ-PARTICIPANT');
