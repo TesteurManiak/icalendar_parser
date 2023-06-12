@@ -95,7 +95,7 @@ class ICalendar {
     'DTSTART': parseDateFunction('dtstart'),
     'DTEND': parseDateFunction('dtend'),
     'DTSTAMP': parseDateFunction('dtstamp'),
-    'TRIGGER': generateSimpleParamFunction('trigger'),
+    'TRIGGER': parseTriggerFunction(),
     'LAST-MODIFIED': parseDateFunction('lastModified'),
     'COMPLETED': parseDateFunction('completed'),
     'DUE': parseDateFunction('due'),
@@ -337,14 +337,14 @@ class ICalendar {
   }
 
   static Object? jsonEncodable(Object? item) {
-    if (item is IcalDateTime) {
-      return item.toJson();
-    } else if (item is TimeTransparency) {
-      return item.value;
-    } else if (item is IcsStatus) {
-      return item.value;
-    }
-    return item;
+    return switch (item) {
+      IcalDateTime() => item.toJson(),
+      TimeTransparency() => item.value,
+      IcsStatus() => item.value,
+      ICalOrganizer() => item.toJson(),
+      IcalDuration() => item.toString(),
+      _ => item,
+    };
   }
 
   @override

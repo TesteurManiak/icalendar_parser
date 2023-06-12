@@ -1,12 +1,14 @@
 import 'package:icalendar_parser/src/utils/extensions.dart';
+import 'package:meta/meta.dart';
 
 /// This property defines the organizer for a calendar component.
 ///
 /// Example: `CN=John Smith:mailto:jsmith@example.com`
 ///
 /// See doc: https://icalendar.org/iCalendar-RFC-5545/3-8-4-3-organizer.html
+@immutable
 class ICalOrganizer {
-  ICalOrganizer({
+  const ICalOrganizer({
     this.cn,
     this.dir,
     this.sentBy,
@@ -74,4 +76,19 @@ class ICalOrganizer {
       'other': other,
     }.toValidMap();
   }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        other is ICalOrganizer &&
+            cn == other.cn &&
+            dir == other.dir &&
+            sentBy == other.sentBy &&
+            this.other == other.other &&
+            value == other.value &&
+            language == other.language;
+  }
+
+  @override
+  int get hashCode => Object.hash(cn, dir, sentBy, other, value, language);
 }

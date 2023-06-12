@@ -49,7 +49,9 @@ void main() {
 
       test('parse TRIGGER', () {
         final iCalendar = ICalendar.fromLines(validWithAlarm);
-        expect(iCalendar.data[1]['trigger'], '-PT1440M');
+        final wantedDuration = IcalDuration.parse('-PT1440M');
+
+        expect(iCalendar.data[1]['trigger'], wantedDuration);
       });
     });
 
@@ -139,11 +141,12 @@ void main() {
     test('without organizer name', () {
       final noOrganizerName = readFileLines('no_organizer_name.ics');
       final iCalendar = ICalendar.fromLines(noOrganizerName);
-      final Map<String, dynamic> organizer = iCalendar.data
-              .firstWhere((e) => e.containsKey('organizer'))['organizer']
-          as Map<String, dynamic>;
-      expect(organizer.containsKey('name'), false);
-      expect(organizer['mail'], 'john.doe@example.com');
+      final organizer = iCalendar.data[0]['organizer'] as ICalOrganizer;
+
+      expect(
+        organizer,
+        ICalOrganizer(value: Uri.parse('mailto:john.doe@example.com')),
+      );
     });
 
     test('with categories', () {

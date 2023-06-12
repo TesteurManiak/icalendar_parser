@@ -19,6 +19,18 @@ SimpleParamFunction parseDateFunction(String name) {
   };
 }
 
+SimpleParamFunction parseTriggerFunction() {
+  return (
+    String value,
+    Map<String, String> params,
+    List<Object?> _,
+    Map<String, dynamic> lastEvent,
+  ) {
+    lastEvent['trigger'] = IcalDuration.parse(value);
+    return lastEvent;
+  };
+}
+
 /// Generate a method that return the [lastEvent] with a new entry at [name]
 /// containing the [value] as [String].
 SimpleParamFunction generateSimpleParamFunction(String name) {
@@ -63,6 +75,6 @@ Map<String, dynamic> parseOrganizerField(
     cn: params['CN'],
     value: Uri.tryParse(value),
   );
-  lastEvent['organizer'] = organizer.toJson();
+  lastEvent['organizer'] = organizer;
   return lastEvent;
 }

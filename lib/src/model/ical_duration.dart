@@ -22,11 +22,10 @@ class IcalDuration extends Duration {
   /// Throws a [FormatException] if the value is not a valid duration.
   factory IcalDuration.parse(String value) {
     final regex = RegExp(
-      r'^P((?<weeks>\d+)W)?((?<days>\d+)D)?(T((?<hours>\d+)H)?((?<minutes>\d+)M)?((?<seconds>\d+)S)?)?$',
+      r'(?<=P)(?:(?:(?<weeks>\d+)W)?(?:(?<days>\d+)D)?)?(?:T(?:(?<hours>\d+)H)?(?:(?<minutes>\d+)M)?(?:(?<seconds>\d+)S)?)?',
     );
 
     final match = regex.firstMatch(value);
-
     if (match == null) {
       throw FormatException('Invalid duration format: $value');
     }

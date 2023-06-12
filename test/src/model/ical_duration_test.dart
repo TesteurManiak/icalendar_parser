@@ -4,14 +4,14 @@ import 'package:test/test.dart';
 void main() {
   group('IcalDuration', () {
     const accurateDuration = 'P15DT5H0M20S';
-    const wantedAccurateDuration = Duration(
+    const wantedAccurateDuration = IcalDuration(
       days: 15,
       hours: 5,
       seconds: 20,
     );
 
     const nominalDuration = 'P7W';
-    const wantedNominalDuration = Duration(days: 49);
+    const wantedNominalDuration = IcalDuration(days: 49);
 
     const invalidDuration = 'invalid';
 
