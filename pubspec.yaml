@@ -9,9 +9,9 @@ environment:
   sdk: ">=3.0.0 <4.0.0"
 
 dev_dependencies:
-  collection: ^1.17.1
-  coverage: ^1.6.3
-  fd_lints: ^2.0.1
-  test: ^1.24.2
+  collection: ^1.18.0
+  coverage: ^1.7.1
+  fd_lints: ^2.2.0
+  test: ^1.24.9
 dependencies:
-  meta: ^1.9.1
+  meta: ^1.11.0
