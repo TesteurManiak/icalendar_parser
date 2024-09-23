@@ -1,6 +1,6 @@
 name: icalendar_parser
 description: Package to parse iCalendar (.ics) files written in pure Dart.
-version: 2.0.0
+version: 2.1.0
 homepage: https://github.com/TesteurManiak
 repository: https://github.com/TesteurManiak/icalendar_parser
 issue_tracker: https://github.com/TesteurManiak/icalendar_parser/issues
@@ -10,8 +10,7 @@ environment:
 
 dev_dependencies:
   collection: ^1.18.0
-  coverage: ^1.7.1
-  fd_lints: ^2.2.0
-  test: ^1.24.9
+  fd_lints: ^2.3.0
+  test: ^1.25.8
 dependencies:
-  meta: ^1.11.0
+  meta: ^1.12.0
