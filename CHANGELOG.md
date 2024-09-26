@@ -1,5 +1,41 @@
 # Changelog
 
+## [2.1.0]
+
+* Bump fd_lints from 1.0.2 to 1.1.0 by @dependabot in https://github.com/TesteurManiak/icalendar_parser/pull/58
+* Bump collection from 1.17.1 to 1.17.2 by @dependabot in https://github.com/TesteurManiak/icalendar_parser/pull/57
+* Bump fd_lints from 1.1.0 to 1.1.1 by @dependabot in https://github.com/TesteurManiak/icalendar_parser/pull/60
+* Bump test from 1.24.2 to 1.24.3 by @dependabot in https://github.com/TesteurManiak/icalendar_parser/pull/59
+* Bump fd_lints from 1.1.1 to 2.0.1 by @dependabot in https://github.com/TesteurManiak/icalendar_parser/pull/62
+* Bump fd_lints from 2.0.1 to 2.1.0 by @dependabot in https://github.com/TesteurManiak/icalendar_parser/pull/64
+* Bump test from 1.24.3 to 1.24.4 by @dependabot in https://github.com/TesteurManiak/icalendar_parser/pull/63
+* Bump test from 1.24.4 to 1.24.5 by @dependabot in https://github.com/TesteurManiak/icalendar_parser/pull/66
+* Bump test from 1.24.5 to 1.24.6 by @dependabot in https://github.com/TesteurManiak/icalendar_parser/pull/68
+* Bump collection from 1.17.2 to 1.18.0 by @dependabot in https://github.com/TesteurManiak/icalendar_parser/pull/65
+* chore: bump dependencies by @TesteurManiak in https://github.com/TesteurManiak/icalendar_parser/pull/76
+* Bump coverage from 1.7.1 to 1.7.2 by @dependabot in https://github.com/TesteurManiak/icalendar_parser/pull/78
+* Bump test from 1.24.9 to 1.25.0 by @dependabot in https://github.com/TesteurManiak/icalendar_parser/pull/77
+* Bump test from 1.25.0 to 1.25.1 by @dependabot in https://github.com/TesteurManiak/icalendar_parser/pull/79
+* Bump test from 1.25.1 to 1.25.2 by @dependabot in https://github.com/TesteurManiak/icalendar_parser/pull/80
+* Bump meta from 1.11.0 to 1.12.0 by @dependabot in https://github.com/TesteurManiak/icalendar_parser/pull/81
+* Bump meta from 1.12.0 to 1.14.0 by @dependabot in https://github.com/TesteurManiak/icalendar_parser/pull/82
+* Bump test from 1.25.2 to 1.25.3 by @dependabot in https://github.com/TesteurManiak/icalendar_parser/pull/83
+* Bump test from 1.25.3 to 1.25.4 by @dependabot in https://github.com/TesteurManiak/icalendar_parser/pull/84
+* Bump fd_lints from 2.2.0 to 2.2.1 by @dependabot in https://github.com/TesteurManiak/icalendar_parser/pull/85
+* Bump test from 1.25.4 to 1.25.5 by @dependabot in https://github.com/TesteurManiak/icalendar_parser/pull/88
+* Bump meta from 1.14.0 to 1.15.0 by @dependabot in https://github.com/TesteurManiak/icalendar_parser/pull/87
+* Bump coverage from 1.7.2 to 1.8.0 by @dependabot in https://github.com/TesteurManiak/icalendar_parser/pull/86
+* Bump fd_lints from 2.2.1 to 2.3.0 by @dependabot in https://github.com/TesteurManiak/icalendar_parser/pull/90
+* Bump test from 1.25.5 to 1.25.6 by @dependabot in https://github.com/TesteurManiak/icalendar_parser/pull/89
+* Bump test from 1.25.6 to 1.25.7 by @dependabot in https://github.com/TesteurManiak/icalendar_parser/pull/91
+* Bump collection from 1.18.0 to 1.19.0 by @dependabot in https://github.com/TesteurManiak/icalendar_parser/pull/92
+* Bump test from 1.25.7 to 1.25.8 by @dependabot in https://github.com/TesteurManiak/icalendar_parser/pull/93
+* Bump coverage from 1.8.0 to 1.9.0 by @dependabot in https://github.com/TesteurManiak/icalendar_parser/pull/94
+* chore: bump dependencies by @TesteurManiak in https://github.com/TesteurManiak/icalendar_parser/pull/97
+
+
+**Full Changelog**: https://github.com/TesteurManiak/icalendar_parser/compare/2.0.0...2.1.0
+
 ## [2.0.0]
 
 * Fixed `toJson()` format
